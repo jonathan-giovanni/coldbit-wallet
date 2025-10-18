@@ -8,7 +8,9 @@ void main() {
     Animate.restartOnHotReload = false;
   });
 
-  testWidgets('ColdBit Wallet shows logo and title', (WidgetTester tester) async {
+  testWidgets('ColdBit Wallet shows logo and title', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const ColdBitApp());
     await tester.pumpAndSettle(); // waits all animations
 
