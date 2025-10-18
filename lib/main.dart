@@ -67,7 +67,7 @@ class _LogoHomePageState extends State<LogoHomePage>
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),
