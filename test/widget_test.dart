@@ -1,17 +1,22 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:coldbit_wallet/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:coldbit_wallet/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  setUpAll(() {
+    Animate.restartOnHotReload = false;
+  });
 
+  testWidgets('ColdBit Wallet shows logo and title', (WidgetTester tester) async {
+    await tester.pumpWidget(const ColdBitApp());
+    await tester.pumpAndSettle(); // waits all animations
+
+    expect(find.text('ColdBit Wallet'), findsOneWidget);
+    expect(find.byType(Image), findsOneWidget);
+
+    final image = tester.widget<Image>(find.byType(Image));
+    final provider = image.image as AssetImage;
+    expect(provider.assetName, equals('assets/icon/icon_without_bg.png'));
   });
 }
