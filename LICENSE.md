@@ -54,7 +54,7 @@ For the full legal terms of the Creative Commons Attribution-NonCommercial 4.0 I
 ### Contact for Commercial Licensing
 
 If you wish to use this software or any derivative in a commercial product, please contact the repository owner for a licensing agreement.  
-**Email:** [Your contact email or admin@grabavoz.com]
+**Email:** [hv12i04001@gmail.com](mailto:hv12i04001@gmail.com)
 
 ---
 
