@@ -48,7 +48,7 @@ class WalletEngine {
       databaseConfig: const DatabaseConfig.memory(),
     );
 
-    final isSigned = await wallet.sign(
+    final isSigned = wallet.sign(
       psbt: psbt,
       signOptions: const SignOptions(
          trustWitnessUtxo: false,
@@ -64,7 +64,7 @@ class WalletEngine {
       throw StateError('PSBT_SIGN_FAILED');
     }
 
-    final serializedBytes = await psbt.serialize();
+    final serializedBytes = psbt.serialize();
     return base64Encode(serializedBytes);
   }
 }

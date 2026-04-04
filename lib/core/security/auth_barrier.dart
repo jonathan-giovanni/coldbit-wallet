@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:local_auth/local_auth.dart';
-import 'package:sodium_libs/sodium_libs.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
@@ -18,11 +15,9 @@ class AuthBarrier {
   static Future<void> registerPin(String pin) async {
     final sodium = MemGuard.sodium;
     
-    final passwordBytes = Int8List.fromList(utf8.encode(pin));
-    
     try {
-      final String hashStr = sodium.crypto.pwhash.strAlloc(
-        password: passwordBytes,
+      final String hashStr = sodium.crypto.pwhash.str(
+        password: pin,
         opsLimit: sodium.crypto.pwhash.opsLimitInteractive,
         memLimit: sodium.crypto.pwhash.memLimitInteractive,
       );
@@ -37,13 +32,12 @@ class AuthBarrier {
     if (savedHash == null) return AuthFailure.inactive;
 
     final sodium = MemGuard.sodium;
-    final attemptBytes = Int8List.fromList(utf8.encode(attemptPin));
     
     bool isValid = false;
     try {
       isValid = sodium.crypto.pwhash.strVerify(
         passwordHash: savedHash,
-        password: attemptBytes,
+        password: attemptPin,
       );
     } catch (_) {}
 
@@ -67,10 +61,8 @@ class AuthBarrier {
       if (canAuthenticateWithBiometrics) {
          final didAuthenticate = await _localAuth.authenticate(
             localizedReason: 'Secure Access Required',
-            options: const AuthenticationOptions(
-              biometricOnly: true,
-              stickyAuth: true,
-            ),
+            biometricOnly: true,
+            persistAcrossBackgrounding: true,
          );
          
          if (!didAuthenticate) {

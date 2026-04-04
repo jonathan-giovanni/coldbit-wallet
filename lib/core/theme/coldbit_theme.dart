@@ -34,7 +34,6 @@ class ColdBitTheme {
       colorScheme: const ColorScheme.dark(
         primary: goldBitcoin,
         surface: darkGraphite,
-        background: obsidianBlack,
         error: errorCrimson,
         onSurface: pureWhiteText,
       ),

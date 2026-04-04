@@ -1,0 +1,27 @@
+Analyzing coldbit_wallet...                                     
+
+   info • Sort directive sections alphabetically • lib/core/crypto/wallet_engine.dart:3:1 • directives_ordering
+   info • Uses 'await' on an instance of 'bool', which is not a subtype of 'Future' • lib/core/crypto/wallet_engine.dart:51:22 • await_only_futures
+   info • Uses 'await' on an instance of 'Uint8List', which is not a subtype of 'Future' • lib/core/crypto/wallet_engine.dart:67:29 • await_only_futures
+   info • Sort directive sections alphabetically • lib/core/security/auth_barrier.dart:5:1 • directives_ordering
+   info • Sort directive sections alphabetically • lib/core/security/auth_barrier.dart:7:1 • directives_ordering
+   info • Constructor declarations should be before non-constructor declarations • lib/core/security/auth_barrier.dart:16:3 • sort_constructors_first
+  error • The getter 'pwhash' isn't defined for the type 'Crypto' • lib/core/security/auth_barrier.dart:24:44 • undefined_getter
+  error • The getter 'pwhash' isn't defined for the type 'Crypto' • lib/core/security/auth_barrier.dart:26:33 • undefined_getter
+  error • The getter 'pwhash' isn't defined for the type 'Crypto' • lib/core/security/auth_barrier.dart:27:33 • undefined_getter
+  error • The getter 'pwhash' isn't defined for the type 'Crypto' • lib/core/security/auth_barrier.dart:44:31 • undefined_getter
+  error • The named parameter 'options' isn't defined • lib/core/security/auth_barrier.dart:70:13 • undefined_named_parameter
+  error • The name 'AuthenticationOptions' isn't a class • lib/core/security/auth_barrier.dart:70:28 • creation_with_non_type
+warning • Unused import: 'dart:async' • lib/core/security/rate_limiter.dart:1:8 • unused_import
+   info • Constructor declarations should be before non-constructor declarations • lib/core/security/rate_limiter.dart:9:3 • sort_constructors_first
+   info • Sort directive sections alphabetically • lib/core/security/sealed_state.dart:4:1 • directives_ordering
+   info • Constructor declarations should be before non-constructor declarations • lib/core/security/sealed_state.dart:11:3 • sort_constructors_first
+   info • 'encryptedSharedPreferences' is deprecated and shouldn't be used. EncryptedSharedPreferences is deprecated and will be removed in v11. The Jetpack Security library is deprecated by Google. Your data will be automatically migrated to custom ciphers on first access. Remove this parameter - it will be ignored • lib/core/security/secure_enclave.dart:6:7 • deprecated_member_use
+   info • 'background' is deprecated and shouldn't be used. Use surface instead. This feature was deprecated after v3.18.0-0.1.pre • lib/core/theme/coldbit_theme.dart:37:9 • deprecated_member_use
+   info • Sort directive sections alphabetically • test/core/crypto/wallet_engine_test.dart:2:1 • directives_ordering
+   info • Uses 'await' on an instance of 'String', which is not a subtype of 'Future' • test/core/crypto/wallet_engine_test.dart:26:32 • await_only_futures
+   info • Sort directive sections alphabetically • test/core/security/rate_limiter_test.dart:2:1 • directives_ordering
+warning • Unused import: 'dart:typed_data' • test/core/security/sealed_state_test.dart:1:8 • unused_import
+   info • Sort directive sections alphabetically • test/core/security/sealed_state_test.dart:3:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/core/security/threat_policy_test.dart:3:1 • directives_ordering
+

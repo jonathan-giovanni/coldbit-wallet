@@ -75,7 +75,7 @@ class SealedState<T> {
 
   T _deserialize(Uint8List bytes) {
     if (T == int) {
-      return ByteData.view(bytes.buffer).getInt64(0) as T;
+      return ByteData.view(bytes.buffer, bytes.offsetInBytes, bytes.lengthInBytes).getInt64(0) as T;
     } else if (T == String) {
       return utf8.decode(bytes) as T;
     } else if (T == bool) {

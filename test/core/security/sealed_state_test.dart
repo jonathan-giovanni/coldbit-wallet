@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
