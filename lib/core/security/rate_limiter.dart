@@ -1,13 +1,13 @@
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
 
 class RateLimiter {
-  static const int maxAttempts = 20;
-
-  late SealedState<int> _failedAttempts;
 
   RateLimiter() {
     _failedAttempts = SealedState<int>(0);
   }
+  static const int maxAttempts = 20;
+
+  late SealedState<int> _failedAttempts;
 
   Duration recordFailure() {
     _failedAttempts.update((count) => count + 1);

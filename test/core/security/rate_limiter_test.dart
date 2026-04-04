@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUpAll(() async {

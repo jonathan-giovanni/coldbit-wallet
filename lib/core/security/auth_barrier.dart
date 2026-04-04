@@ -1,16 +1,16 @@
-import 'package:local_auth/local_auth.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
-import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
+import 'package:coldbit_wallet/core/security/secure_enclave.dart';
+import 'package:local_auth/local_auth.dart';
 
 enum AuthFailure { inactive, invalidPin, timeoutBlock, biometricsFailed, maxAttemptsWipe }
 
 class AuthBarrier {
+
+  AuthBarrier(this._rateLimiter);
   static const String _pinHashKey = 'coldbit_pin_hash';
   final LocalAuthentication _localAuth = LocalAuthentication();
   final RateLimiter _rateLimiter;
-
-  AuthBarrier(this._rateLimiter);
 
   static Future<void> registerPin(String pin) async {
     final sodium = MemGuard.sodium;

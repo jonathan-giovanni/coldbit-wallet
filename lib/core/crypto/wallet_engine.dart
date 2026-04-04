@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:bip39/bip39.dart' as bip39;
+
 import 'package:bdk_flutter/bdk_flutter.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
 
 class WalletEngine {

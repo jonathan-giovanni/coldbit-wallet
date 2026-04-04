@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:bdk_flutter/bdk_flutter.dart';
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUpAll(() async {

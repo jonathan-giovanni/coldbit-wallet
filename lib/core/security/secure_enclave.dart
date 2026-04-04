@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class SecureEnclave {
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
       resetOnError: true,
     ),
     iOptions: IOSOptions(

@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:sodium_libs/sodium_libs.dart';
+
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
+import 'package:sodium_libs/sodium_libs.dart';
 
 class SealedState<T> {
-  SecureKey? _key;
-  Uint8List? _nonce;
-  Uint8List? _ciphertext;
 
   SealedState(T initialValue) {
     _seal(initialValue);
   }
+  SecureKey? _key;
+  Uint8List? _nonce;
+  Uint8List? _ciphertext;
 
   void _seal(T value) {
     final sodium = MemGuard.sodium;

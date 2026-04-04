@@ -1,6 +1,6 @@
+import 'package:coldbit_wallet/core/security/threat_policy.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:coldbit_wallet/core/security/threat_policy.dart';
 
 void main() {
   setUp(() {

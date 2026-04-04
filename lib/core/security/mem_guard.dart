@@ -1,7 +1,8 @@
 import 'dart:ffi';
 import 'dart:io';
-import 'package:sodium_libs/sodium_libs_sumo.dart';
+
 import 'package:sodium/sodium_sumo.dart' as pure_sodium;
+import 'package:sodium_libs/sodium_libs_sumo.dart';
 
 class MemGuard {
   static SodiumSumo? _sodium;
