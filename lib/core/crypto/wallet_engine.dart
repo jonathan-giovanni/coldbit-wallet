@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bdk_flutter/bdk_flutter.dart';
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
@@ -24,5 +25,46 @@ class WalletEngine {
       network: network, 
       keychain: KeychainKind.externalChain,
     );
+  }
+
+  static Future<PartiallySignedTransaction> parsePsbt(String psbtBase64) async {
+    try {
+      return await PartiallySignedTransaction.fromString(psbtBase64);
+    } catch (_) {
+      throw StateError('INVALID_PSBT_FORMAT');
+    }
+  }
+
+  static Future<String> signPsbtOffline({
+    required String psbtBase64,
+    required Descriptor descriptor,
+    required Network network,
+  }) async {
+    final psbt = await parsePsbt(psbtBase64);
+    
+    final wallet = await Wallet.create(
+      descriptor: descriptor,
+      network: network,
+      databaseConfig: const DatabaseConfig.memory(),
+    );
+
+    final isSigned = await wallet.sign(
+      psbt: psbt,
+      signOptions: const SignOptions(
+         trustWitnessUtxo: false,
+         allowAllSighashes: false,
+         removePartialSigs: true,
+         tryFinalize: true,
+         signWithTapInternalKey: false,
+         allowGrinding: true,
+      ),
+    );
+    
+    if (!isSigned) {
+      throw StateError('PSBT_SIGN_FAILED');
+    }
+
+    final serializedBytes = await psbt.serialize();
+    return base64Encode(serializedBytes);
   }
 }
