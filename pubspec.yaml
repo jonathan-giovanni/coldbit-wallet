@@ -44,6 +44,13 @@ dependencies:
   local_auth: ^3.0.1
   bip39: ^1.0.6
   bdk_flutter: ^0.31.3
+  flutter_riverpod: ^2.6.1
+  go_router: ^17.2.0
+  google_fonts: ^8.0.2
+  lucide_icons: ^0.257.0
+  mobile_scanner: ^7.2.0
+  qr_flutter: ^4.1.0
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
