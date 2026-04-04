@@ -4,28 +4,23 @@ import 'package:coldbit_wallet/core/security/threat_policy.dart';
 
 void main() {
   setUp(() {
-    // Inject mock values for secure storage since we are in a headless test environment
     FlutterSecureStorage.setMockInitialValues({});
   });
 
   group('ThreatPolicyManager', () {
-    test('getPolicy defaults to paranoid if nothing is saved', () async {
+    test('getPolicy defaults to paranoid', () async {
       final defaultPolicy = await ThreatPolicyManager.getPolicy();
       expect(defaultPolicy, ThreatPolicy.paranoid);
     });
 
-    test('can save and retrieve Wipe policy', () async {
-      // User detects root context and decides on "forced wipe"
+    test('saves and retrieves Wipe', () async {
       await ThreatPolicyManager.savePolicy(ThreatPolicy.wipe);
-      
       final retrieved = await ThreatPolicyManager.getPolicy();
       expect(retrieved, ThreatPolicy.wipe);
     });
 
-    test('can save and retrieve Warn policy', () async {
-      // User allows the app to just warn
+    test('saves and retrieves Warn', () async {
       await ThreatPolicyManager.savePolicy(ThreatPolicy.warn);
-      
       final retrieved = await ThreatPolicyManager.getPolicy();
       expect(retrieved, ThreatPolicy.warn);
     });

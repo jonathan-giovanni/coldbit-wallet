@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Diseño "High Luxury Premium"
-/// Basado en el uso de negros absolutos, acentos metálicos y el "Naranja Oro Bitcoin".
 class ColdBitTheme {
-  // Paleta High-Luxury
-  static const Color obsidianBlack = Color(0xFF070709); // Fondo extremo
-  static const Color darkGraphite = Color(0xFF121418); // Superficies elevadas
-  static const Color brushedMetal = Color(0xFF26282E); // Bordes e inputs
-  static const Color frostedGlass = Color(0xAA121418); // Efecto blur modal
+  static const Color obsidianBlack = Color(0xFF070709);
+  static const Color darkGraphite = Color(0xFF121418);
+  static const Color brushedMetal = Color(0xFF26282E);
+  static const Color frostedGlass = Color(0xAA121418);
   
   static const Color pureWhiteText = Color(0xFFFAFAFA);
   static const Color platinumText = Color(0xFFA0A5AE);
 
-  // Acentos
-  static const Color goldBitcoin = Color(0xFFD69415); // Naranja ocre elegante
-  static const Color errorCrimson = Color(0xFFE53E3E); // Rojo mate
+  static const Color goldBitcoin = Color(0xFFD69415);
+  static const Color errorCrimson = Color(0xFFE53E3E);
 
   static ThemeData get luxuryTheme {
     return ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: obsidianBlack,
       primaryColor: goldBitcoin,
-      fontFamily: '.SF Pro Display', // Default a Inter/SF
+      fontFamily: '.SF Pro Display',
       
       appBarTheme: const AppBarTheme(
         backgroundColor: obsidianBlack,

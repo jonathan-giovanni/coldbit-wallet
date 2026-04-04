@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:sodium_libs/sodium_libs.dart';
-import 'mem_guard.dart';
+import 'package:coldbit_wallet/core/security/mem_guard.dart';
 
-/// A cryptographically protected state wrapper for variables in RAM. 
-/// Utilizes Libsodium SecretBox (ChaCha20-Poly1305) to encrypt and sign values,
-/// protecting against runtime RAM tampering.
 class SealedState<T> {
   SecureKey? _key;
   Uint8List? _nonce;
@@ -17,17 +14,10 @@ class SealedState<T> {
 
   void _seal(T value) {
     final sodium = MemGuard.sodium;
-    
-    // 1. Generate ephemeral execution key
     _key = sodium.crypto.secretBox.keygen();
-    
-    // 2. Generate nonce
     _nonce = sodium.randombytes.buf(sodium.crypto.secretBox.nonceBytes);
-    
-    // 3. Serialize data
     final bytes = _serialize(value);
     
-    // 4. Authenticated Encryption (ChaCha20-Poly1305 MAC)
     _ciphertext = sodium.crypto.secretBox.easy(
       message: bytes,
       nonce: _nonce!,
@@ -35,11 +25,9 @@ class SealedState<T> {
     );
   }
 
-  /// Unseals the data, verifying the MAC to ensure the cipher was not manipulated.
-  /// Throws an exception if tampering is detected.
   T unseal() {
     if (_key == null || _nonce == null || _ciphertext == null) {
-      throw StateError('SealedState has been wiped or destroyed.');
+      throw StateError('DEAD_STATE');
     }
     
     final sodium = MemGuard.sodium;
@@ -52,23 +40,17 @@ class SealedState<T> {
       );
       return _deserialize(decryptedBytes);
     } catch (e) {
-      // SecretBox throws if MAC is invalid -> Tampering detected.
-      throw Exception('TamperDetectedException: Memory signature validation failed. $e');
+      throw StateError('TAMPER_DETECTED');
     }
   }
 
-  /// Mutates the state securely by decrypting, applying the function, and re-sealing.
   void update(T Function(T current) updater) {
     final current = unseal();
     final newValue = updater(current);
-    
-    // Dispose previous key immediately for memory hygiene
     _key?.dispose();
-    
     _seal(newValue);
   }
 
-  /// Zeroes out the memory pointers completely.
   void destroy() {
     _key?.dispose();
     _key = null;
@@ -88,7 +70,7 @@ class SealedState<T> {
     } else if (value is Uint8List) {
       return value;
     }
-    throw UnsupportedError('Type not supported by SealedState');
+    throw UnsupportedError('UNSUPPORTED_TYPE');
   }
 
   T _deserialize(Uint8List bytes) {
@@ -101,6 +83,6 @@ class SealedState<T> {
     } else if (T == Uint8List) {
       return bytes as T;
     }
-    throw UnsupportedError('Type not supported by SealedState');
+    throw UnsupportedError('UNSUPPORTED_TYPE');
   }
 }

@@ -7,7 +7,7 @@ void main() {
     await MemGuard.init();
   });
 
-  group('RateLimiter Exponencial', () {
+  group('RateLimiter', () {
     late RateLimiter rateLimiter;
 
     setUp(() {
@@ -18,44 +18,38 @@ void main() {
       rateLimiter.destroy();
     });
 
-    test('intentos 1 a 3 devuelven penalización de 30 segundos', () {
-      expect(rateLimiter.recordFailure().inSeconds, 30); // 1
-      expect(rateLimiter.recordFailure().inSeconds, 30); // 2
-      expect(rateLimiter.recordFailure().inSeconds, 30); // 3
+    test('attempts 1 to 3 return 30s', () {
+      expect(rateLimiter.recordFailure().inSeconds, 30);
+      expect(rateLimiter.recordFailure().inSeconds, 30);
+      expect(rateLimiter.recordFailure().inSeconds, 30);
     });
 
-    test('intento 4 salta a penalización de 1 minuto', () {
-      rateLimiter.recordFailure(); // 1
-      rateLimiter.recordFailure(); // 2
-      rateLimiter.recordFailure(); // 3
-      final penalty = rateLimiter.recordFailure(); // 4
-      
-      expect(penalty.inMinutes, 1);
+    test('attempt 4 jumps to 1m', () {
+      rateLimiter.recordFailure();
+      rateLimiter.recordFailure();
+      rateLimiter.recordFailure();
+      expect(rateLimiter.recordFailure().inMinutes, 1);
     });
 
-    test('intento 13 salta a penalización máxima de 12 minutos', () {
+    test('attempt 13 jumps to 12m', () {
       for (int i = 0; i < 12; i++) {
         rateLimiter.recordFailure();
       }
-      final penalty = rateLimiter.recordFailure(); // 13
-      
-      expect(penalty.inMinutes, 12);
+      expect(rateLimiter.recordFailure().inMinutes, 12);
       expect(rateLimiter.currentAttempts, 13);
     });
 
-    test('éxito blanquea el contador', () {
-      rateLimiter.recordFailure(); // 1
+    test('success clears attempts', () {
+      rateLimiter.recordFailure();
       expect(rateLimiter.currentAttempts, 1);
-      
       rateLimiter.recordSuccess();
       expect(rateLimiter.currentAttempts, 0);
     });
 
-    test('intento 20 lanza excepción de MÁXIMO MAX_ATTEMPTS_REACHED para WIPE', () {
+    test('attempt 20 throws MAX_ATTEMPTS_REACHED', () {
       for (int i = 0; i < 19; i++) {
         rateLimiter.recordFailure();
       }
-      
       expect(() => rateLimiter.recordFailure(), throwsA(isA<StateError>()));
     });
   });

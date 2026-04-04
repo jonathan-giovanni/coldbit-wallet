@@ -1,16 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Un Wrapper industrial para el Android Keystore y el iOS Secure Enclave.
-/// Garantiza la lectura y escritura cifrada del material clave asimétrico
-/// (las llaves de MemGuard y las semillas BIP39 durmientes).
 class SecureEnclave {
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions(
       encryptedSharedPreferences: true,
-      resetOnError: true, // Auto-destruct if corruption/tampering occurs
+      resetOnError: true,
     ),
     iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.passcode, // Requires device unlock
+      accessibility: KeychainAccessibility.passcode,
     ),
   );
 
@@ -23,7 +20,6 @@ class SecureEnclave {
   }
 
   static Future<void> wipe() async {
-    // Military wipe triggered 
     await _storage.deleteAll();
   }
 }

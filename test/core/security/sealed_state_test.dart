@@ -5,17 +5,16 @@ import 'package:coldbit_wallet/core/security/sealed_state.dart';
 
 void main() {
   setUpAll(() async {
-    // Initialize libsodium for tests
     await MemGuard.init();
   });
 
   group('SealedState<T>', () {
-    test('successfully seals and unseals an integer', () {
+    test('seals and unseals int', () {
       final state = SealedState<int>(42);
       expect(state.unseal(), 42);
     });
 
-    test('successfully seals and unseals a boolean', () {
+    test('seals and unseals bool', () {
       final state = SealedState<bool>(true);
       expect(state.unseal(), true);
       
@@ -23,34 +22,22 @@ void main() {
       expect(stateFalse.unseal(), false);
     });
 
-    test('successfully seals and unseals a String', () {
+    test('seals and unseals String', () {
       final state = SealedState<String>('SuperSecretData');
       expect(state.unseal(), 'SuperSecretData');
     });
 
-    test('successfully MUTATES the state securely', () {
+    test('mutates securely', () {
       final state = SealedState<int>(10);
-      
       state.update((current) => current + 5);
-      
       expect(state.unseal(), 15);
     });
 
-    test('throws error if state is destroyed', () {
+    test('throws StateError when destroyed', () {
       final state = SealedState<String>('WillBeDestroyed');
       expect(state.unseal(), 'WillBeDestroyed');
-      
       state.destroy();
-      
-      expect(
-        () => state.unseal(),
-        throwsA(isA<StateError>()),
-      );
+      expect(() => state.unseal(), throwsA(isA<StateError>()));
     });
-
-    // In a real isolated memory environment it's hard to test the MAC failure organically
-    // since the ciphertext is private and we shouldn't expose it.
-    // We would need reflection or a mock to alter ciphertext. But we guarantee
-    // that if it is altered, `openEasy` throws, caught as TamperDetectedException.
   });
 }
