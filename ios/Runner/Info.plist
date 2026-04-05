@@ -45,6 +45,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera access to scan offline PSBTs seamlessly without internet connection.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Coldbit requires Face ID or Touch ID to perform mandatory dual-factor authentication and unlock your physical vault.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
