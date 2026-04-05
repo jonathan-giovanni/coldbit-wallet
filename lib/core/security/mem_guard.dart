@@ -9,13 +9,13 @@ class MemGuard {
 
   static Future<void> init() async {
     if (_sodium != null) return;
-    
+
     if (Platform.environment.containsKey('FLUTTER_TEST') && Platform.isMacOS) {
       final lib = DynamicLibrary.open('/opt/homebrew/lib/libsodium.dylib');
       _sodium = await pure_sodium.SodiumSumoInit.init(() => lib);
       return;
     }
-    
+
     _sodium = await SodiumSumoInit.init();
   }
 

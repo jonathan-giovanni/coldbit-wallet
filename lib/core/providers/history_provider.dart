@@ -4,7 +4,6 @@ import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionRecord {
-  
   TransactionRecord({
     required this.txid,
     required this.amountBtc,
@@ -12,12 +11,13 @@ class TransactionRecord {
     required this.timestamp,
   });
 
-  factory TransactionRecord.fromJson(Map<String, dynamic> json) => TransactionRecord(
-    txid: json['txid'],
-    amountBtc: json['amountBtc'],
-    feeBtc: json['feeBtc'],
-    timestamp: DateTime.parse(json['timestamp']),
-  );
+  factory TransactionRecord.fromJson(Map<String, dynamic> json) =>
+      TransactionRecord(
+        txid: json['txid'],
+        amountBtc: json['amountBtc'],
+        feeBtc: json['feeBtc'],
+        timestamp: DateTime.parse(json['timestamp']),
+      );
   final String txid;
   final double amountBtc;
   final double feeBtc;
@@ -43,7 +43,9 @@ class HistoryNotifier extends StateNotifier<List<TransactionRecord>> {
     if (rawData != null && rawData.isNotEmpty) {
       try {
         final List<dynamic> decoded = jsonDecode(rawData);
-        final records = decoded.map((e) => TransactionRecord.fromJson(e)).toList();
+        final records = decoded
+            .map((e) => TransactionRecord.fromJson(e))
+            .toList();
         state = records;
       } catch (e) {
         state = [];
@@ -54,13 +56,14 @@ class HistoryNotifier extends StateNotifier<List<TransactionRecord>> {
   Future<void> addRecord(TransactionRecord record) async {
     final newState = [record, ...state];
     state = newState;
-    
+
     // Persist securely to Hardware Keystore
     final rawData = jsonEncode(newState.map((e) => e.toJson()).toList());
     await SecureEnclave.write(_historyKey, rawData);
   }
 }
 
-final historyProvider = StateNotifierProvider<HistoryNotifier, List<TransactionRecord>>((ref) {
-  return HistoryNotifier();
-});
+final historyProvider =
+    StateNotifierProvider<HistoryNotifier, List<TransactionRecord>>((ref) {
+      return HistoryNotifier();
+    });

@@ -23,7 +23,7 @@ class _PsbtScannerViewState extends State<PsbtScannerView> {
 
   void _handleBarcode(BarcodeCapture capture) {
     if (_isProcessing) return;
-    
+
     final List<Barcode> barcodes = capture.barcodes;
     for (final barcode in barcodes) {
       if (barcode.rawValue != null) {
@@ -62,13 +62,13 @@ class _PsbtScannerViewState extends State<PsbtScannerView> {
                 child: Text(
                   'Hardware Camera Access Required Offline',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColdBitTheme.errorCrimson,
-                      ),
+                    color: ColdBitTheme.errorCrimson,
+                  ),
                 ),
               );
             },
           ),
-          
+
           ColorFiltered(
             colorFilter: ColorFilter.mode(
               ColdBitTheme.darkGraphite.withValues(alpha: 0.8),
@@ -87,7 +87,7 @@ class _PsbtScannerViewState extends State<PsbtScannerView> {
                     width: 250,
                     height: 250,
                     decoration: BoxDecoration(
-                      color: Colors.black, 
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(24.0),
                     ),
                   ),
@@ -95,25 +95,35 @@ class _PsbtScannerViewState extends State<PsbtScannerView> {
               ],
             ),
           ),
-          
+
           Center(
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                border: Border.all(color: ColdBitTheme.goldBitcoin, width: 2),
-                borderRadius: BorderRadius.circular(24.0),
-                boxShadow: ColdBitTheme.glowShadow,
+                child: Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ColdBitTheme.goldBitcoin,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(24.0),
+                    boxShadow: ColdBitTheme.glowShadow,
+                  ),
+                ),
+              )
+              .animate(onPlay: (controller) => controller.repeat(reverse: true))
+              .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.02, 1.02),
+                duration: 2.seconds,
               ),
-            ),
-          ).animate(onPlay: (controller) => controller.repeat(reverse: true))
-           .scale(begin: const Offset(1, 1), end: const Offset(1.02, 1.02), duration: 2.seconds),
 
           if (_isProcessing)
             Container(
               color: ColdBitTheme.obsidianBlack.withValues(alpha: 0.9),
               child: const Center(
-                child: CircularProgressIndicator(color: ColdBitTheme.goldBitcoin),
+                child: CircularProgressIndicator(
+                  color: ColdBitTheme.goldBitcoin,
+                ),
               ),
             ).animate().fade(duration: 200.ms),
         ],

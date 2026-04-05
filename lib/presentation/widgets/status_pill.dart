@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class StatusPill extends StatelessWidget {
-
   const StatusPill({
     super.key,
     required this.label,
@@ -28,33 +27,38 @@ class StatusPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: dotColor.withValues(alpha: 0.6),
-                  blurRadius: 8,
-                  spreadRadius: 2,
-                )
-              ],
-            ),
-          )
-          .animate(onPlay: (controller) => controller.repeat())
-          .fade(duration: 1.seconds, curve: Curves.easeInOut)
-          .then()
-          .fade(duration: 1.seconds, curve: Curves.easeInOut, begin: 1.0, end: 0.3),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: dotColor.withValues(alpha: 0.6),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+              )
+              .animate(onPlay: (controller) => controller.repeat())
+              .fade(duration: 1.seconds, curve: Curves.easeInOut)
+              .then()
+              .fade(
+                duration: 1.seconds,
+                curve: Curves.easeInOut,
+                begin: 1.0,
+                end: 0.3,
+              ),
           const SizedBox(width: 10),
           Text(
             label.toUpperCase(),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: ColdBitTheme.platinumText,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.5,
-                  fontSize: 10,
-                ),
+              color: ColdBitTheme.platinumText,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.5,
+              fontSize: 10,
+            ),
           ),
         ],
       ),

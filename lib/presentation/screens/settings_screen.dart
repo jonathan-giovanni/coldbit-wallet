@@ -1,5 +1,7 @@
 import 'package:coldbit_wallet/core/providers/biometrics_provider.dart';
+import 'package:coldbit_wallet/core/providers/locale_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -49,9 +51,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ajustes de Bóveda'),
+        title: Text(AppLocalizations.of(context)!.settingsTitle),
         leading: IconButton(
-          icon: const Icon(LucideIcons.chevronLeft, color: ColdBitTheme.goldBitcoin),
+          icon: const Icon(
+            LucideIcons.chevronLeft,
+            color: ColdBitTheme.goldBitcoin,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -59,17 +64,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
+            _buildLanguageSelector(context, ref),
+            const SizedBox(height: 16),
             _buildToggle(
               context,
               icon: LucideIcons.camera,
-              title: 'Cámara (Escáner QR)',
-              subtitle: 'Requerida para importar PSBTs de red abierta',
+              title: AppLocalizations.of(context)!.settingsCamera,
+              subtitle: AppLocalizations.of(context)!.settingsCameraDesc,
               value: _cameraGranted,
               onChanged: (val) {
                 if (val) {
-                   _handlePermission(Permission.camera);
+                  _handlePermission(Permission.camera);
                 } else {
-                   openAppSettings();
+                  openAppSettings();
                 }
               },
             ),
@@ -77,14 +84,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             _buildToggle(
               context,
               icon: LucideIcons.bellRing,
-              title: 'Notificaciones Push',
-              subtitle: 'Alertas locales de escaneos o detecciones de jailbreak',
+              title: AppLocalizations.of(context)!.settingsPush,
+              subtitle: AppLocalizations.of(context)!.settingsPushDesc,
               value: _notificationsGranted,
               onChanged: (val) {
                 if (val) {
-                   _handlePermission(Permission.notification);
+                  _handlePermission(Permission.notification);
                 } else {
-                   openAppSettings();
+                  openAppSettings();
                 }
               },
             ),
@@ -92,12 +99,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             _buildToggle(
               context,
               icon: LucideIcons.scanFace,
-              title: 'Autenticación Biométrica',
-              subtitle: 'Reemplaza el tecleo de PIN manual en desbloqueos cortos',
+              title: AppLocalizations.of(context)!.settingsBiometrics,
+              subtitle: AppLocalizations.of(context)!.settingsBiometricsDesc,
               value: biometricsEnabled,
               onChanged: (val) async {
-                 await ColdBitSettings.updateBiometricsStatus(val);
-                 ref.invalidate(biometricsEnabledProvider);
+                await ColdBitSettings.updateBiometricsStatus(val);
+                ref.invalidate(biometricsEnabledProvider);
               },
             ),
           ],
@@ -106,20 +113,112 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _buildToggle(BuildContext context, {required IconData icon, required String title, required String subtitle, required bool value, required ValueChanged<bool> onChanged}) {
+  Widget _buildLanguageSelector(BuildContext context, WidgetRef ref) {
+    final curLocale = ref.watch(localeProvider)?.languageCode ?? 'en';
+    final isEsp = curLocale == 'es';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: ColdBitTheme.obsidianBlack,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.settingsLanguage,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: ColdBitTheme.pureWhiteText,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            AppLocalizations.of(context)!.settingsLanguageDesc,
+            style: const TextStyle(
+              color: ColdBitTheme.platinumText,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () =>
+                      ref.read(localeProvider.notifier).setLocale('en'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: !isEsp
+                        ? ColdBitTheme.goldBitcoin
+                        : ColdBitTheme.darkGraphite,
+                    foregroundColor: !isEsp
+                        ? ColdBitTheme.obsidianBlack
+                        : ColdBitTheme.platinumText,
+                  ),
+                  child: const Text('EN'),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () =>
+                      ref.read(localeProvider.notifier).setLocale('es'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isEsp
+                        ? ColdBitTheme.goldBitcoin
+                        : ColdBitTheme.darkGraphite,
+                    foregroundColor: isEsp
+                        ? ColdBitTheme.obsidianBlack
+                        : ColdBitTheme.platinumText,
+                  ),
+                  child: const Text('ES'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggle(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: ColdBitTheme.obsidianBlack,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: ColdBitTheme.brushedMetal.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: ColdBitTheme.brushedMetal.withValues(alpha: 0.3),
+        ),
       ),
       child: SwitchListTile(
         activeThumbColor: ColdBitTheme.goldBitcoin,
         inactiveThumbColor: ColdBitTheme.platinumText,
         inactiveTrackColor: ColdBitTheme.obsidianBlack,
-        secondary: Icon(icon, color: value ? ColdBitTheme.goldBitcoin : ColdBitTheme.platinumText),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: ColdBitTheme.pureWhiteText)),
-        subtitle: Text(subtitle, style: const TextStyle(color: ColdBitTheme.platinumText)),
+        secondary: Icon(
+          icon,
+          color: value ? ColdBitTheme.goldBitcoin : ColdBitTheme.platinumText,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: ColdBitTheme.pureWhiteText,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(color: ColdBitTheme.platinumText),
+        ),
         value: value,
         onChanged: onChanged,
       ),

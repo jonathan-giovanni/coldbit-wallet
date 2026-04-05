@@ -1,39 +1,0 @@
-00:00 +0: loading /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart                                                                                00:01 +0: loading /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart                                                                                00:02 +0: loading /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart                                                                                00:02 +0: (setUpAll)                                                                                                                                                                                   00:03 +0: (setUpAll)                                                                                                                                                                                   00:03 +0: RateLimiter attempts 1 to 3 return 30s                                                                                                                                                       00:03 +0 -1: RateLimiter attempts 1 to 3 return 30s [E]                                                                                                                                                
-  Bad state: MAX_ATTEMPTS_REACHED
-  package:coldbit_wallet/core/security/rate_limiter.dart 17:7  RateLimiter.recordFailure
-  test/core/security/rate_limiter_test.dart 22:26              main.<fn>.<fn>
-  
-
-To run this test again: /Users/admin/development/flutter/bin/cache/dart-sdk/bin/dart test /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart -p vm --plain-name 'RateLimiter attempts 1 to 3 return 30s'
-00:03 +0 -1: RateLimiter attempt 4 jumps to 1m                                                                                                                                                         00:03 +0 -2: RateLimiter attempt 4 jumps to 1m [E]                                                                                                                                                     
-  Bad state: MAX_ATTEMPTS_REACHED
-  package:coldbit_wallet/core/security/rate_limiter.dart 17:7  RateLimiter.recordFailure
-  test/core/security/rate_limiter_test.dart 28:19              main.<fn>.<fn>
-  
-
-To run this test again: /Users/admin/development/flutter/bin/cache/dart-sdk/bin/dart test /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart -p vm --plain-name 'RateLimiter attempt 4 jumps to 1m'
-00:03 +0 -2: RateLimiter attempt 13 jumps to 12m                                                                                                                                                       00:03 +0 -3: RateLimiter attempt 13 jumps to 12m [E]                                                                                                                                                   
-  Bad state: MAX_ATTEMPTS_REACHED
-  package:coldbit_wallet/core/security/rate_limiter.dart 17:7  RateLimiter.recordFailure
-  test/core/security/rate_limiter_test.dart 36:21              main.<fn>.<fn>
-  
-
-To run this test again: /Users/admin/development/flutter/bin/cache/dart-sdk/bin/dart test /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart -p vm --plain-name 'RateLimiter attempt 13 jumps to 12m'
-00:03 +0 -3: RateLimiter success clears attempts                                                                                                                                                       00:03 +0 -4: RateLimiter success clears attempts [E]                                                                                                                                                   
-  Expected: <1>
-    Actual: <-6961693782341772919>
-  
-  package:matcher                                     expect
-  package:flutter_test/src/widget_tester.dart 473:18  expect
-  test/core/security/rate_limiter_test.dart 44:7      main.<fn>.<fn>
-  
-
-To run this test again: /Users/admin/development/flutter/bin/cache/dart-sdk/bin/dart test /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart -p vm --plain-name 'RateLimiter success clears attempts'
-00:03 +0 -4: RateLimiter attempt 20 throws MAX_ATTEMPTS_REACHED                                                                                                                                        00:03 +0 -5: RateLimiter attempt 20 throws MAX_ATTEMPTS_REACHED [E]                                                                                                                                    
-  Bad state: MAX_ATTEMPTS_REACHED
-  package:coldbit_wallet/core/security/rate_limiter.dart 17:7  RateLimiter.recordFailure
-  test/core/security/rate_limiter_test.dart 51:21              main.<fn>.<fn>
-  
-
-To run this test again: /Users/admin/development/flutter/bin/cache/dart-sdk/bin/dart test /Users/admin/Documents/development/temporary/coldbit_wallet/test/core/security/rate_limiter_test.dart -p vm --plain-name 'RateLimiter attempt 20 throws MAX_ATTEMPTS_REACHED'
-00:03 +0 -5: (tearDownAll)                                                                                                                                                                             00:03 +0 -5: Some tests failed.                                                                                                                                                                        

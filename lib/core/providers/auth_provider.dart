@@ -8,11 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum AuthState { initial, loading, authenticated, error, uninitialized }
 
 class AuthNotifier extends StateNotifier<AuthState> {
-
   AuthNotifier(this.ref) : super(AuthState.loading) {
     evaluateInitialState();
   }
-  
+
   final Ref ref;
 
   Future<bool> unlockWithBiometrics() async {
@@ -43,13 +42,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       // 1. Generate Air-gap mnemonic
       final sealedMnem = WalletEngine.generateMnemonic();
-      
+
       // 2. Derive to Native Segwit (Validation pass)
-      final _ = await WalletEngine.deriveNativeSegwit(sealedMnem.unseal(), Network.testnet);
-      
+      final _ = await WalletEngine.deriveNativeSegwit(
+        sealedMnem.unseal(),
+        Network.testnet,
+      );
+
       // 3. Register PIN and seal payload
       await AuthBarrier.registerPin(pin);
-      
+
       state = AuthState.authenticated;
     } catch (e) {
       state = AuthState.error;
@@ -62,7 +64,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final rateLimiter = RateLimiter(); // standard policy
       final barrier = AuthBarrier(rateLimiter);
       final result = await barrier.authenticate(pin);
-      
+
       if (result is AuthSuccess) {
         state = AuthState.authenticated;
       } else if (result is AuthMaxAttemptsWiped) {

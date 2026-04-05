@@ -16,7 +16,7 @@ void main() {
     test('seals and unseals bool', () {
       final state = SealedState<bool>(true);
       expect(state.unseal(), true);
-      
+
       final stateFalse = SealedState<bool>(false);
       expect(stateFalse.unseal(), false);
     });

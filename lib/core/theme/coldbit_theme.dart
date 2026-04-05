@@ -6,7 +6,7 @@ class ColdBitTheme {
   static const Color darkGraphite = Color(0xFF121418);
   static const Color brushedMetal = Color(0xFF26282E);
   static const Color frostedGlass = Color(0xAA121418);
-  
+
   static const Color pureWhiteText = Color(0xFFFAFAFA);
   static const Color platinumText = Color(0xFFA0A5AE);
 
@@ -25,10 +25,7 @@ class ColdBitTheme {
   static const LinearGradient glassBorderGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Color(0x44FAFAFA),
-      Color(0x00FAFAFA),
-    ],
+    colors: [Color(0x44FAFAFA), Color(0x00FAFAFA)],
   );
 
   // Shadows
@@ -57,7 +54,7 @@ class ColdBitTheme {
       scaffoldBackgroundColor: obsidianBlack,
       primaryColor: goldBitcoin,
       fontFamily: GoogleFonts.outfit().fontFamily,
-      
+
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -69,7 +66,7 @@ class ColdBitTheme {
           letterSpacing: 0.5,
         ),
       ),
-      
+
       colorScheme: const ColorScheme.dark(
         primary: goldBitcoin,
         surface: darkGraphite,

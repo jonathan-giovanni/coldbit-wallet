@@ -1,5 +1,6 @@
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -72,11 +73,11 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title = _state == PinSetupState.create 
-        ? 'Create Vault PIN' 
-        : 'Confirm Vault PIN';
-        
-    final icon = _state == PinSetupState.create 
+    final title = _state == PinSetupState.create
+        ? AppLocalizations.of(context)!.pinSetupCreateMsg
+        : AppLocalizations.of(context)!.pinSetupConfirmMsg;
+
+    final icon = _state == PinSetupState.create
         ? LucideIcons.key
         : LucideIcons.checkSquare;
 
@@ -86,27 +87,33 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
           children: [
             const Spacer(),
             Icon(
-              _isError ? LucideIcons.shieldAlert : icon, 
-              size: 48, 
-              color: _isError ? ColdBitTheme.errorCrimson : ColdBitTheme.platinumText,
-            )
-            .animate(key: ValueKey(_state.name + _isError.toString()))
-            .fade().scale(),
-            
+                  _isError ? LucideIcons.shieldAlert : icon,
+                  size: 48,
+                  color: _isError
+                      ? ColdBitTheme.errorCrimson
+                      : ColdBitTheme.platinumText,
+                )
+                .animate(key: ValueKey(_state.name + _isError.toString()))
+                .fade()
+                .scale(),
+
             const SizedBox(height: 24),
-            
+
             Text(
-              _isError ? 'PIN Mismatch. Restarting.' : title,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  _isError
+                      ? AppLocalizations.of(context)!.pinSetupMismatch
+                      : title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: _isError ? ColdBitTheme.errorCrimson : Colors.white,
                   ),
-            )
-            .animate(key: ValueKey(title + _isError.toString()))
-            .fade().slideY(begin: 0.5),
-            
+                )
+                .animate(key: ValueKey(title + _isError.toString()))
+                .fade()
+                .slideY(begin: 0.5),
+
             const SizedBox(height: 32),
-            
+
             // PIN Dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -119,28 +126,35 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                   height: 16,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _isError 
-                        ? ColdBitTheme.errorCrimson 
-                        : isFilled ? ColdBitTheme.goldBitcoin : Colors.transparent,
+                    color: _isError
+                        ? ColdBitTheme.errorCrimson
+                        : isFilled
+                        ? ColdBitTheme.goldBitcoin
+                        : Colors.transparent,
                     border: Border.all(
-                      color: _isError 
+                      color: _isError
                           ? ColdBitTheme.errorCrimson
-                          : isFilled ? ColdBitTheme.goldBitcoin : ColdBitTheme.brushedMetal,
+                          : isFilled
+                          ? ColdBitTheme.goldBitcoin
+                          : ColdBitTheme.brushedMetal,
                       width: 2,
                     ),
-                    boxShadow: isFilled && !_isError ? ColdBitTheme.glowShadow : null,
+                    boxShadow: isFilled && !_isError
+                        ? ColdBitTheme.glowShadow
+                        : null,
                   ),
                 );
               }),
-            )
-            .animate(target: _isError ? 1 : 0)
-            .shake(hz: 8, duration: 500.ms),
-            
+            ).animate(target: _isError ? 1 : 0).shake(hz: 8, duration: 500.ms),
+
             const Spacer(),
-            
+
             // Numpad
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 48.0,
+                vertical: 32.0,
+              ),
               child: GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 3,
@@ -162,10 +176,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   }
 
   Widget _buildNumKey(String digit) {
-    return _NumKey(
-      label: digit,
-      onPressed: () => _onDigitPressed(digit),
-    );
+    return _NumKey(label: digit, onPressed: () => _onDigitPressed(digit));
   }
 
   Widget _buildIconKey(IconData icon, VoidCallback onPressed) {
@@ -200,25 +211,34 @@ class _NumKeyState extends State<_NumKey> {
         widget.onPressed();
       },
       onTapCancel: () => setState(() => _isPressed = false),
-      child: AnimatedContainer(
-        duration: 100.ms,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _isPressed ? ColdBitTheme.brushedMetal : Colors.transparent,
-          border: Border.all(
-            color: _isPressed ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5) : ColdBitTheme.brushedMetal.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          widget.label,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: _isPressed ? ColdBitTheme.goldBitcoin : ColdBitTheme.pureWhiteText,
-              ),
-        ),
-      ).animate(target: _isPressed ? 1 : 0).scale(end: const Offset(0.9, 0.9), duration: 100.ms),
+      child:
+          AnimatedContainer(
+                duration: 100.ms,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _isPressed
+                      ? ColdBitTheme.brushedMetal
+                      : Colors.transparent,
+                  border: Border.all(
+                    color: _isPressed
+                        ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5)
+                        : ColdBitTheme.brushedMetal.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  widget.label,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: _isPressed
+                        ? ColdBitTheme.goldBitcoin
+                        : ColdBitTheme.pureWhiteText,
+                  ),
+                ),
+              )
+              .animate(target: _isPressed ? 1 : 0)
+              .scale(end: const Offset(0.9, 0.9), duration: 100.ms),
     );
   }
 }

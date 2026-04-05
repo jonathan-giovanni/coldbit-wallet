@@ -14,16 +14,19 @@ class WalletEngine {
     return bip39.validateMnemonic(mnemonic);
   }
 
-  static Future<Descriptor> deriveNativeSegwit(String mnemonic, Network network) async {
+  static Future<Descriptor> deriveNativeSegwit(
+    String mnemonic,
+    Network network,
+  ) async {
     final mnemonicObj = await Mnemonic.fromString(mnemonic);
     final descriptorSecretKey = await DescriptorSecretKey.create(
       network: network,
       mnemonic: mnemonicObj,
     );
-    
+
     return await Descriptor.newBip84(
-      secretKey: descriptorSecretKey, 
-      network: network, 
+      secretKey: descriptorSecretKey,
+      network: network,
       keychain: KeychainKind.externalChain,
     );
   }
@@ -42,7 +45,7 @@ class WalletEngine {
     required Network network,
   }) async {
     final psbt = await parsePsbt(psbtBase64);
-    
+
     final wallet = await Wallet.create(
       descriptor: descriptor,
       network: network,
@@ -52,15 +55,15 @@ class WalletEngine {
     final isSigned = wallet.sign(
       psbt: psbt,
       signOptions: const SignOptions(
-         trustWitnessUtxo: false,
-         allowAllSighashes: false,
-         removePartialSigs: true,
-         tryFinalize: true,
-         signWithTapInternalKey: false,
-         allowGrinding: true,
+        trustWitnessUtxo: false,
+        allowAllSighashes: false,
+        removePartialSigs: true,
+        tryFinalize: true,
+        signWithTapInternalKey: false,
+        allowGrinding: true,
       ),
     );
-    
+
     if (!isSigned) {
       throw StateError('PSBT_SIGN_FAILED');
     }

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppLifecycleGuard extends ConsumerStatefulWidget {
-
   const AppLifecycleGuard({super.key, required this.child});
   final Widget child;
 
@@ -15,7 +14,8 @@ class AppLifecycleGuard extends ConsumerStatefulWidget {
   ConsumerState<AppLifecycleGuard> createState() => _AppLifecycleGuardState();
 }
 
-class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with WidgetsBindingObserver {
+class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard>
+    with WidgetsBindingObserver {
   bool _isHidden = false;
   Timer? _inactivityTimer;
 
@@ -38,7 +38,7 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
     _inactivityTimer?.cancel();
     _inactivityTimer = Timer(const Duration(minutes: 2), () {
       if (ref.read(authProvider) == AuthState.authenticated) {
-         _expelUser();
+        _expelUser();
       }
     });
   }
@@ -50,8 +50,8 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
   }
 
   void _expelUser() {
-     ref.read(authProvider.notifier).logout();
-     // Purgar sesión automáticamente enruta por Riverpod + GoRouter
+    ref.read(authProvider.notifier).logout();
+    // Purgar sesión automáticamente enruta por Riverpod + GoRouter
   }
 
   bool _wasPaused = false;
@@ -66,10 +66,10 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
       setState(() => _isHidden = true);
     } else if (state == AppLifecycleState.resumed) {
       setState(() => _isHidden = false);
-      
+
       // La regla bancaria no negociable: Si pones la app verdaderamente en fondo (paused), pierdes la sesión.
       if (_wasPaused && ref.read(authProvider) == AuthState.authenticated) {
-         _expelUser();
+        _expelUser();
       }
       _wasPaused = false;
       _resetInactivityTimer();
@@ -87,12 +87,12 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
         children: [
           widget.child,
           if (_isHidden)
-             Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                  child: Container(color: Colors.black.withValues(alpha: 0.6)),
-                ),
-             ),
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
+                child: Container(color: Colors.black.withValues(alpha: 0.6)),
+              ),
+            ),
         ],
       ),
     );

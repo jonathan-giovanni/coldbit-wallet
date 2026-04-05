@@ -5,7 +5,7 @@ class RootDetector {
   static Future<bool> isCompromised() async {
     try {
       final isJailBroken = await SafeDevice.isJailBroken;
-      
+
       if (kReleaseMode) {
         final isRealDevice = await SafeDevice.isRealDevice;
         if (!isRealDevice) {
@@ -14,7 +14,7 @@ class RootDetector {
       }
       return isJailBroken;
     } catch (e) {
-      return true; 
+      return true;
     }
   }
 }

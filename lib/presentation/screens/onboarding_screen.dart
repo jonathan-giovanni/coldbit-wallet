@@ -1,4 +1,5 @@
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:coldbit_wallet/presentation/widgets/coldbit_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -80,7 +81,7 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(height: 48),
 
                   Text(
-                    'Military Grade\nCold Storage',
+                    AppLocalizations.of(context)!.onboardingTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       height: 1.1,
@@ -92,7 +93,7 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   Text(
-                    'Your device will now operate in total isolation. No telemetry. No connections. Completely Air-Gapped.',
+                    AppLocalizations.of(context)!.onboardingSubtitle,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColdBitTheme.platinumText,
                       height: 1.5,
@@ -103,7 +104,9 @@ class OnboardingScreen extends StatelessWidget {
                   const Spacer(flex: 2),
 
                   ColdBitActionButton(
-                        label: 'Initialize Vault',
+                        label: AppLocalizations.of(
+                          context,
+                        )!.onboardingCreateBtn,
                         icon: LucideIcons.lock,
                         onPressed: () {
                           context.push('/setup');

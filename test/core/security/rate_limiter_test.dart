@@ -43,7 +43,10 @@ void main() {
       for (int i = 0; i < 19; i++) {
         await rateLimiter.recordFailure();
       }
-      expect(() async => await rateLimiter.recordFailure(), throwsA(isA<StateError>()));
+      expect(
+        () async => await rateLimiter.recordFailure(),
+        throwsA(isA<StateError>()),
+      );
     });
   });
 }

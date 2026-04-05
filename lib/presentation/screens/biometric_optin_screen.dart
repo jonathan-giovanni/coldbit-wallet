@@ -1,5 +1,6 @@
 import 'package:coldbit_wallet/core/providers/biometrics_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,34 +12,38 @@ class BiometricOptinScreen extends ConsumerStatefulWidget {
   const BiometricOptinScreen({super.key});
 
   @override
-  ConsumerState<BiometricOptinScreen> createState() => _BiometricOptinScreenState();
+  ConsumerState<BiometricOptinScreen> createState() =>
+      _BiometricOptinScreenState();
 }
 
 class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
   bool _isLoading = false;
 
   Future<void> _handleOptIn() async {
+    final reason = AppLocalizations.of(context)!.biometricOptinReason;
     setState(() => _isLoading = true);
-    
+
     final auth = LocalAuthentication();
-    final canCheck = await auth.canCheckBiometrics || await auth.isDeviceSupported();
-    
+    final canCheck =
+        await auth.canCheckBiometrics || await auth.isDeviceSupported();
+
     if (canCheck) {
       try {
         final didAuth = await auth.authenticate(
-          localizedReason: 'Enable Biometrics for ColdBit Vault',
+          localizedReason: reason,
           biometricOnly: true,
         );
         if (didAuth) {
-           await ColdBitSettings.completeBiometricSetup(true);
-           if (!mounted) return;
-           ref.invalidate(biometricSetupCompletedProvider);
-           ref.invalidate(biometricsEnabledProvider);
-           context.go('/dashboard');
-           return;
+          await ColdBitSettings.completeBiometricSetup(true);
+          if (!mounted) return;
+          ref.invalidate(biometricSetupCompletedProvider);
+          ref.invalidate(biometricsEnabledProvider);
+          context.go('/dashboard');
+          return;
         }
       } catch (_) {}
     }
+    if (!mounted) return;
     setState(() => _isLoading = false);
   }
 
@@ -61,30 +66,40 @@ class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              const Icon(LucideIcons.scanFace, size: 64, color: ColdBitTheme.goldBitcoin)
-                  .animate().fade(duration: 500.ms).scale(begin: const Offset(0.5, 0.5)),
+              const Icon(
+                    LucideIcons.scanFace,
+                    size: 64,
+                    color: ColdBitTheme.goldBitcoin,
+                  )
+                  .animate()
+                  .fade(duration: 500.ms)
+                  .scale(begin: const Offset(0.5, 0.5)),
               const SizedBox(height: 32),
               Text(
-                'Biometric Defense',
+                AppLocalizations.of(context)!.biometricOptinTitle,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: ColdBitTheme.pureWhiteText,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  color: ColdBitTheme.pureWhiteText,
+                ),
                 textAlign: TextAlign.center,
               ).animate().fade(delay: 200.ms),
               const SizedBox(height: 16),
               Text(
-                'Accelerate your Vault access by linking your biological signature. This feature is completely optional and your Face ID/Touch ID never leaves your physical device.',
+                AppLocalizations.of(context)!.biometricOptinDesc,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColdBitTheme.platinumText,
-                      height: 1.6,
-                    ),
+                  color: ColdBitTheme.platinumText,
+                  height: 1.6,
+                ),
                 textAlign: TextAlign.center,
               ).animate().fade(delay: 300.ms),
               const Spacer(),
-              
+
               if (_isLoading)
-                 const Center(child: CircularProgressIndicator(color: ColdBitTheme.goldBitcoin))
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: ColdBitTheme.goldBitcoin,
+                  ),
+                )
               else ...[
                 Row(
                   children: [
@@ -95,7 +110,10 @@ class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           foregroundColor: ColdBitTheme.platinumText,
                         ),
-                        child: const Text('Omitir', style: TextStyle(fontWeight: FontWeight.w600)),
+                        child: Text(
+                          AppLocalizations.of(context)!.biometricOptinSkipBtn,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -110,7 +128,12 @@ class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text('Confirmar', style: TextStyle(fontWeight: FontWeight.w700)),
+                        child: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.biometricOptinConfirmBtn,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                   ],

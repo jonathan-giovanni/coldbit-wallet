@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/providers/biometrics_provider.dart';
 import 'package:coldbit_wallet/core/security/auth_barrier.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -50,10 +52,13 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
       _pin = '';
       _isError = true;
     });
-    
+
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) { timer.cancel(); return; }
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() {
         if (_lockoutSeconds != null && _lockoutSeconds! > 0) {
           _lockoutSeconds = _lockoutSeconds! - 1;
@@ -103,7 +108,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
     }
     final result = await ref.read(authProvider.notifier).unlockVault(_pin);
     if (!mounted) return;
-    
+
     if (result is AuthTimeoutBlock) {
       HapticFeedback.heavyImpact();
       _startLockout(result.secondsRemaining);
@@ -113,8 +118,8 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
     } else if (result is AuthInvalidPin) {
       HapticFeedback.heavyImpact();
       setState(() {
-         _pin = '';
-         _isError = true;
+        _pin = '';
+        _isError = true;
       });
     }
   }
@@ -126,53 +131,87 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Icon(LucideIcons.lock, size: 48, color: ColdBitTheme.platinumText)
-                .animate().fade().slideY(begin: -0.5),
+            const Icon(
+              LucideIcons.lock,
+              size: 48,
+              color: ColdBitTheme.platinumText,
+            ).animate().fade().slideY(begin: -0.5),
             const SizedBox(height: 24),
             Text(
-              _lockoutSeconds != null 
-                  ? 'LOCKED. Wait ${_lockoutSeconds}s'
-                  : (_isError ? 'Access Denied' : 'Enter PIN Code'),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  _lockoutSeconds != null
+                      ? AppLocalizations.of(
+                          context,
+                        )!.vaultUnlockLockedWait(_lockoutSeconds!)
+                      : (_isError
+                            ? AppLocalizations.of(
+                                context,
+                              )!.vaultUnlockAccessDenied
+                            : AppLocalizations.of(
+                                context,
+                              )!.vaultUnlockEnterPin),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: _isError || _lockoutSeconds != null ? ColdBitTheme.errorCrimson : null,
+                    color: _isError || _lockoutSeconds != null
+                        ? ColdBitTheme.errorCrimson
+                        : null,
                   ),
-            ).animate(key: ValueKey(_isError.toString() + _lockoutSeconds.toString())).fade(delay: 100.ms),
+                )
+                .animate(
+                  key: ValueKey(
+                    _isError.toString() + _lockoutSeconds.toString(),
+                  ),
+                )
+                .fade(delay: 100.ms),
             const SizedBox(height: 32),
-            
+
             // PIN Dots
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(6, (index) {
-                final isFilled = index < _pin.length;
-                final isDark = _lockoutSeconds != null;
-                return AnimatedContainer(
-                  duration: 200.ms,
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isDark ? ColdBitTheme.errorCrimson.withValues(alpha: 0.5) : _isError 
-                        ? ColdBitTheme.errorCrimson 
-                        : isFilled ? ColdBitTheme.goldBitcoin : Colors.transparent,
-                    border: Border.all(
-                      color: isDark ? ColdBitTheme.errorCrimson : _isError 
-                          ? ColdBitTheme.errorCrimson
-                          : isFilled ? ColdBitTheme.goldBitcoin : ColdBitTheme.brushedMetal,
-                      width: 2,
-                    ),
-                    boxShadow: isFilled && !_isError && !isDark ? ColdBitTheme.glowShadow : null,
-                  ),
-                );
-              }),
-            ).animate(target: _isError || _lockoutSeconds != null ? 1 : 0).shake(hz: 8, duration: 500.ms),
-            
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(6, (index) {
+                    final isFilled = index < _pin.length;
+                    final isDark = _lockoutSeconds != null;
+                    return AnimatedContainer(
+                      duration: 200.ms,
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isDark
+                            ? ColdBitTheme.errorCrimson.withValues(alpha: 0.5)
+                            : _isError
+                            ? ColdBitTheme.errorCrimson
+                            : isFilled
+                            ? ColdBitTheme.goldBitcoin
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: isDark
+                              ? ColdBitTheme.errorCrimson
+                              : _isError
+                              ? ColdBitTheme.errorCrimson
+                              : isFilled
+                              ? ColdBitTheme.goldBitcoin
+                              : ColdBitTheme.brushedMetal,
+                          width: 2,
+                        ),
+                        boxShadow: isFilled && !_isError && !isDark
+                            ? ColdBitTheme.glowShadow
+                            : null,
+                      ),
+                    );
+                  }),
+                )
+                .animate(target: _isError || _lockoutSeconds != null ? 1 : 0)
+                .shake(hz: 8, duration: 500.ms),
+
             const Spacer(),
-            
+
             // Numpad
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 32.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 48.0,
+                vertical: 32.0,
+              ),
               child: GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 3,
@@ -194,10 +233,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   }
 
   Widget _buildNumKey(String digit) {
-    return _NumKey(
-      label: digit,
-      onPressed: () => _onDigitPressed(digit),
-    );
+    return _NumKey(label: digit, onPressed: () => _onDigitPressed(digit));
   }
 
   Widget _buildIconKey(IconData icon, VoidCallback onPressed) {
@@ -212,7 +248,6 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
 }
 
 class _NumKey extends StatefulWidget {
-
   const _NumKey({required this.label, required this.onPressed});
   final String label;
   final VoidCallback onPressed;
@@ -233,25 +268,34 @@ class _NumKeyState extends State<_NumKey> {
         widget.onPressed();
       },
       onTapCancel: () => setState(() => _isPressed = false),
-      child: AnimatedContainer(
-        duration: 100.ms,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _isPressed ? ColdBitTheme.brushedMetal : Colors.transparent,
-          border: Border.all(
-            color: _isPressed ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5) : ColdBitTheme.brushedMetal.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          widget.label,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: _isPressed ? ColdBitTheme.goldBitcoin : ColdBitTheme.pureWhiteText,
-              ),
-        ),
-      ).animate(target: _isPressed ? 1 : 0).scale(end: const Offset(0.9, 0.9), duration: 100.ms),
+      child:
+          AnimatedContainer(
+                duration: 100.ms,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _isPressed
+                      ? ColdBitTheme.brushedMetal
+                      : Colors.transparent,
+                  border: Border.all(
+                    color: _isPressed
+                        ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5)
+                        : ColdBitTheme.brushedMetal.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  widget.label,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: _isPressed
+                        ? ColdBitTheme.goldBitcoin
+                        : ColdBitTheme.pureWhiteText,
+                  ),
+                ),
+              )
+              .animate(target: _isPressed ? 1 : 0)
+              .scale(end: const Offset(0.9, 0.9), duration: 100.ms),
     );
   }
 }

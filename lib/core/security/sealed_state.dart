@@ -5,7 +5,6 @@ import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:sodium_libs/sodium_libs.dart';
 
 class SealedState<T> {
-
   SealedState(T initialValue) {
     _seal(initialValue);
   }
@@ -18,7 +17,7 @@ class SealedState<T> {
     _key = sodium.crypto.secretBox.keygen();
     _nonce = sodium.randombytes.buf(sodium.crypto.secretBox.nonceBytes);
     final bytes = _serialize(value);
-    
+
     _ciphertext = sodium.crypto.secretBox.easy(
       message: bytes,
       nonce: _nonce!,
@@ -30,9 +29,9 @@ class SealedState<T> {
     if (_key == null || _nonce == null || _ciphertext == null) {
       throw StateError('DEAD_STATE');
     }
-    
+
     final sodium = MemGuard.sodium;
-    
+
     try {
       final decryptedBytes = sodium.crypto.secretBox.openEasy(
         cipherText: _ciphertext!,
@@ -76,7 +75,12 @@ class SealedState<T> {
 
   T _deserialize(Uint8List bytes) {
     if (T == int) {
-      return ByteData.view(bytes.buffer, bytes.offsetInBytes, bytes.lengthInBytes).getInt64(0) as T;
+      return ByteData.view(
+            bytes.buffer,
+            bytes.offsetInBytes,
+            bytes.lengthInBytes,
+          ).getInt64(0)
+          as T;
     } else if (T == String) {
       return utf8.decode(bytes) as T;
     } else if (T == bool) {

@@ -12,8 +12,11 @@ class ThreatDetector {
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
-    const settings = InitializationSettings(android: androidConfig, iOS: iosConfig);
-    
+    const settings = InitializationSettings(
+      android: androidConfig,
+      iOS: iosConfig,
+    );
+
     await _notificationsPlugin.initialize(settings: settings);
   }
 
@@ -21,7 +24,7 @@ class ThreatDetector {
     try {
       bool jailbroken = await FlutterJailbreakDetection.jailbroken;
       bool developerMode = await FlutterJailbreakDetection.developerMode;
-      
+
       if (jailbroken || developerMode) {
         await _fireThreatNotification();
         return true;
@@ -34,10 +37,11 @@ class ThreatDetector {
 
   static Future<void> _fireThreatNotification() async {
     const androidDetails = AndroidNotificationDetails(
-      'threat_alert', 'Security Threats',
+      'threat_alert',
+      'Security Threats',
       importance: Importance.max,
       priority: Priority.high,
-      color: Colors.red, 
+      color: Colors.red,
     );
     const iosDetails = DarwinNotificationDetails(
       presentAlert: true,
@@ -45,12 +49,16 @@ class ThreatDetector {
       presentSound: true,
       interruptionLevel: InterruptionLevel.critical,
     );
-    const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
-    
+    const details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
     await _notificationsPlugin.show(
       id: 999,
       title: 'CRITICAL SECURITY ALERT',
-      body: 'Unauthorized OS manipulation (Jailbreak/Root) detected. Memory isolated.',
+      body:
+          'Unauthorized OS manipulation (Jailbreak/Root) detected. Memory isolated.',
       notificationDetails: details,
     );
   }

@@ -1,7 +1,6 @@
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 
 class RateLimiter {
-
   static const int maxAttempts = 20;
 
   Future<int> _getAttempts() async {
@@ -26,7 +25,7 @@ class RateLimiter {
   Future<int> checkWaitTimeRemaining() async {
     final lockout = await _getLockoutTime();
     if (lockout == null) return 0;
-    
+
     final diff = lockout.difference(DateTime.now());
     if (diff.isNegative) return 0;
     return diff.inSeconds;
@@ -46,15 +45,15 @@ class RateLimiter {
       final blockUntil = DateTime.now().add(penalty);
       await _setLockoutTime(blockUntil);
     }
-    
+
     return penalty.inSeconds;
   }
 
   Future<void> recordSuccess() async {
     await _setAttempts(0);
-    await SecureEnclave.write('coldbit_lockout_time', ''); 
+    await SecureEnclave.write('coldbit_lockout_time', '');
   }
-  
+
   Future<int> get currentAttempts async => await _getAttempts();
 
   Duration _calculatePenalty(int attempts) {

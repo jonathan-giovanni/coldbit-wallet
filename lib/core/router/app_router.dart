@@ -13,8 +13,11 @@ import 'package:go_router/go_router.dart';
 
 class RouterNotifier extends ChangeNotifier {
   RouterNotifier(this._ref) {
-    _ref.listen<AuthState>(authProvider, (_, __) => notifyListeners());
-    _ref.listen<AsyncValue<bool>>(biometricSetupCompletedProvider, (_, __) => notifyListeners());
+    _ref.listen<AuthState>(authProvider, (_, _) => notifyListeners());
+    _ref.listen<AsyncValue<bool>>(
+      biometricSetupCompletedProvider,
+      (_, _) => notifyListeners(),
+    );
   }
   final Ref _ref;
 }
@@ -31,8 +34,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/onboarding',
     redirect: (context, state) {
       final authState = ref.read(authProvider);
-      final biometricsSetupCompletedAsync = ref.read(biometricSetupCompletedProvider);
-      
+      final biometricsSetupCompletedAsync = ref.read(
+        biometricSetupCompletedProvider,
+      );
+
       final isGoingToOnboarding = state.uri.path == '/onboarding';
       final isGoingToSetup = state.uri.path == '/setup';
       final isGoingToUnlock = state.uri.path == '/unlock';
@@ -56,8 +61,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           }
           if (isGoingToOnboarding || isGoingToSetup || isGoingToUnlock) {
             if (biometricsSetupCompletedAsync is AsyncData) {
-               final val = biometricsSetupCompletedAsync.value ?? false;
-               if (!val) return '/biometric-setup';
+              final val = biometricsSetupCompletedAsync.value ?? false;
+              if (!val) return '/biometric-setup';
             }
             return '/dashboard';
           }
@@ -92,10 +97,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
       ),
-      GoRoute(
-        path: '/about',
-        builder: (context, state) => const AboutScreen(),
-      ),
+      GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
     ],
   );
 });

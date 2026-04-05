@@ -2,12 +2,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureEnclave {
   static const _storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      resetOnError: true,
-    ),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.passcode,
-    ),
+    aOptions: AndroidOptions(resetOnError: true),
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.passcode),
   );
 
   static Future<void> write(String key, String value) async {

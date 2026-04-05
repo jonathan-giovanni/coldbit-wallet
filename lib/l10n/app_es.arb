@@ -1,0 +1,53 @@
+{
+  "@@locale": "es",
+  "appTitle": "Bóveda ColdBit",
+  
+  "onboardingTitle": "Seguridad Absoluta",
+  "onboardingSubtitle": "Tus llaves privadas nunca tocan internet. Firma pura de PSBT desconectada de la red.",
+  "onboardingCreateBtn": "Crear Bóveda de Cero",
+  "onboardingRecoverBtn": "Recuperar Semilla Mnemónica",
+
+  "pinSetupTitle": "Acceso Blindado",
+  "pinSetupCreateMsg": "Establece tu PIN Seguro",
+  "pinSetupConfirmMsg": "Confirma tu PIN Seguro",
+  "pinSetupMismatch": "Los PINs no coinciden",
+
+  "biometricOptinTitle": "Defensa Biométrica",
+  "biometricOptinDesc": "Acelera tu acceso atando tu firma biológica. Esta función es totalmente opcional y tu rostro/huella jamás saldrán de este dispositivo.",
+  "biometricOptinReason": "Activar biometría para ColdBit Vault",
+  "biometricOptinSkipBtn": "Omitir",
+  "biometricOptinConfirmBtn": "Confirmar",
+
+  "vaultUnlockAccessDenied": "Acceso Denegado",
+  "vaultUnlockEnterPin": "Ingresar PIN",
+  "vaultUnlockLockedWait": "BLOQUEADO. Esperar {seconds}s",
+  
+  "dashboardVaultLbl": "Bóveda",
+  "dashboardStatusLbl": "Desconectada",
+  "dashboardMfLbl": "Huella Maestra",
+  "dashboardNetworkLbl": "SegWit Nativo",
+  "dashboardAuthLog": "Bitácora",
+  "dashboardSentBtc": "Enviados {amount} BTC",
+  
+  "dashboardReadyTitle": "Bóveda Alistada",
+  "dashboardReadyDesc": "Escanea una Transacción de Red (PSBT) para autorizarla en criptografía asimétrica.",
+  "dashboardScanBtn": "Escanear Transacción PSBT",
+
+  "drawerSettings": "Ajustes de Bóveda",
+  "drawerAbout": "Acerca del Proyecto",
+  "drawerFallback": "Respaldado",
+  "drawerLastUpdate": "Actualizado",
+
+  "settingsTitle": "Ajustes de Bóveda",
+  "settingsLanguage": "Idioma / Language",
+  "settingsLanguageDesc": "Español • English",
+  "settingsCamera": "Cámara (Escáner QR)",
+  "settingsCameraDesc": "Requerida para capturar tickets PSBT de la red.",
+  "settingsPush": "Notificaciones Push",
+  "settingsPushDesc": "Monitoreo alerta de hackeos locales o jailbreak",
+  "settingsBiometrics": "Autenticación Biométrica",
+  "settingsBiometricsDesc": "Reemplaza el tecleo recurrente del código cifrado",
+
+  "aboutTitle": "Acerca del Proyecto",
+  "aboutMissionMd": "# Misión de ColdBit Wallet\n\nEsta aplicación fue forjada con un propósito absoluto: **Asumir que todos los entornos en internet están comprometidos o son inherentemente hostiles**.\n\n## Principios de Diseño\n1. **Air-gapped Puro**: \n   Tu dispositivo no enviará una sola clave privada a la internet abierta. Solo firma de PSBTs.\n2. **Defensa de Capa RAM (MemGuard)**: \n   Las semillas (Seed Phrases) existen en RAM criptográfica sellada temporal. Se pulsa y se quema a discreción.\n\n---\n\n### Componentes de Seguridad Implementados:\n- **libsodium**: Derivación de hashes estilo Argon2id y almacenamiento aislado.\n- **Fail-Close Policy**: Cualquier perturbación (salir de la App, fallo biométrico, jailbreak detectado) colapsa la sesión por protocolo.\n\n*El software es para uso soberano. Verifique el Hash del código y construya usted mismo.*"
+}

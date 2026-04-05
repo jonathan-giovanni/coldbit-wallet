@@ -1,10 +1,6 @@
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 
-enum ThreatPolicy {
-  wipe,
-  paranoid,
-  warn,
-}
+enum ThreatPolicy { wipe, paranoid, warn }
 
 class ThreatPolicyManager {
   static const _policyKey = 'coldbit_threat_policy';
@@ -16,7 +12,7 @@ class ThreatPolicyManager {
   static Future<ThreatPolicy> getPolicy() async {
     final policyName = await SecureEnclave.read(_policyKey);
     if (policyName == null) {
-      return ThreatPolicy.paranoid; 
+      return ThreatPolicy.paranoid;
     }
     return ThreatPolicy.values.firstWhere(
       (e) => e.name == policyName,

@@ -4,7 +4,6 @@ import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:flutter/material.dart';
 
 class LiquidGlassCard extends StatelessWidget {
-
   const LiquidGlassCard({
     super.key,
     required this.child,
