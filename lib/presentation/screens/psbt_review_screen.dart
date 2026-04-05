@@ -107,7 +107,7 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
                         ),
                         child: const Icon(LucideIcons.shieldAlert, size: 64, color: ColdBitTheme.errorCrimson),
                       ).animate(onPlay: (controller) => controller.repeat(reverse: true))
-                       .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 500.ms),
+                       .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 1.5.seconds, curve: Curves.easeInOutCubic),
                       
                       const SizedBox(height: 32),
                       

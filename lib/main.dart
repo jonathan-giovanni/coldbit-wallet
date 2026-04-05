@@ -1,5 +1,7 @@
 import 'package:coldbit_wallet/core/router/app_router.dart';
+import 'package:coldbit_wallet/core/security/app_lifecycle_guard.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
+import 'package:coldbit_wallet/core/security/threat_detector.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ void main() async {
   
   // Initialize Security Sandboxes
   await MemGuard.init();
+  await ThreatDetector.init();
 
   // Force dark mode UI Overlays globally
   SystemChrome.setSystemUIOverlayStyle(
@@ -29,7 +32,9 @@ void main() async {
 
   runApp(
     const ProviderScope(
-      child: ColdBitApp(),
+      child: AppLifecycleGuard(
+        child: ColdBitApp(),
+      ),
     ),
   );
 }
