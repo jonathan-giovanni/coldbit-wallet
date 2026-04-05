@@ -85,7 +85,69 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
         child: _isAnalyzing 
           ? const Center(child: CircularProgressIndicator(color: ColdBitTheme.goldBitcoin))
           : _error != null 
-            ? Center(child: Text(_error!, style: const TextStyle(color: ColdBitTheme.errorCrimson)))
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: ColdBitTheme.errorCrimson.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: ColdBitTheme.errorCrimson, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColdBitTheme.errorCrimson.withValues(alpha: 0.3),
+                              blurRadius: 30,
+                              spreadRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(LucideIcons.shieldAlert, size: 64, color: ColdBitTheme.errorCrimson),
+                      ).animate(onPlay: (controller) => controller.repeat(reverse: true))
+                       .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 500.ms),
+                      
+                      const SizedBox(height: 32),
+                      
+                      Text(
+                        'PAYLOAD REJECTED',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: ColdBitTheme.errorCrimson,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 2.0,
+                            ),
+                      ).animate().fade().slideY(begin: 0.2),
+                      
+                      const SizedBox(height: 16),
+                      
+                      Text(
+                        'The scanned physical data does not match a valid Partially Signed Bitcoin Transaction (PSBT). Potential corruption or tampering detected.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: ColdBitTheme.platinumText,
+                              height: 1.5,
+                            ),
+                      ).animate().fade().slideY(begin: 0.3),
+                      
+                      const SizedBox(height: 48),
+                      
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: ColdBitTheme.pureWhiteText,
+                          side: const BorderSide(color: ColdBitTheme.brushedMetal),
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(LucideIcons.scanLine),
+                        label: const Text('RESCAN PAYLOAD'),
+                      ).animate().fade(delay: 400.ms),
+                    ],
+                  ),
+                ),
+              )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                 child: Column(

@@ -225,7 +225,7 @@ class DashboardScreen extends ConsumerWidget {
                       final output = await Navigator.of(context).push<String>(
                         MaterialPageRoute(
                           builder: (context) => PsbtScannerView(
-                            onDetect: (data) => data,
+                            onDetect: (data) => Navigator.of(context).pop(data),
                           ),
                         ),
                       );

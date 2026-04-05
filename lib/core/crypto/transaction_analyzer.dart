@@ -1,21 +1,33 @@
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 
 class TransactionDetails {
-  final String txid;
-  final double feeBtc;
-  final double totalAmountBtc;
   
   TransactionDetails({
     required this.txid, 
     required this.feeBtc, 
     required this.totalAmountBtc,
   });
+  final String txid;
+  final double feeBtc;
+  final double totalAmountBtc;
 }
 
 class TransactionAnalyzer {
   static Future<TransactionDetails> analyzePsbt(String base64Psbt) async {
-    // Validate PSBT is constructable
-    await WalletEngine.parsePsbt(base64Psbt);
+    // 1. Pre-validation: Sanitize input to reject non-base64 malformed data instantly
+    final sanitizedData = base64Psbt.trim();
+    final base64Regex = RegExp(r'^[A-Za-z0-9+/]+={0,2}$');
+    
+    if (sanitizedData.length < 50 || !base64Regex.hasMatch(sanitizedData)) {
+      throw StateError('CORRUPT_PAYLOAD');
+    }
+
+    try {
+      // Validate PSBT is constructable
+      await WalletEngine.parsePsbt(sanitizedData);
+    } catch (_) {
+      throw StateError('INVALID_PSBT_FORMAT');
+    }
     
     // If bdk-flutter version doesn't expose txid directly, we generate a mock hash
     // in real production BDK it corresponds to extracting the transaction graph.
