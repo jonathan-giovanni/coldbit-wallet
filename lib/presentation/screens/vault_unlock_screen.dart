@@ -1,6 +1,7 @@
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -15,6 +16,18 @@ class VaultUnlockScreen extends ConsumerStatefulWidget {
 class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   String _pin = '';
   bool _isError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _attemptBiometrics();
+    });
+  }
+
+  Future<void> _attemptBiometrics() async {
+    await ref.read(authProvider.notifier).unlockWithBiometrics();
+  }
 
   void _onDigitPressed(String digit) {
     if (_pin.length < 6) {
@@ -42,6 +55,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
     if (!mounted) return;
     
     if (!success) {
+      HapticFeedback.heavyImpact();
       setState(() {
          _pin = '';
          _isError = true;

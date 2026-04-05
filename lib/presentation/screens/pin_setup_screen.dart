@@ -1,6 +1,7 @@
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -57,6 +58,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
         // Ejecución Dual Auth Registration
         ref.read(authProvider.notifier).setupNewVault(_currentPin);
       } else {
+        HapticFeedback.heavyImpact();
         // Disparar error TyP
         setState(() {
           _isError = true;

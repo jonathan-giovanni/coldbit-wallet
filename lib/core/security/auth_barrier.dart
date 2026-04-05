@@ -91,4 +91,22 @@ class AuthBarrier {
     _rateLimiter.recordSuccess();
     return null;
   }
+
+  Future<bool> authenticateBiometricsOnly() async {
+    try {
+      final canAuthenticateWithBiometrics = await _localAuth.canCheckBiometrics ||
+          await _localAuth.isDeviceSupported();
+          
+      if (!canAuthenticateWithBiometrics) return false;
+      
+      final didAuthenticate = await _localAuth.authenticate(
+         localizedReason: 'Biometric authorization required to bypass PIN',
+         biometricOnly: true,
+      );
+      
+      return didAuthenticate;
+    } catch (e) {
+      return false;
+    }
+  }
 }

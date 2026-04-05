@@ -9,8 +9,24 @@ enum AuthState { initial, loading, authenticated, error, uninitialized }
 
 class AuthNotifier extends StateNotifier<AuthState> {
 
-  AuthNotifier(this.ref) : super(AuthState.initial);
+  AuthNotifier(this.ref) : super(AuthState.loading) {
+    evaluateInitialState();
+  }
+  
   final Ref ref;
+
+  Future<bool> unlockWithBiometrics() async {
+    state = AuthState.loading;
+    final barrier = AuthBarrier(RateLimiter());
+    final success = await barrier.authenticateBiometricsOnly();
+    if (success) {
+      state = AuthState.authenticated;
+      return true;
+    } else {
+      state = AuthState.initial;
+      return false;
+    }
+  }
 
   Future<void> evaluateInitialState() async {
     state = AuthState.loading;
