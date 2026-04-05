@@ -2,6 +2,7 @@ import 'package:coldbit_wallet/core/providers/history_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/presentation/screens/psbt_review_screen.dart';
 import 'package:coldbit_wallet/presentation/widgets/coldbit_action_button.dart';
+import 'package:coldbit_wallet/presentation/widgets/coldbit_drawer.dart';
 import 'package:coldbit_wallet/presentation/widgets/liquid_glass_card.dart';
 import 'package:coldbit_wallet/presentation/widgets/psbt_scanner_view.dart';
 import 'package:coldbit_wallet/presentation/widgets/status_pill.dart';
@@ -18,6 +19,7 @@ class DashboardScreen extends ConsumerWidget {
     final history = ref.watch(historyProvider);
     
     return Scaffold(
+      drawer: const ColdBitDrawer(),
       body: Stack(
         children: [
           Positioned(
@@ -50,13 +52,20 @@ class DashboardScreen extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: ColdBitTheme.darkGraphite,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(LucideIcons.wallet, size: 20, color: ColdBitTheme.pureWhiteText),
+                          Builder(
+                            builder: (context) {
+                              return GestureDetector(
+                                onTap: () => Scaffold.of(context).openDrawer(),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: ColdBitTheme.darkGraphite,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Icon(LucideIcons.menu, size: 20, color: ColdBitTheme.pureWhiteText),
+                                ),
+                              );
+                            }
                           ),
                           const SizedBox(width: 12),
                           Text(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
+import 'package:coldbit_wallet/core/providers/biometrics_provider.dart';
 import 'package:coldbit_wallet/core/security/auth_barrier.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
@@ -66,7 +67,10 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   }
 
   Future<void> _attemptBiometrics() async {
-    await ref.read(authProvider.notifier).unlockWithBiometrics();
+    final isEnabledAsync = ref.read(biometricsEnabledProvider);
+    if (isEnabledAsync is AsyncData && (isEnabledAsync.value ?? false)) {
+      await ref.read(authProvider.notifier).unlockWithBiometrics();
+    }
   }
 
   void _onDigitPressed(String digit) {

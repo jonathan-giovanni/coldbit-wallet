@@ -23,21 +23,6 @@ class AuthBarrier {
 
   static Future<void> registerPin(String pin) async {
     final sodium = MemGuard.sodium;
-    
-    final auth = LocalAuthentication();
-    final canCheck = await auth.canCheckBiometrics || await auth.isDeviceSupported();
-    if (!canCheck) {
-      throw StateError('BIOMETRICS_UNAVAILABLE');
-    }
-
-    final didAuth = await auth.authenticate(
-      localizedReason: 'Secure Vault Registration',
-      biometricOnly: true,
-    );
-    
-    if (!didAuth) {
-      throw StateError('BIOMETRICS_DENIED');
-    }
 
     try {
       final String hashStr = sodium.crypto.pwhash.str(
