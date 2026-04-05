@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/config/vault_config.dart';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
@@ -23,12 +24,12 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
   bool _isError = false;
 
   void _onDigitPressed(String digit) {
-    if (_currentPin.length < 6) {
+    if (_currentPin.length < VaultConfig.pinLength) {
       setState(() {
         _currentPin += digit;
         _isError = false;
       });
-      if (_currentPin.length == 6) {
+      if (_currentPin.length == VaultConfig.pinLength) {
         _processStep();
       }
     }
@@ -117,7 +118,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
             // PIN Dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(6, (index) {
+              children: List.generate(VaultConfig.pinLength, (index) {
                 final isFilled = index < _currentPin.length;
                 return AnimatedContainer(
                   duration: 200.ms,

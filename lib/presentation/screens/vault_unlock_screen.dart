@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:coldbit_wallet/core/config/vault_config.dart';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/providers/biometrics_provider.dart';
 import 'package:coldbit_wallet/core/security/auth_barrier.dart';
@@ -80,12 +81,12 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
 
   void _onDigitPressed(String digit) {
     if (_lockoutSeconds != null && _lockoutSeconds! > 0) return;
-    if (_pin.length < 6) {
+    if (_pin.length < VaultConfig.pinLength) {
       setState(() {
         _pin += digit;
         _isError = false;
       });
-      if (_pin.length == 6) {
+      if (_pin.length == VaultConfig.pinLength) {
         _unlock();
       }
     }
@@ -167,7 +168,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
             // PIN Dots
             Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(6, (index) {
+                  children: List.generate(VaultConfig.pinLength, (index) {
                     final isFilled = index < _pin.length;
                     final isDark = _lockoutSeconds != null;
                     return AnimatedContainer(

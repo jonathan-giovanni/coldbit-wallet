@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:coldbit_wallet/core/config/vault_config.dart';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/security/threat_detector.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard>
 
   void _resetInactivityTimer() {
     _inactivityTimer?.cancel();
-    _inactivityTimer = Timer(const Duration(minutes: 2), () {
+    _inactivityTimer = Timer(VaultConfig.inactivityTimeout, () {
       if (ref.read(authProvider) == AuthState.authenticated) {
         _expelUser();
       }

@@ -1,7 +1,8 @@
+import 'package:coldbit_wallet/core/config/vault_config.dart';
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 
 class RateLimiter {
-  static const int maxAttempts = 20;
+  static int get maxAttempts => VaultConfig.maxAuthAttempts;
 
   Future<int> _getAttempts() async {
     final str = await SecureEnclave.read('coldbit_failed_attempts');

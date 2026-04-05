@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/config/vault_config.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,12 @@ void main() {
 
     expect(find.text('Establish your Secure PIN'), findsOneWidget);
 
-    for (int i = 1; i <= 6; i++) {
-      await tester.tap(find.text('$i'));
+    final digits = List.generate(
+      VaultConfig.pinLength,
+      (i) => '${(i + 1) % 10}',
+    );
+    for (final d in digits) {
+      await tester.tap(find.text(d));
       await tester.pump(const Duration(milliseconds: 100));
     }
 
@@ -37,13 +42,22 @@ void main() {
 
     expect(find.text('Confirm your Secure PIN'), findsOneWidget);
 
-    for (int i = 6; i >= 1; i--) {
-      await tester.tap(find.text('$i'));
+    final wrongDigits = digits.reversed.toList();
+    for (final d in wrongDigits) {
+      await tester.tap(find.text(d));
       await tester.pump(const Duration(milliseconds: 100));
     }
 
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
 
     expect(find.text('PINs do not match'), findsOneWidget);
+  });
+
+  test('VaultConfig.pinLength is 8 per REQUIREMENTS.md', () {
+    expect(VaultConfig.pinLength, 8);
+  });
+
+  test('VaultConfig.maxAuthAttempts is 20', () {
+    expect(VaultConfig.maxAuthAttempts, 20);
   });
 }
