@@ -106,7 +106,7 @@ class OnboardingScreen extends StatelessWidget {
                         label: 'Initialize Vault',
                         icon: LucideIcons.lock,
                         onPressed: () {
-                          context.push('/unlock');
+                          context.push('/setup');
                         },
                       )
                       .animate()

@@ -5,75 +5,111 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class VaultUnlockScreen extends ConsumerStatefulWidget {
-  const VaultUnlockScreen({super.key});
+enum PinSetupState { create, confirm }
+
+class PinSetupScreen extends ConsumerStatefulWidget {
+  const PinSetupScreen({super.key});
 
   @override
-  ConsumerState<VaultUnlockScreen> createState() => _VaultUnlockScreenState();
+  ConsumerState<PinSetupScreen> createState() => _PinSetupScreenState();
 }
 
-class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
-  String _pin = '';
+class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
+  PinSetupState _state = PinSetupState.create;
+  String _initialPin = '';
+  String _currentPin = '';
   bool _isError = false;
 
   void _onDigitPressed(String digit) {
-    if (_pin.length < 6) {
+    if (_currentPin.length < 6) {
       setState(() {
-        _pin += digit;
+        _currentPin += digit;
         _isError = false;
       });
-      if (_pin.length == 6) {
-        _unlock();
+      if (_currentPin.length == 6) {
+        _processStep();
       }
     }
   }
 
   void _onDeletePressed() {
-    if (_pin.isNotEmpty) {
+    if (_currentPin.isNotEmpty) {
       setState(() {
-        _pin = _pin.substring(0, _pin.length - 1);
+        _currentPin = _currentPin.substring(0, _currentPin.length - 1);
         _isError = false;
       });
     }
   }
 
-  Future<void> _unlock() async {
-    final success = await ref.read(authProvider.notifier).unlockVault(_pin);
+  Future<void> _processStep() async {
+    await Future.delayed(300.ms); // Micro pausa UX
+
     if (!mounted) return;
-    
-    if (!success) {
+
+    if (_state == PinSetupState.create) {
       setState(() {
-         _pin = '';
-         _isError = true;
+        _initialPin = _currentPin;
+        _currentPin = '';
+        _state = PinSetupState.confirm;
       });
+    } else {
+      if (_currentPin == _initialPin) {
+        // Ejecución Dual Auth Registration
+        ref.read(authProvider.notifier).setupNewVault(_currentPin);
+      } else {
+        // Disparar error TyP
+        setState(() {
+          _isError = true;
+          _currentPin = '';
+          _initialPin = '';
+          _state = PinSetupState.create;
+        });
+      }
     }
-    // Si es success, GoRouter reactivo hará redirect mágico.
   }
 
   @override
   Widget build(BuildContext context) {
+    final title = _state == PinSetupState.create 
+        ? 'Create Vault PIN' 
+        : 'Confirm Vault PIN';
+        
+    final icon = _state == PinSetupState.create 
+        ? LucideIcons.key
+        : LucideIcons.checkSquare;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             const Spacer(),
-            const Icon(LucideIcons.lock, size: 48, color: ColdBitTheme.platinumText)
-                .animate().fade().slideY(begin: -0.5),
+            Icon(
+              _isError ? LucideIcons.shieldAlert : icon, 
+              size: 48, 
+              color: _isError ? ColdBitTheme.errorCrimson : ColdBitTheme.platinumText,
+            )
+            .animate(key: ValueKey(_state.name + _isError.toString()))
+            .fade().scale(),
+            
             const SizedBox(height: 24),
+            
             Text(
-              _isError ? 'Access Denied' : 'Enter PIN Code',
+              _isError ? 'PIN Mismatch. Restarting.' : title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: _isError ? ColdBitTheme.errorCrimson : null,
+                    color: _isError ? ColdBitTheme.errorCrimson : Colors.white,
                   ),
-            ).animate(key: ValueKey(_isError.toString())).fade(delay: 100.ms),
+            )
+            .animate(key: ValueKey(title + _isError.toString()))
+            .fade().slideY(begin: 0.5),
+            
             const SizedBox(height: 32),
             
             // PIN Dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(6, (index) {
-                final isFilled = index < _pin.length;
+                final isFilled = index < _currentPin.length;
                 return AnimatedContainer(
                   duration: 200.ms,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -94,7 +130,9 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
                   ),
                 );
               }),
-            ).animate(target: _isError ? 1 : 0).shake(hz: 8, duration: 500.ms),
+            )
+            .animate(target: _isError ? 1 : 0)
+            .shake(hz: 8, duration: 500.ms),
             
             const Spacer(),
             
@@ -109,11 +147,11 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   for (int i = 1; i <= 9; i++) _buildNumKey(i.toString()),
-                  _buildIconKey(Icons.fingerprint, () => _unlock()),
+                  const SizedBox.shrink(), // Clear space (no fingerprint on setup numpad)
                   _buildNumKey('0'),
                   _buildIconKey(LucideIcons.delete, _onDeletePressed),
                 ],
-              ).animate().fade(delay: 400.ms).slideY(begin: 0.2),
+              ).animate().fade(delay: 200.ms).slideY(begin: 0.2),
             ),
           ],
         ),
@@ -140,7 +178,6 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
 }
 
 class _NumKey extends StatefulWidget {
-
   const _NumKey({required this.label, required this.onPressed});
   final String label;
   final VoidCallback onPressed;

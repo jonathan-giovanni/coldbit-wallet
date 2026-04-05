@@ -39,16 +39,17 @@ void main() async {
   );
 }
 
-class ColdBitApp extends StatelessWidget {
+class ColdBitApp extends ConsumerWidget {
   const ColdBitApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       title: 'ColdBit Vault',
       debugShowCheckedModeBanner: false,
       theme: ColdBitTheme.luxuryTheme,
-      routerConfig: appRouter,
+      routerConfig: goRouter,
     );
   }
 }

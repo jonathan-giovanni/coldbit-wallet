@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
-import 'package:coldbit_wallet/core/router/app_router.dart';
 import 'package:coldbit_wallet/core/security/threat_detector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,8 +51,7 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
 
   void _expelUser() {
      ref.read(authProvider.notifier).logout();
-     // Purgar navegación hacia el muro criptográfico
-     appRouter.go('/unlock');
+     // Purgar sesión automáticamente enruta por Riverpod + GoRouter
   }
 
   @override
