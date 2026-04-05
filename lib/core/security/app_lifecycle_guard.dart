@@ -54,19 +54,24 @@ class _AppLifecycleGuardState extends ConsumerState<AppLifecycleGuard> with Widg
      // Purgar sesión automáticamente enruta por Riverpod + GoRouter
   }
 
+  bool _wasPaused = false;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      // Inmediatamente oscurecemos la UI para que los snapshots del OS no copien datos en crudo BTC
+    if (state == AppLifecycleState.paused) {
+      _wasPaused = true;
       setState(() => _isHidden = true);
-      
+    } else if (state == AppLifecycleState.inactive) {
+      // Inmediatamente oscurecemos la UI para que los snapshots del OS no copien datos, o para cubrir FaceID modal
+      setState(() => _isHidden = true);
     } else if (state == AppLifecycleState.resumed) {
       setState(() => _isHidden = false);
       
-      // La regla bancaria no negociable: Si pones la app en fondo, pierdes el token de sesión.
-      if (ref.read(authProvider) == AuthState.authenticated) {
+      // La regla bancaria no negociable: Si pones la app verdaderamente en fondo (paused), pierdes la sesión.
+      if (_wasPaused && ref.read(authProvider) == AuthState.authenticated) {
          _expelUser();
       }
+      _wasPaused = false;
       _resetInactivityTimer();
     }
   }
