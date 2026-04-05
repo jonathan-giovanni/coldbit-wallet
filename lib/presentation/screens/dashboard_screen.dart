@@ -1,22 +1,25 @@
+import 'package:coldbit_wallet/core/providers/history_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/presentation/screens/psbt_review_screen.dart';
 import 'package:coldbit_wallet/presentation/widgets/coldbit_action_button.dart';
 import 'package:coldbit_wallet/presentation/widgets/liquid_glass_card.dart';
 import 'package:coldbit_wallet/presentation/widgets/psbt_scanner_view.dart';
-import 'package:coldbit_wallet/presentation/widgets/signed_qr_visualizer.dart';
 import 'package:coldbit_wallet/presentation/widgets/status_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final history = ref.watch(historyProvider);
+    
     return Scaffold(
       body: Stack(
         children: [
-          // Subtle Top Gradient
           Positioned(
             top: -150,
             left: -50,
@@ -128,46 +131,92 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ).animate().fade(delay: 200.ms).slideX(begin: 0.1),
                   
-                  const Spacer(),
+                  const SizedBox(height: 24),
                   
-                  Center(
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: ColdBitTheme.darkGraphite.withValues(alpha: 0.8),
-                            border: Border.all(color: ColdBitTheme.obsidianBlack, width: 4),
-                            boxShadow: ColdBitTheme.ambientShadow,
-                          ),
-                          child: const Icon(LucideIcons.qrCode, size: 32, color: ColdBitTheme.platinumText),
-                        ).animate(onPlay: (controller) => controller.repeat(reverse: true))
-                         .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 2.seconds),
-                        
-                        const SizedBox(height: 32),
-                        
-                        Text(
-                          'Ready to Sign',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Scan a Partially Signed Bitcoin Transaction (PSBT) to authorize it offline within the enclave.',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: ColdBitTheme.platinumText,
-                                height: 1.5,
-                              ),
-                        ),
-                      ],
+                  if (history.isNotEmpty) ...[
+                    Text('Auth Log', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColdBitTheme.platinumText, letterSpacing: 1.5)),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: history.length,
+                        separatorBuilder: (context, _) => const SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          final tx = history[index];
+                          return Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: ColdBitTheme.darkGraphite.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: ColdBitTheme.brushedMetal.withValues(alpha: 0.1)),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(LucideIcons.arrowUpRight, color: ColdBitTheme.goldBitcoin, size: 20),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Sent ${tx.amountBtc.toStringAsFixed(6)} BTC',
+                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        tx.timestamp.toIso8601String().split('T').first,
+                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColdBitTheme.platinumText),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).animate().fade(),
                     ),
-                  ).animate().fade(delay: 400.ms).scale(begin: const Offset(0.95, 0.95)),
+                  ] else ...[
+                     Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: ColdBitTheme.darkGraphite.withValues(alpha: 0.8),
+                                  border: Border.all(color: ColdBitTheme.obsidianBlack, width: 4),
+                                  boxShadow: ColdBitTheme.ambientShadow,
+                                ),
+                                child: const Icon(LucideIcons.qrCode, size: 32, color: ColdBitTheme.platinumText),
+                              ).animate(onPlay: (controller) => controller.repeat(reverse: true))
+                               .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 2.seconds),
+                              
+                              const SizedBox(height: 32),
+                              
+                              Text(
+                                'Ready to Sign',
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Scan a Partially Signed Bitcoin Transaction (PSBT) to authorize it offline within the enclave.',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: ColdBitTheme.platinumText,
+                                      height: 1.5,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ).animate().fade(delay: 400.ms).scale(begin: const Offset(0.95, 0.95)),
+                     ),
+                  ],
                   
-                  const Spacer(),
+                  const SizedBox(height: 16),
                   
                   ColdBitActionButton(
                     label: 'Scan PSBT Ticket',
@@ -184,8 +233,8 @@ class DashboardScreen extends StatelessWidget {
                       if (output != null && context.mounted) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => SignedQrVisualizer(
-                              signedPayload: 'MOCK_SIGNED_PSBT_$output',
+                            builder: (context) => PsbtReviewScreen(
+                              rawPsbtBase64: output,
                             ),
                           ),
                         );
