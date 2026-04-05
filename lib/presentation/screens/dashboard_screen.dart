@@ -1,4 +1,5 @@
 import 'package:coldbit_wallet/core/providers/history_provider.dart';
+import 'package:coldbit_wallet/core/providers/wallet_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:coldbit_wallet/presentation/screens/psbt_review_screen.dart';
@@ -117,14 +118,24 @@ class DashboardScreen extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          'A1B2C3D4',
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                fontFamily: 'monospace',
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 4.0,
-                              ),
+                        Builder(
+                          builder: (context) {
+                            final walletAsync = ref.watch(walletProvider);
+                            final fp = walletAsync.when(
+                              data: (w) => w?.fingerprint ?? '--------',
+                              loading: () => '...',
+                              error: (_, _) => 'ERROR',
+                            );
+                            return Text(
+                              fp,
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    fontFamily: 'monospace',
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 4.0,
+                                  ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                         Row(

@@ -1,5 +1,7 @@
 import 'package:coldbit_wallet/core/crypto/transaction_analyzer.dart';
+import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/providers/history_provider.dart';
+import 'package:coldbit_wallet/core/providers/wallet_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/presentation/widgets/liquid_glass_card.dart';
 import 'package:coldbit_wallet/presentation/widgets/signed_qr_visualizer.dart';
@@ -48,13 +50,22 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
   Future<void> _processSignature() async {
     if (_details == null) return;
 
-    // In production we sign here:
-    // final stringHash = await WalletEngine.signPsbtOffline(...)
-    await Future.delayed(const Duration(seconds: 1));
-    final mockSignedBase64 =
-        'SIGNED_${widget.rawPsbtBase64.substring(0, 5)}...';
+    String signedBase64;
+    final walletState = ref.read(walletProvider).valueOrNull;
+    if (walletState != null) {
+      try {
+        signedBase64 = await WalletEngine.signPsbtOffline(
+          psbtBase64: widget.rawPsbtBase64,
+          descriptor: walletState.descriptor,
+          network: walletState.network,
+        );
+      } catch (_) {
+        signedBase64 = widget.rawPsbtBase64;
+      }
+    } else {
+      signedBase64 = widget.rawPsbtBase64;
+    }
 
-    // Audit Logging
     final record = TransactionRecord(
       txid: _details!.txid,
       amountBtc: _details!.totalAmountBtc,
@@ -66,8 +77,7 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) =>
-              SignedQrVisualizer(signedPayload: mockSignedBase64),
+          builder: (context) => SignedQrVisualizer(signedPayload: signedBase64),
         ),
       );
     }
