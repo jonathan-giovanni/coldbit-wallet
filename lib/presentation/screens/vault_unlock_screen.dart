@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
+import 'package:coldbit_wallet/core/security/auth_barrier.dart';
+import 'package:coldbit_wallet/core/security/rate_limiter.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,12 +19,49 @@ class VaultUnlockScreen extends ConsumerStatefulWidget {
 class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   String _pin = '';
   bool _isError = false;
+  int? _lockoutSeconds;
+  Timer? _countdownTimer;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _attemptBiometrics();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final waitTime = await RateLimiter().checkWaitTimeRemaining();
+      if (!mounted) return;
+      if (waitTime > 0) {
+        _startLockout(waitTime);
+      } else {
+        _attemptBiometrics();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startLockout(int seconds) {
+    if (!mounted) return;
+    setState(() {
+      _lockoutSeconds = seconds;
+      _pin = '';
+      _isError = true;
+    });
+    
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) { timer.cancel(); return; }
+      setState(() {
+        if (_lockoutSeconds != null && _lockoutSeconds! > 0) {
+          _lockoutSeconds = _lockoutSeconds! - 1;
+        } else {
+          _lockoutSeconds = null;
+          _isError = false;
+          timer.cancel();
+        }
+      });
     });
   }
 
@@ -30,6 +70,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   }
 
   void _onDigitPressed(String digit) {
+    if (_lockoutSeconds != null && _lockoutSeconds! > 0) return;
     if (_pin.length < 6) {
       setState(() {
         _pin += digit;
@@ -42,6 +83,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   }
 
   void _onDeletePressed() {
+    if (_lockoutSeconds != null && _lockoutSeconds! > 0) return;
     if (_pin.isNotEmpty) {
       setState(() {
         _pin = _pin.substring(0, _pin.length - 1);
@@ -51,17 +93,26 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   }
 
   Future<void> _unlock() async {
-    final success = await ref.read(authProvider.notifier).unlockVault(_pin);
+    if (_lockoutSeconds != null && _lockoutSeconds! > 0) {
+      HapticFeedback.heavyImpact();
+      return;
+    }
+    final result = await ref.read(authProvider.notifier).unlockVault(_pin);
     if (!mounted) return;
     
-    if (!success) {
+    if (result is AuthTimeoutBlock) {
+      HapticFeedback.heavyImpact();
+      _startLockout(result.secondsRemaining);
+    } else if (result is AuthMaxAttemptsWiped) {
+      HapticFeedback.heavyImpact();
+      // Furia de Dios
+    } else if (result is AuthInvalidPin) {
       HapticFeedback.heavyImpact();
       setState(() {
          _pin = '';
          _isError = true;
       });
     }
-    // Si es success, GoRouter reactivo hará redirect mágico.
   }
 
   @override
@@ -75,12 +126,14 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
                 .animate().fade().slideY(begin: -0.5),
             const SizedBox(height: 24),
             Text(
-              _isError ? 'Access Denied' : 'Enter PIN Code',
+              _lockoutSeconds != null 
+                  ? 'LOCKED. Wait ${_lockoutSeconds}s'
+                  : (_isError ? 'Access Denied' : 'Enter PIN Code'),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: _isError ? ColdBitTheme.errorCrimson : null,
+                    color: _isError || _lockoutSeconds != null ? ColdBitTheme.errorCrimson : null,
                   ),
-            ).animate(key: ValueKey(_isError.toString())).fade(delay: 100.ms),
+            ).animate(key: ValueKey(_isError.toString() + _lockoutSeconds.toString())).fade(delay: 100.ms),
             const SizedBox(height: 32),
             
             // PIN Dots
@@ -88,6 +141,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(6, (index) {
                 final isFilled = index < _pin.length;
+                final isDark = _lockoutSeconds != null;
                 return AnimatedContainer(
                   duration: 200.ms,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -95,20 +149,20 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
                   height: 16,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _isError 
+                    color: isDark ? ColdBitTheme.errorCrimson.withValues(alpha: 0.5) : _isError 
                         ? ColdBitTheme.errorCrimson 
                         : isFilled ? ColdBitTheme.goldBitcoin : Colors.transparent,
                     border: Border.all(
-                      color: _isError 
+                      color: isDark ? ColdBitTheme.errorCrimson : _isError 
                           ? ColdBitTheme.errorCrimson
                           : isFilled ? ColdBitTheme.goldBitcoin : ColdBitTheme.brushedMetal,
                       width: 2,
                     ),
-                    boxShadow: isFilled && !_isError ? ColdBitTheme.glowShadow : null,
+                    boxShadow: isFilled && !_isError && !isDark ? ColdBitTheme.glowShadow : null,
                   ),
                 );
               }),
-            ).animate(target: _isError ? 1 : 0).shake(hz: 8, duration: 500.ms),
+            ).animate(target: _isError || _lockoutSeconds != null ? 1 : 0).shake(hz: 8, duration: 500.ms),
             
             const Spacer(),
             

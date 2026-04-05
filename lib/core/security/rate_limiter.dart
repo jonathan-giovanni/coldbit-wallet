@@ -1,40 +1,68 @@
-import 'package:coldbit_wallet/core/security/sealed_state.dart';
+import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 
 class RateLimiter {
 
-  RateLimiter() {
-    _failedAttempts = SealedState<int>(0);
-  }
   static const int maxAttempts = 20;
 
-  late SealedState<int> _failedAttempts;
+  Future<int> _getAttempts() async {
+    final str = await SecureEnclave.read('coldbit_failed_attempts');
+    return int.tryParse(str ?? '0') ?? 0;
+  }
 
-  Duration recordFailure() {
-    _failedAttempts.update((count) => count + 1);
-    final currentFails = _failedAttempts.unseal();
+  Future<void> _setAttempts(int count) async {
+    await SecureEnclave.write('coldbit_failed_attempts', count.toString());
+  }
 
-    if (currentFails >= maxAttempts) {
+  Future<void> _setLockoutTime(DateTime time) async {
+    await SecureEnclave.write('coldbit_lockout_time', time.toIso8601String());
+  }
+
+  Future<DateTime?> _getLockoutTime() async {
+    final str = await SecureEnclave.read('coldbit_lockout_time');
+    if (str == null || str.isEmpty) return null;
+    return DateTime.tryParse(str);
+  }
+
+  Future<int> checkWaitTimeRemaining() async {
+    final lockout = await _getLockoutTime();
+    if (lockout == null) return 0;
+    
+    final diff = lockout.difference(DateTime.now());
+    if (diff.isNegative) return 0;
+    return diff.inSeconds;
+  }
+
+  Future<int> recordFailure() async {
+    var count = await _getAttempts();
+    count += 1;
+    await _setAttempts(count);
+
+    if (count >= maxAttempts) {
       throw StateError('MAX_ATTEMPTS_REACHED');
     }
 
-    return _calculatePenalty(currentFails);
+    final penalty = _calculatePenalty(count);
+    if (penalty.inSeconds > 0) {
+      final blockUntil = DateTime.now().add(penalty);
+      await _setLockoutTime(blockUntil);
+    }
+    
+    return penalty.inSeconds;
   }
 
-  void recordSuccess() {
-    _failedAttempts.update((_) => 0);
+  Future<void> recordSuccess() async {
+    await _setAttempts(0);
+    await SecureEnclave.write('coldbit_lockout_time', ''); 
   }
   
-  int get currentAttempts => _failedAttempts.unseal();
+  Future<int> get currentAttempts async => await _getAttempts();
 
   Duration _calculatePenalty(int attempts) {
-    if (attempts <= 3) return const Duration(seconds: 30);
-    if (attempts <= 6) return const Duration(minutes: 1);
-    if (attempts <= 9) return const Duration(minutes: 3);
-    if (attempts <= 12) return const Duration(minutes: 6);
+    if (attempts < 3) return Duration.zero;
+    if (attempts <= 5) return const Duration(seconds: 30);
+    if (attempts <= 8) return const Duration(minutes: 1);
+    if (attempts <= 11) return const Duration(minutes: 3);
+    if (attempts <= 14) return const Duration(minutes: 6);
     return const Duration(minutes: 12);
-  }
-  
-  void destroy() {
-    _failedAttempts.destroy();
   }
 }

@@ -56,23 +56,24 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> unlockVault(String pin) async {
+  Future<AuthResult> unlockVault(String pin) async {
     state = AuthState.loading;
     try {
       final rateLimiter = RateLimiter(); // standard policy
       final barrier = AuthBarrier(rateLimiter);
-      final failure = await barrier.authenticate(pin);
+      final result = await barrier.authenticate(pin);
       
-      if (failure == null) {
+      if (result is AuthSuccess) {
         state = AuthState.authenticated;
-        return true;
+      } else if (result is AuthMaxAttemptsWiped) {
+        state = AuthState.uninitialized; // Furia de Dios (Wiped)
       } else {
-        state = AuthState.error;
-        return false;
+        state = AuthState.initial;
       }
+      return result;
     } catch (e) {
       state = AuthState.error;
-      return false;
+      return AuthInvalidPin();
     }
   }
 

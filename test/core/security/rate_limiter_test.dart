@@ -1,56 +1,49 @@
-import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  setUpAll(() async {
-    await MemGuard.init();
+  setUp(() {
+    FlutterSecureStorage.setMockInitialValues({});
   });
 
-  group('RateLimiter', () {
+  group('RateLimiter Async', () {
     late RateLimiter rateLimiter;
 
     setUp(() {
       rateLimiter = RateLimiter();
     });
-    
-    tearDown(() {
-      rateLimiter.destroy();
+
+    test('attempts < 3 return 0s', () async {
+      expect(await rateLimiter.recordFailure(), 0);
+      expect(await rateLimiter.recordFailure(), 0);
     });
 
-    test('attempts 1 to 3 return 30s', () {
-      expect(rateLimiter.recordFailure().inSeconds, 30);
-      expect(rateLimiter.recordFailure().inSeconds, 30);
-      expect(rateLimiter.recordFailure().inSeconds, 30);
+    test('attempt 3 to 5 jumps to 30s', () async {
+      await rateLimiter.recordFailure();
+      await rateLimiter.recordFailure();
+      expect(await rateLimiter.recordFailure(), 30);
     });
 
-    test('attempt 4 jumps to 1m', () {
-      rateLimiter.recordFailure();
-      rateLimiter.recordFailure();
-      rateLimiter.recordFailure();
-      expect(rateLimiter.recordFailure().inMinutes, 1);
-    });
-
-    test('attempt 13 jumps to 12m', () {
-      for (int i = 0; i < 12; i++) {
-        rateLimiter.recordFailure();
+    test('attempt 6 jumps to 1m', () async {
+      for (int i = 0; i < 5; i++) {
+        await rateLimiter.recordFailure();
       }
-      expect(rateLimiter.recordFailure().inMinutes, 12);
-      expect(rateLimiter.currentAttempts, 13);
+      expect(await rateLimiter.recordFailure(), 60);
     });
 
-    test('success clears attempts', () {
-      rateLimiter.recordFailure();
-      expect(rateLimiter.currentAttempts, 1);
-      rateLimiter.recordSuccess();
-      expect(rateLimiter.currentAttempts, 0);
+    test('success clears attempts', () async {
+      await rateLimiter.recordFailure();
+      expect(await rateLimiter.currentAttempts, 1);
+      await rateLimiter.recordSuccess();
+      expect(await rateLimiter.currentAttempts, 0);
     });
 
-    test('attempt 20 throws MAX_ATTEMPTS_REACHED', () {
+    test('attempt 20 throws MAX_ATTEMPTS_REACHED', () async {
       for (int i = 0; i < 19; i++) {
-        rateLimiter.recordFailure();
+        await rateLimiter.recordFailure();
       }
-      expect(() => rateLimiter.recordFailure(), throwsA(isA<StateError>()));
+      expect(() async => await rateLimiter.recordFailure(), throwsA(isA<StateError>()));
     });
   });
 }

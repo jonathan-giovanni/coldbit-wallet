@@ -1,7 +1,7 @@
+import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
 
 void main() {
   testWidgets('Pin Setup strict loop: Create -> Confirm -> Mismatch (typo) logic test', (WidgetTester tester) async {

@@ -3,7 +3,16 @@ import 'package:coldbit_wallet/core/security/rate_limiter.dart';
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
 import 'package:local_auth/local_auth.dart';
 
-enum AuthFailure { inactive, invalidPin, timeoutBlock, biometricsFailed, maxAttemptsWipe }
+sealed class AuthResult {}
+class AuthSuccess extends AuthResult {}
+class AuthInvalidPin extends AuthResult {}
+class AuthBiometricsFailed extends AuthResult {}
+class AuthTimeoutBlock extends AuthResult {
+  AuthTimeoutBlock(this.secondsRemaining);
+  final int secondsRemaining;
+}
+class AuthMaxAttemptsWiped extends AuthResult {}
+class AuthInactive extends AuthResult {}
 
 class AuthBarrier {
 
@@ -42,9 +51,12 @@ class AuthBarrier {
     }
   }
 
-  Future<AuthFailure?> authenticate(String attemptPin) async {
+  Future<AuthResult> authenticate(String attemptPin) async {
+    final waitRemaining = await _rateLimiter.checkWaitTimeRemaining();
+    if (waitRemaining > 0) return AuthTimeoutBlock(waitRemaining);
+
     final savedHash = await SecureEnclave.read(_pinHashKey);
-    if (savedHash == null) return AuthFailure.inactive;
+    if (savedHash == null) return AuthInactive();
 
     final sodium = MemGuard.sodium;
     
@@ -58,41 +70,32 @@ class AuthBarrier {
 
     if (!isValid) {
       try {
-        _rateLimiter.recordFailure(); 
+        final timeoutSecs = await _rateLimiter.recordFailure(); 
+        if (timeoutSecs > 0) return AuthTimeoutBlock(timeoutSecs);
+        return AuthInvalidPin();
       } catch (e) {
         if (e is StateError && e.message == 'MAX_ATTEMPTS_REACHED') {
-          return AuthFailure.maxAttemptsWipe;
+          await SecureEnclave.wipe();
+          return AuthMaxAttemptsWiped();
         }
       }
-      return _rateLimiter.currentAttempts >= RateLimiter.maxAttempts 
-          ? AuthFailure.maxAttemptsWipe 
-          : AuthFailure.invalidPin;
-    }
-
-    // MANDATORY BIOMETRICS (DUAL AUTH)
-    try {
-      final canAuthenticateWithBiometrics = await _localAuth.canCheckBiometrics ||
-          await _localAuth.isDeviceSupported();
-          
-      if (!canAuthenticateWithBiometrics) return AuthFailure.biometricsFailed;
-      
-      final didAuthenticate = await _localAuth.authenticate(
-         localizedReason: 'Biological Authorization Required',
-         biometricOnly: true,
-      );
-      
-      if (!didAuthenticate) {
-        return AuthFailure.biometricsFailed;
+      final fails = await _rateLimiter.currentAttempts;
+      if (fails >= RateLimiter.maxAttempts) {
+        await SecureEnclave.wipe();
+        return AuthMaxAttemptsWiped();
       }
-    } catch (e) {
-      return AuthFailure.biometricsFailed;
+      return AuthInvalidPin();
     }
 
-    _rateLimiter.recordSuccess();
-    return null;
+    // MANDATORY BIOMETRICS REMOVED FROM PIN FALLBACK
+    await _rateLimiter.recordSuccess();
+    return AuthSuccess();
   }
 
   Future<bool> authenticateBiometricsOnly() async {
+    final waitRemaining = await _rateLimiter.checkWaitTimeRemaining();
+    if (waitRemaining > 0) return false;
+
     try {
       final canAuthenticateWithBiometrics = await _localAuth.canCheckBiometrics ||
           await _localAuth.isDeviceSupported();
