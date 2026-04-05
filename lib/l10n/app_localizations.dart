@@ -343,6 +343,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'# ColdBit Wallet Mission\n\nThis application was forged with an absolute purpose: **Assume that all internet environments are compromised or inherently hostile**.\n\n## Design Principles\n1. **Pure Air-gapped**: \n   Your device will not send a single private key to the open internet. Only PSBT signing.\n2. **RAM Layer Defense (MemGuard)**: \n   Seeds (Seed Phrases) exist in temporary sealed cryptographic RAM. Pulsed and burned at discretion.\n\n---\n\n### Implemented Security Components:\n- **libsodium**: Argon2id style hashing derivation and isolated storage.\n- **Fail-Close Policy**: Any disturbance (exiting the App, biometric failure, detected jailbreak) collapses the session by protocol.\n\n*The software is for sovereign use. Verify the Code Hash and build it yourself.*'**
   String get aboutMissionMd;
+
+  /// No description provided for @seedBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery Phrase'**
+  String get seedBackupTitle;
+
+  /// No description provided for @seedBackupWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.'**
+  String get seedBackupWarning;
+
+  /// No description provided for @seedBackupHiddenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phrase Hidden'**
+  String get seedBackupHiddenTitle;
+
+  /// No description provided for @seedBackupHiddenDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure no one can see your screen before revealing your recovery phrase.'**
+  String get seedBackupHiddenDesc;
+
+  /// No description provided for @seedBackupRevealBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal Phrase'**
+  String get seedBackupRevealBtn;
+
+  /// No description provided for @seedBackupContinueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'I Wrote It Down'**
+  String get seedBackupContinueBtn;
+
+  /// No description provided for @seedVerifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Backup'**
+  String get seedVerifyTitle;
+
+  /// No description provided for @seedVerifyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the correct word for each position to confirm you saved your recovery phrase.'**
+  String get seedVerifyDesc;
+
+  /// No description provided for @seedVerifyWordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Word #{number}'**
+  String seedVerifyWordLabel(int number);
+
+  /// No description provided for @seedVerifyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect selection. Try again.'**
+  String get seedVerifyFailed;
+
+  /// No description provided for @seedVerifyConfirmBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Backup'**
+  String get seedVerifyConfirmBtn;
 }
 
 class _AppLocalizationsDelegate

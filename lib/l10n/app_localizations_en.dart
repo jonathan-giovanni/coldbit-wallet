@@ -140,4 +140,42 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aboutMissionMd =>
       '# ColdBit Wallet Mission\n\nThis application was forged with an absolute purpose: **Assume that all internet environments are compromised or inherently hostile**.\n\n## Design Principles\n1. **Pure Air-gapped**: \n   Your device will not send a single private key to the open internet. Only PSBT signing.\n2. **RAM Layer Defense (MemGuard)**: \n   Seeds (Seed Phrases) exist in temporary sealed cryptographic RAM. Pulsed and burned at discretion.\n\n---\n\n### Implemented Security Components:\n- **libsodium**: Argon2id style hashing derivation and isolated storage.\n- **Fail-Close Policy**: Any disturbance (exiting the App, biometric failure, detected jailbreak) collapses the session by protocol.\n\n*The software is for sovereign use. Verify the Code Hash and build it yourself.*';
+
+  @override
+  String get seedBackupTitle => 'Recovery Phrase';
+
+  @override
+  String get seedBackupWarning =>
+      'Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.';
+
+  @override
+  String get seedBackupHiddenTitle => 'Phrase Hidden';
+
+  @override
+  String get seedBackupHiddenDesc =>
+      'Ensure no one can see your screen before revealing your recovery phrase.';
+
+  @override
+  String get seedBackupRevealBtn => 'Reveal Phrase';
+
+  @override
+  String get seedBackupContinueBtn => 'I Wrote It Down';
+
+  @override
+  String get seedVerifyTitle => 'Verify Backup';
+
+  @override
+  String get seedVerifyDesc =>
+      'Select the correct word for each position to confirm you saved your recovery phrase.';
+
+  @override
+  String seedVerifyWordLabel(int number) {
+    return 'Word #$number';
+  }
+
+  @override
+  String get seedVerifyFailed => 'Incorrect selection. Try again.';
+
+  @override
+  String get seedVerifyConfirmBtn => 'Confirm Backup';
 }

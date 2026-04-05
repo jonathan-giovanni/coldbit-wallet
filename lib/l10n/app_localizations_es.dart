@@ -141,4 +141,42 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get aboutMissionMd =>
       '# Misión de ColdBit Wallet\n\nEsta aplicación fue forjada con un propósito absoluto: **Asumir que todos los entornos en internet están comprometidos o son inherentemente hostiles**.\n\n## Principios de Diseño\n1. **Air-gapped Puro**: \n   Tu dispositivo no enviará una sola clave privada a la internet abierta. Solo firma de PSBTs.\n2. **Defensa de Capa RAM (MemGuard)**: \n   Las semillas (Seed Phrases) existen en RAM criptográfica sellada temporal. Se pulsa y se quema a discreción.\n\n---\n\n### Componentes de Seguridad Implementados:\n- **libsodium**: Derivación de hashes estilo Argon2id y almacenamiento aislado.\n- **Fail-Close Policy**: Cualquier perturbación (salir de la App, fallo biométrico, jailbreak detectado) colapsa la sesión por protocolo.\n\n*El software es para uso soberano. Verifique el Hash del código y construya usted mismo.*';
+
+  @override
+  String get seedBackupTitle => 'Frase de Recuperación';
+
+  @override
+  String get seedBackupWarning =>
+      'Escribe estas 24 palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.';
+
+  @override
+  String get seedBackupHiddenTitle => 'Frase Oculta';
+
+  @override
+  String get seedBackupHiddenDesc =>
+      'Asegúrate de que nadie pueda ver tu pantalla antes de revelar tu frase de recuperación.';
+
+  @override
+  String get seedBackupRevealBtn => 'Revelar Frase';
+
+  @override
+  String get seedBackupContinueBtn => 'Ya La Escribí';
+
+  @override
+  String get seedVerifyTitle => 'Verificar Respaldo';
+
+  @override
+  String get seedVerifyDesc =>
+      'Selecciona la palabra correcta para cada posición para confirmar que guardaste tu frase de recuperación.';
+
+  @override
+  String seedVerifyWordLabel(int number) {
+    return 'Palabra #$number';
+  }
+
+  @override
+  String get seedVerifyFailed => 'Selección incorrecta. Intenta de nuevo.';
+
+  @override
+  String get seedVerifyConfirmBtn => 'Confirmar Respaldo';
 }

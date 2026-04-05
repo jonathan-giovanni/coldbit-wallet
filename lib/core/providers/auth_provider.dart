@@ -1,11 +1,16 @@
-import 'package:bdk_flutter/bdk_flutter.dart';
-import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/providers/vault_provider.dart';
 import 'package:coldbit_wallet/core/security/auth_barrier.dart';
 import 'package:coldbit_wallet/core/security/rate_limiter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum AuthState { initial, loading, authenticated, error, uninitialized }
+enum AuthState {
+  initial,
+  loading,
+  authenticated,
+  error,
+  uninitialized,
+  seedPending,
+}
 
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this.ref) : super(AuthState.loading) {
@@ -40,22 +45,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> setupNewVault(String pin) async {
     state = AuthState.loading;
     try {
-      // 1. Generate Air-gap mnemonic
-      final sealedMnem = WalletEngine.generateMnemonic();
-
-      // 2. Derive to Native Segwit (Validation pass)
-      final _ = await WalletEngine.deriveNativeSegwit(
-        sealedMnem.unseal(),
-        Network.testnet,
-      );
-
-      // 3. Register PIN and seal payload
       await AuthBarrier.registerPin(pin);
-
-      state = AuthState.authenticated;
+      state = AuthState.seedPending;
     } catch (e) {
       state = AuthState.error;
     }
+  }
+
+  void completeSeedBackup() {
+    state = AuthState.authenticated;
   }
 
   Future<AuthResult> unlockVault(String pin) async {

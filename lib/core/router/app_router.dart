@@ -5,6 +5,8 @@ import 'package:coldbit_wallet/presentation/screens/biometric_optin_screen.dart'
 import 'package:coldbit_wallet/presentation/screens/dashboard_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/onboarding_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
+import 'package:coldbit_wallet/presentation/screens/seed_backup_screen.dart';
+import 'package:coldbit_wallet/presentation/screens/seed_verify_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/settings_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/vault_unlock_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,28 +40,39 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         biometricSetupCompletedProvider,
       );
 
-      final isGoingToOnboarding = state.uri.path == '/onboarding';
-      final isGoingToSetup = state.uri.path == '/setup';
-      final isGoingToUnlock = state.uri.path == '/unlock';
-      final isGoingToBiometricSetup = state.uri.path == '/biometric-setup';
+      final currentPath = state.uri.path;
+      final isGoingToOnboarding = currentPath == '/onboarding';
+      final isGoingToSetup = currentPath == '/setup';
+      final isGoingToUnlock = currentPath == '/unlock';
+      final isGoingToSeedBackup = currentPath == '/seed-backup';
+      final isGoingToSeedVerify = currentPath == '/seed-verify';
+      final isGoingToBiometricSetup = currentPath == '/biometric-setup';
 
       switch (authState) {
         case AuthState.uninitialized:
           if (!isGoingToOnboarding && !isGoingToSetup) return '/onboarding';
+          break;
+        case AuthState.seedPending:
+          if (!isGoingToSeedBackup && !isGoingToSeedVerify) {
+            return '/seed-backup';
+          }
           break;
         case AuthState.initial:
         case AuthState.error:
           if (!isGoingToUnlock) return '/unlock';
           break;
         case AuthState.authenticated:
-          // Check biometrics setup
           if (biometricsSetupCompletedAsync is AsyncData) {
             final setupCompleted = biometricsSetupCompletedAsync.value ?? false;
             if (!setupCompleted && !isGoingToBiometricSetup) {
               return '/biometric-setup';
             }
           }
-          if (isGoingToOnboarding || isGoingToSetup || isGoingToUnlock) {
+          if (isGoingToOnboarding ||
+              isGoingToSetup ||
+              isGoingToUnlock ||
+              isGoingToSeedBackup ||
+              isGoingToSeedVerify) {
             if (biometricsSetupCompletedAsync is AsyncData) {
               final val = biometricsSetupCompletedAsync.value ?? false;
               if (!val) return '/biometric-setup';
@@ -68,7 +81,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           }
           break;
         case AuthState.loading:
-          break; // Permite espera UI
+          break;
       }
       return null;
     },
@@ -80,6 +93,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/setup',
         builder: (context, state) => const PinSetupScreen(),
+      ),
+      GoRoute(
+        path: '/seed-backup',
+        builder: (context, state) => const SeedBackupScreen(),
+      ),
+      GoRoute(
+        path: '/seed-verify',
+        builder: (context, state) => const SeedVerifyScreen(),
       ),
       GoRoute(
         path: '/unlock',

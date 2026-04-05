@@ -11,7 +11,7 @@ class ColdBitActionButton extends StatefulWidget {
     this.isLoading = false,
     this.isPrimary = true,
   });
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String label;
   final IconData? icon;
   final bool isLoading;
@@ -40,7 +40,7 @@ class _ColdBitActionButtonState extends State<ColdBitActionButton> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
         setState(() => _isPressed = false);
-        if (!widget.isLoading) widget.onPressed();
+        if (!widget.isLoading) widget.onPressed?.call();
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child:
