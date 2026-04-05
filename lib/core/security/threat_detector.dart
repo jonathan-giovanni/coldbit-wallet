@@ -14,7 +14,7 @@ class ThreatDetector {
     );
     const settings = InitializationSettings(android: androidConfig, iOS: iosConfig);
     
-    await _notificationsPlugin.initialize(initializationSettings: settings);
+    await _notificationsPlugin.initialize(settings: settings);
   }
 
   static Future<bool> isCompromised() async {
