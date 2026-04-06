@@ -409,6 +409,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm Backup'**
   String get seedVerifyConfirmBtn;
+
+  /// No description provided for @receiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive Address'**
+  String get receiveTitle;
+
+  /// No description provided for @receiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this address to receive Bitcoin. Verify it matches your hardware wallet before sending funds.'**
+  String get receiveDesc;
+
+  /// No description provided for @receiveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to derive address'**
+  String get receiveError;
+
+  /// No description provided for @receiveNoWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'No wallet configured'**
+  String get receiveNoWallet;
+
+  /// No description provided for @receiveCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Address copied to clipboard'**
+  String get receiveCopied;
+
+  /// No description provided for @receiveOfflineNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.'**
+  String get receiveOfflineNote;
 }
 
 class _AppLocalizationsDelegate

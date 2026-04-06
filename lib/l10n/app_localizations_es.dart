@@ -179,4 +179,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get seedVerifyConfirmBtn => 'Confirmar Respaldo';
+
+  @override
+  String get receiveTitle => 'Dirección de Recepción';
+
+  @override
+  String get receiveDesc =>
+      'Comparte esta dirección para recibir Bitcoin. Verifica que coincida con tu dispositivo antes de enviar fondos.';
+
+  @override
+  String get receiveError => 'Error al derivar la dirección';
+
+  @override
+  String get receiveNoWallet => 'No hay billetera configurada';
+
+  @override
+  String get receiveCopied => 'Dirección copiada al portapapeles';
+
+  @override
+  String get receiveOfflineNote =>
+      'Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes.';
 }

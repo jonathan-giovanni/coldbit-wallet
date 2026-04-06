@@ -62,5 +62,12 @@
   "seedVerifyDesc": "Selecciona la palabra correcta para cada posición para confirmar que guardaste tu frase de recuperación.",
   "seedVerifyWordLabel": "Palabra #{number}",
   "seedVerifyFailed": "Selección incorrecta. Intenta de nuevo.",
-  "seedVerifyConfirmBtn": "Confirmar Respaldo"
+  "seedVerifyConfirmBtn": "Confirmar Respaldo",
+
+  "receiveTitle": "Dirección de Recepción",
+  "receiveDesc": "Comparte esta dirección para recibir Bitcoin. Verifica que coincida con tu dispositivo antes de enviar fondos.",
+  "receiveError": "Error al derivar la dirección",
+  "receiveNoWallet": "No hay billetera configurada",
+  "receiveCopied": "Dirección copiada al portapapeles",
+  "receiveOfflineNote": "Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes."
 }

@@ -5,6 +5,7 @@ import 'package:coldbit_wallet/presentation/screens/biometric_optin_screen.dart'
 import 'package:coldbit_wallet/presentation/screens/dashboard_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/onboarding_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
+import 'package:coldbit_wallet/presentation/screens/receive_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/seed_backup_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/seed_verify_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/settings_screen.dart';
@@ -119,6 +120,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
+      GoRoute(
+        path: '/receive',
+        builder: (context, state) => const ReceiveScreen(),
+      ),
     ],
   );
 });

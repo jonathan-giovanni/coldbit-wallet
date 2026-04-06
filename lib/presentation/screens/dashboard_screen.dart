@@ -11,6 +11,7 @@ import 'package:coldbit_wallet/presentation/widgets/status_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -349,6 +350,15 @@ class DashboardScreen extends ConsumerWidget {
                       }
                     },
                   ).animate().fade(delay: 600.ms).slideY(begin: 0.2),
+
+                  const SizedBox(height: 12),
+
+                  ColdBitActionButton(
+                    label: AppLocalizations.of(context)!.receiveTitle,
+                    icon: LucideIcons.download,
+                    isPrimary: false,
+                    onPressed: () => GoRouter.of(context).push('/receive'),
+                  ).animate().fade(delay: 700.ms).slideY(begin: 0.2),
 
                   const SizedBox(height: 16),
                 ],

@@ -178,4 +178,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seedVerifyConfirmBtn => 'Confirm Backup';
+
+  @override
+  String get receiveTitle => 'Receive Address';
+
+  @override
+  String get receiveDesc =>
+      'Share this address to receive Bitcoin. Verify it matches your hardware wallet before sending funds.';
+
+  @override
+  String get receiveError => 'Failed to derive address';
+
+  @override
+  String get receiveNoWallet => 'No wallet configured';
+
+  @override
+  String get receiveCopied => 'Address copied to clipboard';
+
+  @override
+  String get receiveOfflineNote =>
+      'This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.';
 }

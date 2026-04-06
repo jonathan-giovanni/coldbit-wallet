@@ -78,5 +78,12 @@
     }
   },
   "seedVerifyFailed": "Incorrect selection. Try again.",
-  "seedVerifyConfirmBtn": "Confirm Backup"
+  "seedVerifyConfirmBtn": "Confirm Backup",
+
+  "receiveTitle": "Receive Address",
+  "receiveDesc": "Share this address to receive Bitcoin. Verify it matches your hardware wallet before sending funds.",
+  "receiveError": "Failed to derive address",
+  "receiveNoWallet": "No wallet configured",
+  "receiveCopied": "Address copied to clipboard",
+  "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions."
 }
