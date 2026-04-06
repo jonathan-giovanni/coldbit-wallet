@@ -87,43 +87,44 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/onboarding',
-        builder: (context, state) => const OnboardingScreen(),
-      ),
-      GoRoute(
-        path: '/setup',
-        builder: (context, state) => const PinSetupScreen(),
-      ),
-      GoRoute(
-        path: '/seed-backup',
-        builder: (context, state) => const SeedBackupScreen(),
-      ),
-      GoRoute(
-        path: '/seed-verify',
-        builder: (context, state) => const SeedVerifyScreen(),
-      ),
-      GoRoute(
-        path: '/unlock',
-        builder: (context, state) => const VaultUnlockScreen(),
-      ),
-      GoRoute(
-        path: '/biometric-setup',
-        builder: (context, state) => const BiometricOptinScreen(),
-      ),
-      GoRoute(
-        path: '/dashboard',
-        builder: (context, state) => const DashboardScreen(),
-      ),
-      GoRoute(
-        path: '/settings',
-        builder: (context, state) => const SettingsScreen(),
-      ),
-      GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
-      GoRoute(
-        path: '/receive',
-        builder: (context, state) => const ReceiveScreen(),
-      ),
+      _route('/onboarding', const OnboardingScreen()),
+      _route('/setup', const PinSetupScreen()),
+      _route('/seed-backup', const SeedBackupScreen()),
+      _route('/seed-verify', const SeedVerifyScreen()),
+      _route('/unlock', const VaultUnlockScreen()),
+      _route('/biometric-setup', const BiometricOptinScreen()),
+      _route('/dashboard', const DashboardScreen()),
+      _route('/settings', const SettingsScreen()),
+      _route('/about', const AboutScreen()),
+      _route('/receive', const ReceiveScreen()),
     ],
   );
 });
+
+GoRoute _route(String path, Widget child) {
+  return GoRoute(
+    path: path,
+    pageBuilder: (context, state) => CustomTransitionPage(
+      key: state.pageKey,
+      child: child,
+      transitionDuration: const Duration(milliseconds: 350),
+      reverseTransitionDuration: const Duration(milliseconds: 250),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final fade = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
+        return FadeTransition(
+          opacity: fade,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.04),
+              end: Offset.zero,
+            ).animate(fade),
+            child: child,
+          ),
+        );
+      },
+    ),
+  );
+}

@@ -25,6 +25,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
   void _onDigitPressed(String digit) {
     if (_currentPin.length < VaultConfig.pinLength) {
+      HapticFeedback.selectionClick();
       setState(() {
         _currentPin += digit;
         _isError = false;

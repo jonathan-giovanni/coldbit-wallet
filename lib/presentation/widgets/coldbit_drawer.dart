@@ -14,6 +14,7 @@ class ColdBitDrawer extends StatefulWidget {
 
 class _ColdBitDrawerState extends State<ColdBitDrawer> {
   String _version = 'v1.0.0-alpha';
+  String _buildNumber = '';
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _ColdBitDrawerState extends State<ColdBitDrawer> {
       if (mounted) {
         setState(() {
           _version = 'v${info.version}';
+          _buildNumber = info.buildNumber;
         });
       }
     } catch (_) {}
@@ -111,7 +113,7 @@ class _ColdBitDrawerState extends State<ColdBitDrawer> {
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Text(
-                '$_version • ${AppLocalizations.of(context)!.drawerLastUpdate}: Hoy',
+                '$_version+$_buildNumber • Air-Gapped',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: ColdBitTheme.platinumText,
                   fontWeight: FontWeight.bold,

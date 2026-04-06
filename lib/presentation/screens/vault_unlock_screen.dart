@@ -82,6 +82,7 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
   void _onDigitPressed(String digit) {
     if (_lockoutSeconds != null && _lockoutSeconds! > 0) return;
     if (_pin.length < VaultConfig.pinLength) {
+      HapticFeedback.selectionClick();
       setState(() {
         _pin += digit;
         _isError = false;
