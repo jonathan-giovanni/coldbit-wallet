@@ -12,7 +12,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'ColdBit Wallet';
 
   @override
-  String get onboardingTitle => 'Absolute Security';
+  String get onboardingTitle => 'Secure by Isolation';
+
+  @override
+  String get onboardingSlide1Title => 'Air-Gapped Absolute';
+
+  @override
+  String get onboardingSlide1Desc =>
+      'Your keys never touch the internet. Pure PSBT signing disconnected from any network.';
+
+  @override
+  String get onboardingSlide2Title => 'Zero Telemetry';
+
+  @override
+  String get onboardingSlide2Desc =>
+      'No analytics. No tracking. No third-party servers. Your data is your own.';
+
+  @override
+  String get onboardingSlide3Title => 'Fortress Storage';
+
+  @override
+  String get onboardingSlide3Desc =>
+      'Protected by Secure Enclave and military-grade encryption patterns.';
 
   @override
   String get onboardingSubtitle =>
@@ -198,4 +219,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get receiveOfflineNote =>
       'This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.';
+
+  @override
+  String get recoverTitle => 'Recover Wallet';
+
+  @override
+  String get recoverDesc =>
+      'Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.';
+
+  @override
+  String get recoverInvalidSeed =>
+      'Invalid recovery phrase. Check each word carefully.';
+
+  @override
+  String get recoverError => 'Recovery failed. Please try again.';
+
+  @override
+  String get recoverConfirmBtn => 'Restore Vault';
 }

@@ -13,6 +13,11 @@ class SeedProvider extends StateNotifier<SealedState<String>?> {
     state = WalletEngine.generateMnemonic();
   }
 
+  void setSeed(String mnemonic) {
+    state?.destroy();
+    state = SealedState<String>(mnemonic);
+  }
+
   List<String> get words {
     if (state == null) return [];
     return state!.unseal().split(' ');

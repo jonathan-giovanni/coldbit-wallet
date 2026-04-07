@@ -53,8 +53,8 @@ void main() {
     expect(find.text('PINs do not match'), findsOneWidget);
   });
 
-  test('VaultConfig.pinLength is 8 per REQUIREMENTS.md', () {
-    expect(VaultConfig.pinLength, 8);
+  test('VaultConfig.pinLength is 6 digits per user request', () {
+    expect(VaultConfig.pinLength, 6);
   });
 
   test('VaultConfig.maxAuthAttempts is 20', () {

@@ -3,6 +3,12 @@
   "appTitle": "Bóveda ColdBit",
   
   "onboardingTitle": "Seguridad Absoluta",
+  "onboardingSlide1Title": "Aislamiento Total",
+  "onboardingSlide1Desc": "Tus llaves privadas nunca tocan la internet. Firma de PSBTs alejada de cualquier red.",
+  "onboardingSlide2Title": "Privacidad Extrema",
+  "onboardingSlide2Desc": "Sin analíticas. Sin rastreo. Sin servidores externos. Tus datos son solo tuyos.",
+  "onboardingSlide3Title": "Blindaje Hardware",
+  "onboardingSlide3Desc": "Protegido por Secure Enclave y patrones de cifrado de grado militar.",
   "onboardingSubtitle": "Tus llaves privadas nunca tocan internet. Firma pura de PSBT desconectada de la red.",
   "onboardingCreateBtn": "Crear Bóveda de Cero",
   "onboardingRecoverBtn": "Recuperar Semilla Mnemónica",
@@ -69,5 +75,11 @@
   "receiveError": "Error al derivar la dirección",
   "receiveNoWallet": "No hay billetera configurada",
   "receiveCopied": "Dirección copiada al portapapeles",
-  "receiveOfflineNote": "Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes."
+  "receiveOfflineNote": "Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes.",
+
+  "recoverTitle": "Recuperar Bóveda",
+  "recoverDesc": "Ingresa tu frase de recuperación de 24 palabras para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.",
+  "recoverInvalidSeed": "Frase de recuperación inválida. Verifica cada palabra cuidadosamente.",
+  "recoverError": "Error en la recuperación. Intenta de nuevo.",
+  "recoverConfirmBtn": "Restaurar Bóveda"
 }

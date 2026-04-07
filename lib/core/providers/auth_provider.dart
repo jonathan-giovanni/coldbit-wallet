@@ -52,8 +52,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  Future<void> setupRecoveredVault(String pin) async {
+    state = AuthState.loading;
+    try {
+      await AuthBarrier.registerPin(pin);
+      state = AuthState.authenticated;
+    } catch (e) {
+      state = AuthState.error;
+    }
+  }
+
   void completeSeedBackup() {
     state = AuthState.authenticated;
+  }
+
+  void markRecoveryComplete() {
+    state = AuthState.uninitialized;
   }
 
   Future<AuthResult> unlockVault(String pin) async {

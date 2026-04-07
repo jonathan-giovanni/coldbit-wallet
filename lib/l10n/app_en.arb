@@ -4,7 +4,13 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "onboardingTitle": "Absolute Security",
+  "onboardingTitle": "Secure by Isolation",
+  "onboardingSlide1Title": "Air-Gapped Absolute",
+  "onboardingSlide1Desc": "Your keys never touch the internet. Pure PSBT signing disconnected from any network.",
+  "onboardingSlide2Title": "Zero Telemetry",
+  "onboardingSlide2Desc": "No analytics. No tracking. No third-party servers. Your data is your own.",
+  "onboardingSlide3Title": "Fortress Storage",
+  "onboardingSlide3Desc": "Protected by Secure Enclave and military-grade encryption patterns.",
   "onboardingSubtitle": "Your private keys never touch the internet. Fully isolated offline PSBT signing vault.",
   "onboardingCreateBtn": "Create Empty Vault",
   "onboardingRecoverBtn": "Recover Seed",
@@ -85,5 +91,11 @@
   "receiveError": "Failed to derive address",
   "receiveNoWallet": "No wallet configured",
   "receiveCopied": "Address copied to clipboard",
-  "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions."
+  "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.",
+
+  "recoverTitle": "Recover Wallet",
+  "recoverDesc": "Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverInvalidSeed": "Invalid recovery phrase. Check each word carefully.",
+  "recoverError": "Recovery failed. Please try again.",
+  "recoverConfirmBtn": "Restore Vault"
 }

@@ -84,37 +84,71 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
         : LucideIcons.checkSquare;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: _state == PinSetupState.confirm
+            ? IconButton(
+                icon: const Icon(
+                  LucideIcons.arrowLeft,
+                  color: ColdBitTheme.goldBitcoin,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _state = PinSetupState.create;
+                    _currentPin = '';
+                    _initialPin = '';
+                  });
+                },
+              )
+            : null,
+      ),
       body: SafeArea(
         child: Column(
           children: [
             const Spacer(),
             Icon(
                   _isError ? LucideIcons.shieldAlert : icon,
-                  size: 48,
+                  size: 64,
                   color: _isError
                       ? ColdBitTheme.errorCrimson
-                      : ColdBitTheme.platinumText,
+                      : ColdBitTheme.goldBitcoin,
                 )
                 .animate(key: ValueKey(_state.name + _isError.toString()))
-                .fade()
-                .scale(),
+                .scale(begin: const Offset(0.8, 0.8), duration: 400.ms)
+                .shimmer(delay: 400.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
 
             Text(
                   _isError
-                      ? AppLocalizations.of(context)!.pinSetupMismatch
-                      : title,
+                      ? AppLocalizations.of(context)!.pinSetupMismatch.toUpperCase()
+                      : title.toUpperCase(),
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 2.0,
+                    fontSize: 20,
                     color: _isError ? ColdBitTheme.errorCrimson : Colors.white,
                   ),
                 )
                 .animate(key: ValueKey(title + _isError.toString()))
                 .fade()
-                .slideY(begin: 0.5),
+                .slideY(begin: 0.2),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 12),
+            
+            if (!_isError)
+              Text(
+                _state == PinSetupState.create
+                    ? "Choose a 6-digit access code"
+                    : "Repeat the code to verify accuracy",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ColdBitTheme.platinumText,
+                ),
+              ).animate().fade(),
+
+            const SizedBox(height: 48),
 
             // PIN Dots
             Row(
@@ -123,9 +157,9 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                 final isFilled = index < _currentPin.length;
                 return AnimatedContainer(
                   duration: 200.ms,
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  width: 16,
-                  height: 16,
+                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  width: 18,
+                  height: 18,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _isError
@@ -138,8 +172,8 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                           ? ColdBitTheme.errorCrimson
                           : isFilled
                           ? ColdBitTheme.goldBitcoin
-                          : ColdBitTheme.brushedMetal,
-                      width: 2,
+                          : ColdBitTheme.brushedMetal.withValues(alpha: 0.5),
+                      width: 2.5,
                     ),
                     boxShadow: isFilled && !_isError
                         ? ColdBitTheme.glowShadow
@@ -165,11 +199,11 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   for (int i = 1; i <= 9; i++) _buildNumKey(i.toString()),
-                  const SizedBox.shrink(), // Clear space (no fingerprint on setup numpad)
+                  const SizedBox.shrink(),
                   _buildNumKey('0'),
                   _buildIconKey(LucideIcons.delete, _onDeletePressed),
                 ],
-              ).animate().fade(delay: 200.ms).slideY(begin: 0.2),
+              ).animate().fade(delay: 200.ms).slideY(begin: 0.1),
             ),
           ],
         ),

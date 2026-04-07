@@ -107,8 +107,44 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Absolute Security'**
+  /// **'Secure by Isolation'**
   String get onboardingTitle;
+
+  /// No description provided for @onboardingSlide1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Air-Gapped Absolute'**
+  String get onboardingSlide1Title;
+
+  /// No description provided for @onboardingSlide1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your keys never touch the internet. Pure PSBT signing disconnected from any network.'**
+  String get onboardingSlide1Desc;
+
+  /// No description provided for @onboardingSlide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero Telemetry'**
+  String get onboardingSlide2Title;
+
+  /// No description provided for @onboardingSlide2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'No analytics. No tracking. No third-party servers. Your data is your own.'**
+  String get onboardingSlide2Desc;
+
+  /// No description provided for @onboardingSlide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fortress Storage'**
+  String get onboardingSlide3Title;
+
+  /// No description provided for @onboardingSlide3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected by Secure Enclave and military-grade encryption patterns.'**
+  String get onboardingSlide3Desc;
 
   /// No description provided for @onboardingSubtitle.
   ///
@@ -445,6 +481,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.'**
   String get receiveOfflineNote;
+
+  /// No description provided for @recoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover Wallet'**
+  String get recoverTitle;
+
+  /// No description provided for @recoverDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.'**
+  String get recoverDesc;
+
+  /// No description provided for @recoverInvalidSeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid recovery phrase. Check each word carefully.'**
+  String get recoverInvalidSeed;
+
+  /// No description provided for @recoverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery failed. Please try again.'**
+  String get recoverError;
+
+  /// No description provided for @recoverConfirmBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Vault'**
+  String get recoverConfirmBtn;
 }
 
 class _AppLocalizationsDelegate

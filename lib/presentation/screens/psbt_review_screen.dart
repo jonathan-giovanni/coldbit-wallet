@@ -3,6 +3,7 @@ import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/providers/history_provider.dart';
 import 'package:coldbit_wallet/core/providers/wallet_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/presentation/widgets/auth_challenge_sheet.dart';
 import 'package:coldbit_wallet/presentation/widgets/liquid_glass_card.dart';
 import 'package:coldbit_wallet/presentation/widgets/signed_qr_visualizer.dart';
 import 'package:coldbit_wallet/presentation/widgets/slide_to_sign.dart';
@@ -49,6 +50,10 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
 
   Future<void> _processSignature() async {
     if (_details == null) return;
+
+    // MANDATORY DUAL AUTH CHALLENGE
+    final isAuthenticated = await AuthChallengeSheet.show(context);
+    if (!isAuthenticated) return;
 
     String signedBase64;
     final walletState = ref.read(walletProvider).valueOrNull;

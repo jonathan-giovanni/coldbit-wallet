@@ -15,6 +15,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingTitle => 'Seguridad Absoluta';
 
   @override
+  String get onboardingSlide1Title => 'Aislamiento Total';
+
+  @override
+  String get onboardingSlide1Desc =>
+      'Tus llaves privadas nunca tocan la internet. Firma de PSBTs alejada de cualquier red.';
+
+  @override
+  String get onboardingSlide2Title => 'Privacidad Extrema';
+
+  @override
+  String get onboardingSlide2Desc =>
+      'Sin analíticas. Sin rastreo. Sin servidores externos. Tus datos son solo tuyos.';
+
+  @override
+  String get onboardingSlide3Title => 'Blindaje Hardware';
+
+  @override
+  String get onboardingSlide3Desc =>
+      'Protegido por Secure Enclave y patrones de cifrado de grado militar.';
+
+  @override
   String get onboardingSubtitle =>
       'Tus llaves privadas nunca tocan internet. Firma pura de PSBT desconectada de la red.';
 
@@ -199,4 +220,21 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get receiveOfflineNote =>
       'Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes.';
+
+  @override
+  String get recoverTitle => 'Recuperar Bóveda';
+
+  @override
+  String get recoverDesc =>
+      'Ingresa tu frase de recuperación de 24 palabras para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.';
+
+  @override
+  String get recoverInvalidSeed =>
+      'Frase de recuperación inválida. Verifica cada palabra cuidadosamente.';
+
+  @override
+  String get recoverError => 'Error en la recuperación. Intenta de nuevo.';
+
+  @override
+  String get recoverConfirmBtn => 'Restaurar Bóveda';
 }
