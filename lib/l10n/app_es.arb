@@ -15,8 +15,10 @@
 
   "pinSetupTitle": "Acceso Blindado",
   "pinSetupCreateMsg": "Establece tu PIN Seguro",
-  "pinSetupConfirmMsg": "Confirma tu PIN Seguro",
-  "pinSetupMismatch": "Los PINs no coinciden",
+  "pinSetupConfirmMsg": "Confirmar su PIN Seguro",
+  "pinSetupHintCreate": "Elija un código de acceso de 6 dígitos",
+  "pinSetupHintConfirm": "Repita el código para verificar la precisión",
+  "pinSetupMismatch": "Los PIN no coinciden",
 
   "biometricOptinTitle": "Defensa Biométrica",
   "biometricOptinDesc": "Acelera tu acceso atando tu firma biológica. Esta función es totalmente opcional y tu rostro/huella jamás saldrán de este dispositivo.",

@@ -52,10 +52,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pinSetupCreateMsg => 'Establece tu PIN Seguro';
 
   @override
-  String get pinSetupConfirmMsg => 'Confirma tu PIN Seguro';
+  String get pinSetupConfirmMsg => 'Confirmar su PIN Seguro';
 
   @override
-  String get pinSetupMismatch => 'Los PINs no coinciden';
+  String get pinSetupHintCreate => 'Elija un código de acceso de 6 dígitos';
+
+  @override
+  String get pinSetupHintConfirm =>
+      'Repita el código para verificar la precisión';
+
+  @override
+  String get pinSetupMismatch => 'Los PIN no coinciden';
 
   @override
   String get biometricOptinTitle => 'Defensa Biométrica';

@@ -18,6 +18,8 @@
   "pinSetupTitle": "Vault Access",
   "pinSetupCreateMsg": "Establish your Secure PIN",
   "pinSetupConfirmMsg": "Confirm your Secure PIN",
+  "pinSetupHintCreate": "Choose a 6-digit access code",
+  "pinSetupHintConfirm": "Repeat the code to verify accuracy",
   "pinSetupMismatch": "PINs do not match",
 
   "biometricOptinTitle": "Biometric Defense",

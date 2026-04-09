@@ -55,6 +55,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinSetupConfirmMsg => 'Confirm your Secure PIN';
 
   @override
+  String get pinSetupHintCreate => 'Choose a 6-digit access code';
+
+  @override
+  String get pinSetupHintConfirm => 'Repeat the code to verify accuracy';
+
+  @override
   String get pinSetupMismatch => 'PINs do not match';
 
   @override

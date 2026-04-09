@@ -182,6 +182,18 @@ abstract class AppLocalizations {
   /// **'Confirm your Secure PIN'**
   String get pinSetupConfirmMsg;
 
+  /// No description provided for @pinSetupHintCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a 6-digit access code'**
+  String get pinSetupHintCreate;
+
+  /// No description provided for @pinSetupHintConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the code to verify accuracy'**
+  String get pinSetupHintConfirm;
+
   /// No description provided for @pinSetupMismatch.
   ///
   /// In en, this message translates to:
