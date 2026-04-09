@@ -28,6 +28,8 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
   bool _isValid = false;
   bool _isLoading = false;
   String? _error;
+  List<String> _suggestions = [];
+  int _activeIndex = 0;
 
   @override
   void dispose() {
@@ -59,6 +61,37 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
       _isValid = valid;
       _error = valid ? null : AppLocalizations.of(context)!.recoverInvalidSeed;
     });
+  }
+
+  void _handleOnChanged(int index, String value) {
+    // Smart-Paste Logic: if the value contains spaces, it's likely a mnemonic
+    if (value.trim().contains(' ')) {
+      final words = value.trim().split(RegExp(r'\s+'));
+      for (var i = 0; i < words.length && (index + i) < 24; i++) {
+        _controllers[index + i].text = words[i].toLowerCase();
+      }
+      _validate();
+      return;
+    }
+
+    // Update suggestions for the active field
+    setState(() {
+      _activeIndex = index;
+      _suggestions = WalletEngine.getSuggestions(value);
+    });
+
+    _validate();
+  }
+
+  void _applySuggestion(String suggestion) {
+    setState(() {
+      _controllers[_activeIndex].text = suggestion;
+      _suggestions = [];
+      if (_activeIndex < 23) {
+        _focusNodes[_activeIndex + 1].requestFocus();
+      }
+    });
+    _validate();
   }
 
   Future<void> _recover() async {
@@ -162,13 +195,12 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                             color: ColdBitTheme.darkGraphite,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: _controllers[index].text.trim().isNotEmpty
-                                  ? ColdBitTheme.goldBitcoin.withValues(
-                                      alpha: 0.4,
-                                    )
-                                  : ColdBitTheme.brushedMetal.withValues(
-                                      alpha: 0.3,
-                                    ),
+                              color: _controllers[index].text.trim().isEmpty
+                                  ? ColdBitTheme.brushedMetal.withValues(alpha: 0.3)
+                                  : WalletEngine.isWordValid(_controllers[index].text)
+                                      ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.6)
+                                      : ColdBitTheme.errorCrimson.withValues(alpha: 0.6),
+                              width: WalletEngine.isWordValid(_controllers[index].text) ? 1.5 : 1,
                             ),
                           ),
                           child: Row(
@@ -213,7 +245,8 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                                       RegExp(r'[a-zA-Z]'),
                                     ),
                                   ],
-                                  onChanged: (_) => _validate(),
+                                    onChanged: (val) => _handleOnChanged(index, val),
+                                    onTap: () => setState(() => _activeIndex = index),
                                   onSubmitted: (_) {
                                     if (index < 23) {
                                       _focusNodes[index + 1].requestFocus();
@@ -230,8 +263,33 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                         .fade(delay: (20 * index).ms)
                         .slideY(begin: 0.2, duration: 200.ms);
                   },
-                ),
               ),
+              ),
+              const SizedBox(height: 12),
+
+              // Suggestion Bar
+              if (_suggestions.isNotEmpty)
+                SizedBox(
+                  height: 40,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _suggestions.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    itemBuilder: (context, i) => ActionChip(
+                      label: Text(
+                        _suggestions[i],
+                        style: const TextStyle(
+                          color: ColdBitTheme.goldBitcoin,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      backgroundColor: ColdBitTheme.darkGraphite,
+                      side: const BorderSide(color: ColdBitTheme.goldBitcoin, width: 0.5),
+                      onPressed: () => _applySuggestion(_suggestions[i]),
+                    ),
+                  ),
+                ).animate().fade().slideY(begin: 0.2),
+
               const SizedBox(height: 16),
               ColdBitActionButton(
                 label: loc.recoverConfirmBtn,
