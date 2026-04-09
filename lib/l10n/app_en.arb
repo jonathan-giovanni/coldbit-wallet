@@ -1,0 +1,101 @@
+{
+  "@@locale": "en",
+  "appTitle": "ColdBit Wallet",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "onboardingTitle": "Secure by Isolation",
+  "onboardingSlide1Title": "Air-Gapped Absolute",
+  "onboardingSlide1Desc": "Your keys never touch the internet. Pure PSBT signing disconnected from any network.",
+  "onboardingSlide2Title": "Zero Telemetry",
+  "onboardingSlide2Desc": "No analytics. No tracking. No third-party servers. Your data is your own.",
+  "onboardingSlide3Title": "Fortress Storage",
+  "onboardingSlide3Desc": "Protected by Secure Enclave and military-grade encryption patterns.",
+  "onboardingSubtitle": "Your private keys never touch the internet. Fully isolated offline PSBT signing vault.",
+  "onboardingCreateBtn": "Create Empty Vault",
+  "onboardingRecoverBtn": "Recover Seed",
+
+  "pinSetupTitle": "Vault Access",
+  "pinSetupCreateMsg": "Establish your Secure PIN",
+  "pinSetupConfirmMsg": "Confirm your Secure PIN",
+  "pinSetupMismatch": "PINs do not match",
+
+  "biometricOptinTitle": "Biometric Defense",
+  "biometricOptinDesc": "Accelerate your Vault access by linking your biological signature. This feature is completely optional and your Face ID/Touch ID never leaves your physical device.",
+  "biometricOptinReason": "Enable Biometrics for ColdBit Vault",
+  "biometricOptinSkipBtn": "Skip",
+  "biometricOptinConfirmBtn": "Confirm",
+
+  "vaultUnlockAccessDenied": "Access Denied",
+  "vaultUnlockEnterPin": "Enter PIN Code",
+  "vaultUnlockLockedWait": "LOCKED. Wait {seconds}s",
+  "@vaultUnlockLockedWait": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+
+  "dashboardVaultLbl": "Vault",
+  "dashboardStatusLbl": "Air-Gapped",
+  "dashboardMfLbl": "Master Fingerprint",
+  "dashboardNetworkLbl": "Native SegWit",
+  "dashboardAuthLog": "Auth Log",
+  "dashboardSentBtc": "Sent {amount} BTC",
+  "@dashboardSentBtc": {
+    "placeholders": {
+       "amount": { "type": "String" }
+    }
+  },
+  "dashboardReadyTitle": "Ready to Sign",
+  "dashboardReadyDesc": "Scan a Partially Signed Bitcoin Transaction (PSBT) to authorize it offline within the enclave.",
+  "dashboardScanBtn": "Scan PSBT Ticket",
+
+  "drawerSettings": "Vault Settings",
+  "drawerAbout": "About ColdBit",
+  "drawerFallback": "Fallback",
+  "drawerLastUpdate": "Last Update",
+
+  "settingsTitle": "Vault Settings",
+  "settingsLanguage": "Language / Idioma",
+  "settingsLanguageDesc": "English • Español",
+  "settingsCamera": "Camera (QR Scanner)",
+  "settingsCameraDesc": "Required to import open network PSBTs",
+  "settingsPush": "Push Notifications",
+  "settingsPushDesc": "Local alerts for scans or jailbreak detections",
+  "settingsBiometrics": "Biometric Authentication",
+  "settingsBiometricsDesc": "Replaces manual PIN typing on quick unlocks",
+
+  "aboutTitle": "About the Project",
+  "aboutMissionMd": "# ColdBit Wallet Mission\n\nThis application was forged with an absolute purpose: **Assume that all internet environments are compromised or inherently hostile**.\n\n## Design Principles\n1. **Pure Air-gapped**: \n   Your device will not send a single private key to the open internet. Only PSBT signing.\n2. **RAM Layer Defense (MemGuard)**: \n   Seeds (Seed Phrases) exist in temporary sealed cryptographic RAM. Pulsed and burned at discretion.\n\n---\n\n### Implemented Security Components:\n- **libsodium**: Argon2id style hashing derivation and isolated storage.\n- **Fail-Close Policy**: Any disturbance (exiting the App, biometric failure, detected jailbreak) collapses the session by protocol.\n\n*The software is for sovereign use. Verify the Code Hash and build it yourself.*",
+
+  "seedBackupTitle": "Recovery Phrase",
+  "seedBackupWarning": "Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.",
+  "seedBackupHiddenTitle": "Phrase Hidden",
+  "seedBackupHiddenDesc": "Ensure no one can see your screen before revealing your recovery phrase.",
+  "seedBackupRevealBtn": "Reveal Phrase",
+  "seedBackupContinueBtn": "I Wrote It Down",
+
+  "seedVerifyTitle": "Verify Backup",
+  "seedVerifyDesc": "Select the correct word for each position to confirm you saved your recovery phrase.",
+  "seedVerifyWordLabel": "Word #{number}",
+  "@seedVerifyWordLabel": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "seedVerifyFailed": "Incorrect selection. Try again.",
+  "seedVerifyConfirmBtn": "Confirm Backup",
+
+  "receiveTitle": "Receive Address",
+  "receiveDesc": "Share this address to receive Bitcoin. Verify it matches your hardware wallet before sending funds.",
+  "receiveError": "Failed to derive address",
+  "receiveNoWallet": "No wallet configured",
+  "receiveCopied": "Address copied to clipboard",
+  "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.",
+
+  "recoverTitle": "Recover Wallet",
+  "recoverDesc": "Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverInvalidSeed": "Invalid recovery phrase. Check each word carefully.",
+  "recoverError": "Recovery failed. Please try again.",
+  "recoverConfirmBtn": "Restore Vault"
+}

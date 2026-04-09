@@ -1,0 +1,85 @@
+{
+  "@@locale": "es",
+  "appTitle": "Bóveda ColdBit",
+  
+  "onboardingTitle": "Seguridad Absoluta",
+  "onboardingSlide1Title": "Aislamiento Total",
+  "onboardingSlide1Desc": "Tus llaves privadas nunca tocan la internet. Firma de PSBTs alejada de cualquier red.",
+  "onboardingSlide2Title": "Privacidad Extrema",
+  "onboardingSlide2Desc": "Sin analíticas. Sin rastreo. Sin servidores externos. Tus datos son solo tuyos.",
+  "onboardingSlide3Title": "Blindaje Hardware",
+  "onboardingSlide3Desc": "Protegido por Secure Enclave y patrones de cifrado de grado militar.",
+  "onboardingSubtitle": "Tus llaves privadas nunca tocan internet. Firma pura de PSBT desconectada de la red.",
+  "onboardingCreateBtn": "Crear Bóveda de Cero",
+  "onboardingRecoverBtn": "Recuperar Semilla Mnemónica",
+
+  "pinSetupTitle": "Acceso Blindado",
+  "pinSetupCreateMsg": "Establece tu PIN Seguro",
+  "pinSetupConfirmMsg": "Confirma tu PIN Seguro",
+  "pinSetupMismatch": "Los PINs no coinciden",
+
+  "biometricOptinTitle": "Defensa Biométrica",
+  "biometricOptinDesc": "Acelera tu acceso atando tu firma biológica. Esta función es totalmente opcional y tu rostro/huella jamás saldrán de este dispositivo.",
+  "biometricOptinReason": "Activar biometría para ColdBit Vault",
+  "biometricOptinSkipBtn": "Omitir",
+  "biometricOptinConfirmBtn": "Confirmar",
+
+  "vaultUnlockAccessDenied": "Acceso Denegado",
+  "vaultUnlockEnterPin": "Ingresar PIN",
+  "vaultUnlockLockedWait": "BLOQUEADO. Esperar {seconds}s",
+  
+  "dashboardVaultLbl": "Bóveda",
+  "dashboardStatusLbl": "Desconectada",
+  "dashboardMfLbl": "Huella Maestra",
+  "dashboardNetworkLbl": "SegWit Nativo",
+  "dashboardAuthLog": "Bitácora",
+  "dashboardSentBtc": "Enviados {amount} BTC",
+  
+  "dashboardReadyTitle": "Bóveda Alistada",
+  "dashboardReadyDesc": "Escanea una Transacción de Red (PSBT) para autorizarla en criptografía asimétrica.",
+  "dashboardScanBtn": "Escanear Transacción PSBT",
+
+  "drawerSettings": "Ajustes de Bóveda",
+  "drawerAbout": "Acerca del Proyecto",
+  "drawerFallback": "Respaldado",
+  "drawerLastUpdate": "Actualizado",
+
+  "settingsTitle": "Ajustes de Bóveda",
+  "settingsLanguage": "Idioma / Language",
+  "settingsLanguageDesc": "Español • English",
+  "settingsCamera": "Cámara (Escáner QR)",
+  "settingsCameraDesc": "Requerida para capturar tickets PSBT de la red.",
+  "settingsPush": "Notificaciones Push",
+  "settingsPushDesc": "Monitoreo alerta de hackeos locales o jailbreak",
+  "settingsBiometrics": "Autenticación Biométrica",
+  "settingsBiometricsDesc": "Reemplaza el tecleo recurrente del código cifrado",
+
+  "aboutTitle": "Acerca del Proyecto",
+  "aboutMissionMd": "# Misión de ColdBit Wallet\n\nEsta aplicación fue forjada con un propósito absoluto: **Asumir que todos los entornos en internet están comprometidos o son inherentemente hostiles**.\n\n## Principios de Diseño\n1. **Air-gapped Puro**: \n   Tu dispositivo no enviará una sola clave privada a la internet abierta. Solo firma de PSBTs.\n2. **Defensa de Capa RAM (MemGuard)**: \n   Las semillas (Seed Phrases) existen en RAM criptográfica sellada temporal. Se pulsa y se quema a discreción.\n\n---\n\n### Componentes de Seguridad Implementados:\n- **libsodium**: Derivación de hashes estilo Argon2id y almacenamiento aislado.\n- **Fail-Close Policy**: Cualquier perturbación (salir de la App, fallo biométrico, jailbreak detectado) colapsa la sesión por protocolo.\n\n*El software es para uso soberano. Verifique el Hash del código y construya usted mismo.*",
+
+  "seedBackupTitle": "Frase de Recuperación",
+  "seedBackupWarning": "Escribe estas 24 palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.",
+  "seedBackupHiddenTitle": "Frase Oculta",
+  "seedBackupHiddenDesc": "Asegúrate de que nadie pueda ver tu pantalla antes de revelar tu frase de recuperación.",
+  "seedBackupRevealBtn": "Revelar Frase",
+  "seedBackupContinueBtn": "Ya La Escribí",
+
+  "seedVerifyTitle": "Verificar Respaldo",
+  "seedVerifyDesc": "Selecciona la palabra correcta para cada posición para confirmar que guardaste tu frase de recuperación.",
+  "seedVerifyWordLabel": "Palabra #{number}",
+  "seedVerifyFailed": "Selección incorrecta. Intenta de nuevo.",
+  "seedVerifyConfirmBtn": "Confirmar Respaldo",
+
+  "receiveTitle": "Dirección de Recepción",
+  "receiveDesc": "Comparte esta dirección para recibir Bitcoin. Verifica que coincida con tu dispositivo antes de enviar fondos.",
+  "receiveError": "Error al derivar la dirección",
+  "receiveNoWallet": "No hay billetera configurada",
+  "receiveCopied": "Dirección copiada al portapapeles",
+  "receiveOfflineNote": "Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes.",
+
+  "recoverTitle": "Recuperar Bóveda",
+  "recoverDesc": "Ingresa tu frase de recuperación de 24 palabras para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.",
+  "recoverInvalidSeed": "Frase de recuperación inválida. Verifica cada palabra cuidadosamente.",
+  "recoverError": "Error en la recuperación. Intenta de nuevo.",
+  "recoverConfirmBtn": "Restaurar Bóveda"
+}

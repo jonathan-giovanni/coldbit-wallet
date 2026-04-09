@@ -1,110 +1,58 @@
+import 'package:coldbit_wallet/core/providers/locale_provider.dart';
+import 'package:coldbit_wallet/core/router/app_router.dart';
+import 'package:coldbit_wallet/core/security/app_lifecycle_guard.dart';
+import 'package:coldbit_wallet/core/security/mem_guard.dart';
+import 'package:coldbit_wallet/core/security/threat_detector.dart';
+import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
+import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart'; // For animations
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const ColdBitApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Security Sandboxes
+  await MemGuard.init();
+  await ThreatDetector.init();
+
+  // Force dark mode UI Overlays globally
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: ColdBitTheme.obsidianBlack,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
+
+  // Restrict to portrait given the numpad and scanner UX priority
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(const ProviderScope(child: AppLifecycleGuard(child: ColdBitApp())));
 }
 
-class ColdBitApp extends StatelessWidget {
+class ColdBitApp extends ConsumerWidget {
   const ColdBitApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ColdBit Wallet',
+  Widget build(BuildContext context, WidgetRef ref) {
+    final goRouter = ref.watch(goRouterProvider);
+    final locale = ref.watch(localeProvider);
+
+    return MaterialApp.router(
+      title:
+          'ColdBit Vault', // Mantenemos este title fuera de loc para el OS si queremos, o usamos onGenerateTitle
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF0F1115),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF8A00)),
-        textTheme: const TextTheme(
-          headlineMedium: TextStyle(
-            color: Color(0xFFE6E7E8),
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-          bodyMedium: TextStyle(color: Color(0xFFE6E7E8), fontSize: 18),
-        ),
-      ),
-      home: const LogoHomePage(),
-    );
-  }
-}
-
-class LogoHomePage extends StatefulWidget {
-  const LogoHomePage({super.key});
-
-  @override
-  State<LogoHomePage> createState() => _LogoHomePageState();
-}
-
-class _LogoHomePageState extends State<LogoHomePage>
-    with SingleTickerProviderStateMixin {
-  double _rotation = 0.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _rotation += 3.14; // Rotate 180 degrees on tap
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF121417),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.6),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child:
-                    AnimatedRotation(
-                      turns: _rotation / (2 * 3.1415926535),
-                      duration: const Duration(milliseconds: 800),
-                      curve: Curves.easeInOutCubic,
-                      child: Center(
-                        child: Image.asset(
-                          'assets/icon/icon_without_bg.png',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ).animate().scaleXY(
-                      duration: 800.ms,
-                      curve: Curves.easeInOutCubic,
-                      begin: 1.0,
-                      end: 1.1,
-                      alignment: Alignment.center,
-                    ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'ColdBit Wallet',
-              style: TextStyle(
-                color: Color(0xFFE6E7E8),
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.2,
-              ),
-            ),
-          ],
-        ),
-      ),
+      theme: ColdBitTheme.luxuryTheme,
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      routerConfig: goRouter,
     );
   }
 }

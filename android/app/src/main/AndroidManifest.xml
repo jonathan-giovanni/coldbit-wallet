@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required for scanning QR PSBT. Explicitly avoids INTERNET permission. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    
     <application
         android:label="coldbit_wallet"
         android:name="${applicationName}"
