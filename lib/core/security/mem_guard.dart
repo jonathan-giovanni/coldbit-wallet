@@ -16,9 +16,9 @@ class MemGuard {
         libPath = '/opt/homebrew/lib/libsodium.dylib';
       } else if (Platform.isLinux) {
         // Common paths for libsodium on Ubuntu/Debian
-        libPath = 'libsodium.so'; 
+        libPath = 'libsodium.so';
       }
-      
+
       if (libPath != null) {
         final lib = DynamicLibrary.open(libPath);
         _sodium = await pure_sodium.SodiumSumoInit.init(() => lib);

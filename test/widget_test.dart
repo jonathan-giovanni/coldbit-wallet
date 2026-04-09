@@ -37,10 +37,17 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
     await tester.pump(const Duration(milliseconds: 500));
 
-    // Verify some text content exists to prove rendering. 
+    // Verify some text content exists to prove rendering.
     // We look for parts of the title without assuming casing or full string.
-    expect(find.textContaining('Air-Gapped', findRichText: true, skipOffstage: false), findsWidgets);
-    
+    expect(
+      find.textContaining(
+        'Air-Gapped',
+        findRichText: true,
+        skipOffstage: false,
+      ),
+      findsWidgets,
+    );
+
     // Alternative: Find by icon which is part of the first slide
     expect(find.byIcon(LucideIcons.shieldCheck), findsOneWidget);
   });

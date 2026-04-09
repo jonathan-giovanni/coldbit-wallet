@@ -123,7 +123,9 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
             Text(
                   _isError
-                      ? AppLocalizations.of(context)!.pinSetupMismatch.toUpperCase()
+                      ? AppLocalizations.of(
+                          context,
+                        )!.pinSetupMismatch.toUpperCase()
                       : title.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -138,7 +140,7 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                 .slideY(begin: 0.2),
 
             const SizedBox(height: 12),
-            
+
             if (!_isError)
               Text(
                 _state == PinSetupState.create

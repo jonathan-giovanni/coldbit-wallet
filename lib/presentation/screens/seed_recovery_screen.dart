@@ -18,8 +18,10 @@ class SeedRecoveryScreen extends ConsumerStatefulWidget {
 }
 
 class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
-  final List<TextEditingController> _controllers =
-      List.generate(24, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    24,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(24, (_) => FocusNode());
   final ScrollController _scrollController = ScrollController();
 
@@ -105,15 +107,17 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
               Text(
                 loc.recoverDesc,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColdBitTheme.platinumText,
-                      height: 1.5,
-                    ),
+                  color: ColdBitTheme.platinumText,
+                  height: 1.5,
+                ),
               ).animate().fade(),
               if (_error != null) ...[
                 const SizedBox(height: 12),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: ColdBitTheme.errorCrimson.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
@@ -121,8 +125,11 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(LucideIcons.alertTriangle,
-                          color: ColdBitTheme.errorCrimson, size: 18),
+                      const Icon(
+                        LucideIcons.alertTriangle,
+                        color: ColdBitTheme.errorCrimson,
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -151,74 +158,74 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                   itemCount: 24,
                   itemBuilder: (context, index) {
                     return Container(
-                      decoration: BoxDecoration(
-                        color: ColdBitTheme.darkGraphite,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: _controllers[index].text.trim().isNotEmpty
-                              ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.4)
-                              : ColdBitTheme.brushedMetal
-                                  .withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 32,
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${index + 1}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    color: ColdBitTheme.goldBitcoin,
-                                    fontFamily: 'monospace',
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          decoration: BoxDecoration(
+                            color: ColdBitTheme.darkGraphite,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: _controllers[index].text.trim().isNotEmpty
+                                  ? ColdBitTheme.goldBitcoin.withValues(
+                                      alpha: 0.4,
+                                    )
+                                  : ColdBitTheme.brushedMetal.withValues(
+                                      alpha: 0.3,
+                                    ),
                             ),
                           ),
-                          Expanded(
-                            child: TextField(
-                              controller: _controllers[index],
-                              focusNode: _focusNodes[index],
-                              autocorrect: false,
-                              enableSuggestions: false,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.5,
-                                  ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 8,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 32,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: ColdBitTheme.goldBitcoin,
+                                        fontFamily: 'monospace',
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ),
-                              textInputAction: index < 23
-                                  ? TextInputAction.next
-                                  : TextInputAction.done,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'[a-zA-Z]')),
-                              ],
-                              onChanged: (_) => _validate(),
-                              onSubmitted: (_) {
-                                if (index < 23) {
-                                  _focusNodes[index + 1].requestFocus();
-                                } else {
-                                  _validate();
-                                }
-                              },
-                            ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllers[index],
+                                  focusNode: _focusNodes[index],
+                                  autocorrect: false,
+                                  enableSuggestions: false,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.5,
+                                      ),
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                  textInputAction: index < 23
+                                      ? TextInputAction.next
+                                      : TextInputAction.done,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z]'),
+                                    ),
+                                  ],
+                                  onChanged: (_) => _validate(),
+                                  onSubmitted: (_) {
+                                    if (index < 23) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else {
+                                      _validate();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
+                        )
                         .animate()
                         .fade(delay: (20 * index).ms)
                         .slideY(begin: 0.2, duration: 200.ms);

@@ -80,7 +80,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
-                    onPageChanged: (page) => setState(() => _currentPage = page),
+                    onPageChanged: (page) =>
+                        setState(() => _currentPage = page),
                     itemCount: slides.length,
                     itemBuilder: (context, index) => slides[index],
                   ),
@@ -133,7 +134,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ).animate().shimmer(duration: 2.seconds),
 
                       const SizedBox(height: 16),
-                      
+
                       if (_currentPage == slides.length - 1)
                         TextButton(
                           onPressed: () => context.push('/recover'),
@@ -178,24 +179,24 @@ class _OnboardingSlide extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: Icon(
-              icon,
-              size: 72,
-              color: ColdBitTheme.goldBitcoin,
-            ),
-          )
-          .animate(key: ValueKey(icon))
-          .scale(begin: const Offset(0.5, 0.5), duration: 600.ms, curve: Curves.easeOutBack)
-          .shimmer(delay: 600.ms, duration: 1.5.seconds),
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(icon, size: 72, color: ColdBitTheme.goldBitcoin),
+              )
+              .animate(key: ValueKey(icon))
+              .scale(
+                begin: const Offset(0.5, 0.5),
+                duration: 600.ms,
+                curve: Curves.easeOutBack,
+              )
+              .shimmer(delay: 600.ms, duration: 1.5.seconds),
 
           const SizedBox(height: 48),
 
@@ -212,13 +213,16 @@ class _OnboardingSlide extends StatelessWidget {
           const SizedBox(height: 16),
 
           Text(
-            description,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: ColdBitTheme.platinumText,
-              height: 1.6,
-            ),
-          ).animate(key: ValueKey(description)).fade(delay: 200.ms).slideY(begin: 0.2),
+                description,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: ColdBitTheme.platinumText,
+                  height: 1.6,
+                ),
+              )
+              .animate(key: ValueKey(description))
+              .fade(delay: 200.ms)
+              .slideY(begin: 0.2),
         ],
       ),
     );
