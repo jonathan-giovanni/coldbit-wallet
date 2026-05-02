@@ -43,6 +43,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingCreateBtn => 'Crear Bóveda de Cero';
 
   @override
+  String get onboardingCreate24Btn => 'Crear bóveda de 24 palabras';
+
+  @override
+  String get onboardingCreate12Btn => 'Crear bóveda de 12 palabras';
+
+  @override
   String get onboardingRecoverBtn => 'Recuperar Semilla Mnemónica';
 
   @override
@@ -174,8 +180,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get seedBackupTitle => 'Frase de Recuperación';
 
   @override
-  String get seedBackupWarning =>
-      'Escribe estas 24 palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.';
+  String seedBackupWarning(int count) {
+    return 'Escribe estas $count palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.';
+  }
 
   @override
   String get seedBackupHiddenTitle => 'Frase Oculta';
@@ -233,7 +240,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recoverDesc =>
-      'Ingresa tu frase de recuperación de 24 palabras para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.';
+      'Ingresa tu frase de recuperación para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.';
+
+  @override
+  String get recoverWords12 => '12 palabras';
+
+  @override
+  String get recoverWords24 => '24 palabras';
 
   @override
   String get recoverInvalidSeed =>

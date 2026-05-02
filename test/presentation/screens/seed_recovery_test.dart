@@ -43,6 +43,9 @@ void main() {
       await tester.enterText(firstField, 'notaword');
       await tester.pump();
       expect(find.text('notaword'), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
     });
 
     test('WalletEngine.isWordValid identifies BIP39 dictionary', () {
@@ -63,6 +66,32 @@ void main() {
       final abaSuggestions = WalletEngine.getSuggestions('aba');
       expect(abaSuggestions, contains('abandon'));
       expect(abaSuggestions, isNot(contains('ability')));
+    });
+
+    testWidgets('supports 12-word recovery mode', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: SeedRecoveryScreen(),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('12 words'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextField), findsNWidgets(12));
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
     });
   });
 }

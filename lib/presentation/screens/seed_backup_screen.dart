@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/providers/mnemonic_policy_provider.dart';
 import 'package:coldbit_wallet/core/providers/seed_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
@@ -21,13 +22,15 @@ class _SeedBackupScreenState extends ConsumerState<SeedBackupScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(seedProvider.notifier).generate();
+    final strength = ref.read(mnemonicStrengthProvider);
+    ref.read(seedProvider.notifier).generate(strength: strength);
   }
 
   @override
   Widget build(BuildContext context) {
     final words = ref.read(seedProvider.notifier).words;
     final loc = AppLocalizations.of(context)!;
+    final strength = ref.watch(mnemonicStrengthProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -57,7 +60,7 @@ class _SeedBackupScreenState extends ConsumerState<SeedBackupScreen> {
               ).animate().fade().slideY(begin: -0.2),
               const SizedBox(height: 8),
               Text(
-                loc.seedBackupWarning,
+                loc.seedBackupWarning(strength.wordCount),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: ColdBitTheme.errorCrimson.withValues(alpha: 0.8),
                   height: 1.5,

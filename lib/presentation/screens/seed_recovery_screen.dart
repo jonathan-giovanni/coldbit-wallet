@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/providers/seed_provider.dart';
@@ -30,6 +31,9 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
   String? _error;
   List<String> _suggestions = [];
   int _activeIndex = 0;
+  MnemonicStrength _strength = MnemonicStrength.words24;
+
+  int get _wordCount => _strength.wordCount;
 
   @override
   void dispose() {
@@ -43,11 +47,15 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
     super.dispose();
   }
 
-  String get _mnemonic =>
-      _controllers.map((c) => c.text.trim().toLowerCase()).join(' ');
+  String get _mnemonic => _controllers
+      .take(_wordCount)
+      .map((c) => c.text.trim().toLowerCase())
+      .join(' ');
 
   void _validate() {
-    final allFilled = _controllers.every((c) => c.text.trim().isNotEmpty);
+    final allFilled = _controllers
+        .take(_wordCount)
+        .every((c) => c.text.trim().isNotEmpty);
     if (!allFilled) {
       setState(() {
         _isValid = false;
@@ -67,7 +75,11 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
     // Smart-Paste Logic: if the value contains spaces, it's likely a mnemonic
     if (value.trim().contains(' ')) {
       final words = value.trim().split(RegExp(r'\s+'));
-      for (var i = 0; i < words.length && (index + i) < 24; i++) {
+      if (words.length == MnemonicStrength.words12.wordCount ||
+          words.length == MnemonicStrength.words24.wordCount) {
+        _strength = MnemonicStrength.fromWordCount(words.length);
+      }
+      for (var i = 0; i < words.length && (index + i) < _wordCount; i++) {
         _controllers[index + i].text = words[i].toLowerCase();
       }
       _validate();
@@ -87,7 +99,7 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
     setState(() {
       _controllers[_activeIndex].text = suggestion;
       _suggestions = [];
-      if (_activeIndex < 23) {
+      if (_activeIndex < _wordCount - 1) {
         _focusNodes[_activeIndex + 1].requestFocus();
       }
     });
@@ -179,6 +191,28 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                 ).animate().shake(hz: 6, duration: 400.ms),
               ],
               const SizedBox(height: 16),
+              SegmentedButton<MnemonicStrength>(
+                segments: [
+                  ButtonSegment(
+                    value: MnemonicStrength.words12,
+                    label: Text(loc.recoverWords12),
+                  ),
+                  ButtonSegment(
+                    value: MnemonicStrength.words24,
+                    label: Text(loc.recoverWords24),
+                  ),
+                ],
+                selected: {_strength},
+                onSelectionChanged: (selection) {
+                  setState(() {
+                    _strength = selection.first;
+                    _suggestions = [];
+                    _error = null;
+                  });
+                  _validate();
+                },
+              ).animate().fade(delay: 100.ms),
+              const SizedBox(height: 16),
               Expanded(
                 child: GridView.builder(
                   controller: _scrollController,
@@ -188,7 +222,7 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                     mainAxisSpacing: 8,
                     childAspectRatio: 2.5,
                   ),
-                  itemCount: 24,
+                  itemCount: _wordCount,
                   itemBuilder: (context, index) {
                     return Container(
                           decoration: BoxDecoration(
@@ -250,7 +284,7 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                                       vertical: 8,
                                     ),
                                   ),
-                                  textInputAction: index < 23
+                                  textInputAction: index < _wordCount - 1
                                       ? TextInputAction.next
                                       : TextInputAction.done,
                                   inputFormatters: [
@@ -263,7 +297,7 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                                   onTap: () =>
                                       setState(() => _activeIndex = index),
                                   onSubmitted: (_) {
-                                    if (index < 23) {
+                                    if (index < _wordCount - 1) {
                                       _focusNodes[index + 1].requestFocus();
                                     } else {
                                       _validate();

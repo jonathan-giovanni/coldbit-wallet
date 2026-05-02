@@ -13,6 +13,8 @@
   "onboardingSlide3Desc": "Protected by Secure Enclave and military-grade encryption patterns.",
   "onboardingSubtitle": "Your private keys never touch the internet. Fully isolated offline PSBT signing vault.",
   "onboardingCreateBtn": "Create Empty Vault",
+  "onboardingCreate24Btn": "Create 24-word Vault",
+  "onboardingCreate12Btn": "Create 12-word Vault",
   "onboardingRecoverBtn": "Recover Seed",
 
   "pinSetupTitle": "Vault Access",
@@ -71,7 +73,12 @@
   "aboutMissionMd": "# ColdBit Wallet Mission\n\nThis application was forged with an absolute purpose: **Assume that all internet environments are compromised or inherently hostile**.\n\n## Design Principles\n1. **Pure Air-gapped**: \n   Your device will not send a single private key to the open internet. Only PSBT signing.\n2. **RAM Layer Defense (MemGuard)**: \n   Seeds (Seed Phrases) exist in temporary sealed cryptographic RAM. Pulsed and burned at discretion.\n\n---\n\n### Implemented Security Components:\n- **libsodium**: Argon2id style hashing derivation and isolated storage.\n- **Fail-Close Policy**: Any disturbance (exiting the App, biometric failure, detected jailbreak) collapses the session by protocol.\n\n*The software is for sovereign use. Verify the Code Hash and build it yourself.*",
 
   "seedBackupTitle": "Recovery Phrase",
-  "seedBackupWarning": "Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.",
+  "seedBackupWarning": "Write down these {count} words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.",
+  "@seedBackupWarning": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "seedBackupHiddenTitle": "Phrase Hidden",
   "seedBackupHiddenDesc": "Ensure no one can see your screen before revealing your recovery phrase.",
   "seedBackupRevealBtn": "Reveal Phrase",
@@ -96,7 +103,9 @@
   "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.",
 
   "recoverTitle": "Recover Wallet",
-  "recoverDesc": "Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverDesc": "Enter your recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverWords12": "12 words",
+  "recoverWords24": "24 words",
   "recoverInvalidSeed": "Invalid recovery phrase. Check each word carefully.",
   "recoverError": "Recovery failed. Please try again.",
   "recoverConfirmBtn": "Restore Vault"

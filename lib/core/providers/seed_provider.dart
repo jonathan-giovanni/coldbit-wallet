@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
 import 'package:coldbit_wallet/core/security/secure_enclave.dart';
@@ -8,9 +9,9 @@ class SeedProvider extends StateNotifier<SealedState<String>?> {
 
   static const String _seedKey = 'coldbit_sealed_seed';
 
-  void generate() {
+  void generate({MnemonicStrength strength = MnemonicStrength.words24}) {
     state?.destroy();
-    state = WalletEngine.generateMnemonic();
+    state = WalletEngine.generateMnemonic(strength: strength);
   }
 
   void setSeed(String mnemonic) {

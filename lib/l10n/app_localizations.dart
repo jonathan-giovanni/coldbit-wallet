@@ -158,6 +158,18 @@ abstract class AppLocalizations {
   /// **'Create Empty Vault'**
   String get onboardingCreateBtn;
 
+  /// No description provided for @onboardingCreate24Btn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 24-word Vault'**
+  String get onboardingCreate24Btn;
+
+  /// No description provided for @onboardingCreate12Btn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 12-word Vault'**
+  String get onboardingCreate12Btn;
+
   /// No description provided for @onboardingRecoverBtn.
   ///
   /// In en, this message translates to:
@@ -401,8 +413,8 @@ abstract class AppLocalizations {
   /// No description provided for @seedBackupWarning.
   ///
   /// In en, this message translates to:
-  /// **'Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.'**
-  String get seedBackupWarning;
+  /// **'Write down these {count} words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.'**
+  String seedBackupWarning(int count);
 
   /// No description provided for @seedBackupHiddenTitle.
   ///
@@ -503,8 +515,20 @@ abstract class AppLocalizations {
   /// No description provided for @recoverDesc.
   ///
   /// In en, this message translates to:
-  /// **'Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.'**
+  /// **'Enter your recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.'**
   String get recoverDesc;
+
+  /// No description provided for @recoverWords12.
+  ///
+  /// In en, this message translates to:
+  /// **'12 words'**
+  String get recoverWords12;
+
+  /// No description provided for @recoverWords24.
+  ///
+  /// In en, this message translates to:
+  /// **'24 words'**
+  String get recoverWords24;
 
   /// No description provided for @recoverInvalidSeed.
   ///

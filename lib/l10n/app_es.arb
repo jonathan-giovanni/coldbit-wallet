@@ -11,6 +11,8 @@
   "onboardingSlide3Desc": "Protegido por Secure Enclave y patrones de cifrado de grado militar.",
   "onboardingSubtitle": "Tus llaves privadas nunca tocan internet. Firma pura de PSBT desconectada de la red.",
   "onboardingCreateBtn": "Crear Bóveda de Cero",
+  "onboardingCreate24Btn": "Crear bóveda de 24 palabras",
+  "onboardingCreate12Btn": "Crear bóveda de 12 palabras",
   "onboardingRecoverBtn": "Recuperar Semilla Mnemónica",
 
   "pinSetupTitle": "Acceso Blindado",
@@ -60,7 +62,12 @@
   "aboutMissionMd": "# Misión de ColdBit Wallet\n\nEsta aplicación fue forjada con un propósito absoluto: **Asumir que todos los entornos en internet están comprometidos o son inherentemente hostiles**.\n\n## Principios de Diseño\n1. **Air-gapped Puro**: \n   Tu dispositivo no enviará una sola clave privada a la internet abierta. Solo firma de PSBTs.\n2. **Defensa de Capa RAM (MemGuard)**: \n   Las semillas (Seed Phrases) existen en RAM criptográfica sellada temporal. Se pulsa y se quema a discreción.\n\n---\n\n### Componentes de Seguridad Implementados:\n- **libsodium**: Derivación de hashes estilo Argon2id y almacenamiento aislado.\n- **Fail-Close Policy**: Cualquier perturbación (salir de la App, fallo biométrico, jailbreak detectado) colapsa la sesión por protocolo.\n\n*El software es para uso soberano. Verifique el Hash del código y construya usted mismo.*",
 
   "seedBackupTitle": "Frase de Recuperación",
-  "seedBackupWarning": "Escribe estas 24 palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.",
+  "seedBackupWarning": "Escribe estas {count} palabras en orden. Es tu ÚNICA forma de recuperar tu billetera. Nunca las compartas. Nunca las guardes digitalmente.",
+  "@seedBackupWarning": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "seedBackupHiddenTitle": "Frase Oculta",
   "seedBackupHiddenDesc": "Asegúrate de que nadie pueda ver tu pantalla antes de revelar tu frase de recuperación.",
   "seedBackupRevealBtn": "Revelar Frase",
@@ -80,7 +87,9 @@
   "receiveOfflineNote": "Esta dirección fue derivada offline desde tu semilla. Siempre verifica en tu dispositivo hardware antes de aceptar transacciones grandes.",
 
   "recoverTitle": "Recuperar Bóveda",
-  "recoverDesc": "Ingresa tu frase de recuperación de 24 palabras para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.",
+  "recoverDesc": "Ingresa tu frase de recuperación para restaurar tu billetera. Cada palabra debe pertenecer a la lista estándar BIP39.",
+  "recoverWords12": "12 palabras",
+  "recoverWords24": "24 palabras",
   "recoverInvalidSeed": "Frase de recuperación inválida. Verifica cada palabra cuidadosamente.",
   "recoverError": "Error en la recuperación. Intenta de nuevo.",
   "recoverConfirmBtn": "Restaurar Bóveda"

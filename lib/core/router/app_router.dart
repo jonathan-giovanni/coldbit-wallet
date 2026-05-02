@@ -7,6 +7,7 @@ import 'package:coldbit_wallet/presentation/screens/onboarding_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/pin_setup_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/receive_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/seed_backup_screen.dart';
+import 'package:coldbit_wallet/presentation/screens/seed_recovery_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/seed_verify_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/settings_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/vault_unlock_screen.dart';
@@ -47,11 +48,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final isGoingToUnlock = currentPath == '/unlock';
       final isGoingToSeedBackup = currentPath == '/seed-backup';
       final isGoingToSeedVerify = currentPath == '/seed-verify';
+      final isGoingToRecover = currentPath == '/recover';
       final isGoingToBiometricSetup = currentPath == '/biometric-setup';
 
       switch (authState) {
         case AuthState.uninitialized:
-          if (!isGoingToOnboarding && !isGoingToSetup) return '/onboarding';
+          if (!isGoingToOnboarding && !isGoingToSetup && !isGoingToRecover) {
+            return '/onboarding';
+          }
           break;
         case AuthState.seedPending:
           if (!isGoingToSeedBackup && !isGoingToSeedVerify) {
@@ -91,6 +95,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       _route('/setup', const PinSetupScreen()),
       _route('/seed-backup', const SeedBackupScreen()),
       _route('/seed-verify', const SeedVerifyScreen()),
+      _route('/recover', const SeedRecoveryScreen()),
       _route('/unlock', const VaultUnlockScreen()),
       _route('/biometric-setup', const BiometricOptinScreen()),
       _route('/dashboard', const DashboardScreen()),

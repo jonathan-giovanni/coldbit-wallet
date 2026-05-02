@@ -1,4 +1,5 @@
 import 'package:bdk_flutter/bdk_flutter.dart';
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/security/mem_guard.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,11 +10,30 @@ void main() {
   });
 
   group('WalletEngine', () {
-    test('generateMnemonic generates valid 256-bit mnemonic', () {
+    test('generateMnemonic generates valid 24-word mnemonic by default', () {
       final mnemonicState = WalletEngine.generateMnemonic();
       final phrase = mnemonicState.unseal();
 
-      // 256 bits of entropy generates exactly 24 words
+      expect(phrase.split(' ').length, 24);
+      expect(WalletEngine.validateMnemonic(phrase), true);
+    });
+
+    test('generateMnemonic generates valid 12-word mnemonic', () {
+      final mnemonicState = WalletEngine.generateMnemonic(
+        strength: MnemonicStrength.words12,
+      );
+      final phrase = mnemonicState.unseal();
+
+      expect(phrase.split(' ').length, 12);
+      expect(WalletEngine.validateMnemonic(phrase), true);
+    });
+
+    test('generateMnemonic generates valid 24-word mnemonic explicitly', () {
+      final mnemonicState = WalletEngine.generateMnemonic(
+        strength: MnemonicStrength.words24,
+      );
+      final phrase = mnemonicState.unseal();
+
       expect(phrase.split(' ').length, 24);
       expect(WalletEngine.validateMnemonic(phrase), true);
     });

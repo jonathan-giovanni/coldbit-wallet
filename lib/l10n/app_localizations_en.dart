@@ -43,6 +43,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingCreateBtn => 'Create Empty Vault';
 
   @override
+  String get onboardingCreate24Btn => 'Create 24-word Vault';
+
+  @override
+  String get onboardingCreate12Btn => 'Create 12-word Vault';
+
+  @override
   String get onboardingRecoverBtn => 'Recover Seed';
 
   @override
@@ -172,8 +178,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seedBackupTitle => 'Recovery Phrase';
 
   @override
-  String get seedBackupWarning =>
-      'Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.';
+  String seedBackupWarning(int count) {
+    return 'Write down these $count words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.';
+  }
 
   @override
   String get seedBackupHiddenTitle => 'Phrase Hidden';
@@ -231,7 +238,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recoverDesc =>
-      'Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.';
+      'Enter your recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.';
+
+  @override
+  String get recoverWords12 => '12 words';
+
+  @override
+  String get recoverWords24 => '24 words';
 
   @override
   String get recoverInvalidSeed =>

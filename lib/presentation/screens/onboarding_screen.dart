@@ -1,19 +1,22 @@
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
+import 'package:coldbit_wallet/core/providers/mnemonic_policy_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:coldbit_wallet/presentation/widgets/coldbit_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -126,12 +129,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           isPrimary: false,
                         )
                       else
-                        ColdBitActionButton(
-                          label: loc.onboardingCreateBtn,
-                          icon: LucideIcons.plusCircle,
-                          onPressed: () => context.push('/setup'),
-                          isPrimary: true,
-                        ).animate().shimmer(duration: 2.seconds),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ColdBitActionButton(
+                              label: loc.onboardingCreate24Btn,
+                              icon: LucideIcons.shieldCheck,
+                              onPressed: () => _createVault(
+                                context,
+                                MnemonicStrength.words24,
+                              ),
+                              isPrimary: true,
+                            ).animate().shimmer(duration: 2.seconds),
+                            const SizedBox(height: 12),
+                            ColdBitActionButton(
+                              label: loc.onboardingCreate12Btn,
+                              icon: LucideIcons.plusCircle,
+                              onPressed: () => _createVault(
+                                context,
+                                MnemonicStrength.words12,
+                              ),
+                              isPrimary: false,
+                            ),
+                          ],
+                        ),
 
                       const SizedBox(height: 16),
 
@@ -157,6 +178,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ],
       ),
     );
+  }
+
+  void _createVault(BuildContext context, MnemonicStrength strength) {
+    ref.read(mnemonicStrengthProvider.notifier).state = strength;
+    context.push('/setup');
   }
 }
 
