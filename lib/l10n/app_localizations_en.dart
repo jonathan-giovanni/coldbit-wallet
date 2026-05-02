@@ -225,6 +225,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vaultUnlockEnterPin => 'Enter PIN Code';
 
   @override
+  String get vaultUnlockStartSetup => 'Create or recover wallet';
+
+  @override
+  String get vaultUnlockStartSetupDesc =>
+      'Use this if you want to start the onboarding flow again on this device.';
+
+  @override
   String vaultUnlockLockedWait(int seconds) {
     return 'LOCKED. Wait ${seconds}s';
   }

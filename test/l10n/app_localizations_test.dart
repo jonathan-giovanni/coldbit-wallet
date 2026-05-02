@@ -138,6 +138,8 @@ List<String> _allStrings(AppLocalizations loc) {
     loc.biometricOptinConfirmBtn,
     loc.vaultUnlockAccessDenied,
     loc.vaultUnlockEnterPin,
+    loc.vaultUnlockStartSetup,
+    loc.vaultUnlockStartSetupDesc,
     loc.vaultUnlockLockedWait(30),
     loc.dashboardVaultLbl,
     loc.dashboardStatusLbl,

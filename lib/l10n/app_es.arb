@@ -74,6 +74,8 @@
 
   "vaultUnlockAccessDenied": "Acceso Denegado",
   "vaultUnlockEnterPin": "Ingresar PIN",
+  "vaultUnlockStartSetup": "Crear o recuperar wallet",
+  "vaultUnlockStartSetupDesc": "Usa esta opción si quieres iniciar de nuevo el onboarding en este dispositivo.",
   "vaultUnlockLockedWait": "BLOQUEADO. Esperar {seconds}s",
   
   "dashboardVaultLbl": "Bóveda",

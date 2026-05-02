@@ -52,9 +52,9 @@ All tests passed.
 Coverage summary from `coverage/lcov.info`:
 
 ```text
-lines_hit=968
-lines_found=1241
-coverage=78.00%
+lines_hit=1074
+lines_found=1428
+coverage=75.21%
 ```
 
 Android debug build:

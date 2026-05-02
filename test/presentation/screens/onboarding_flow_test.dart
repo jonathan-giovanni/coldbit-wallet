@@ -6,6 +6,7 @@ import 'package:coldbit_wallet/presentation/screens/intro_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/mnemonic_length_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/security_briefing_screen.dart';
 import 'package:coldbit_wallet/presentation/screens/vault_mode_screen.dart';
+import 'package:coldbit_wallet/presentation/screens/vault_unlock_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,6 +121,25 @@ void main() {
     expect(find.text('Use physical media'), findsOneWidget);
     expect(find.text('Never photograph it'), findsOneWidget);
     expect(find.text('CREATE SECURE PIN'), findsOneWidget);
+
+    await clearWidgetTree(tester);
+  });
+
+  testWidgets('unlock screen exposes a visible entry back to onboarding', (
+    tester,
+  ) async {
+    useTallViewport(tester);
+
+    await tester.pumpWidget(localizedHarness(const VaultUnlockScreen()));
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('Create or recover wallet'), findsOneWidget);
+    expect(
+      find.text(
+        'Use this if you want to start the onboarding flow again on this device.',
+      ),
+      findsOneWidget,
+    );
 
     await clearWidgetTree(tester);
   });

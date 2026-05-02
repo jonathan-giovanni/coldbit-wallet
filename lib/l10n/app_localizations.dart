@@ -488,6 +488,18 @@ abstract class AppLocalizations {
   /// **'Enter PIN Code'**
   String get vaultUnlockEnterPin;
 
+  /// No description provided for @vaultUnlockStartSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or recover wallet'**
+  String get vaultUnlockStartSetup;
+
+  /// No description provided for @vaultUnlockStartSetupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this if you want to start the onboarding flow again on this device.'**
+  String get vaultUnlockStartSetupDesc;
+
   /// No description provided for @vaultUnlockLockedWait.
   ///
   /// In en, this message translates to:

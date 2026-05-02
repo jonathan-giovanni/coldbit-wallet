@@ -76,6 +76,8 @@
 
   "vaultUnlockAccessDenied": "Access Denied",
   "vaultUnlockEnterPin": "Enter PIN Code",
+  "vaultUnlockStartSetup": "Create or recover wallet",
+  "vaultUnlockStartSetupDesc": "Use this if you want to start the onboarding flow again on this device.",
   "vaultUnlockLockedWait": "LOCKED. Wait {seconds}s",
   "@vaultUnlockLockedWait": {
     "placeholders": {

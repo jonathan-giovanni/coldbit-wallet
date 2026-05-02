@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class VaultUnlockScreen extends ConsumerStatefulWidget {
@@ -227,6 +228,29 @@ class _VaultUnlockScreenState extends ConsumerState<VaultUnlockScreen> {
                   _buildIconKey(LucideIcons.delete, _onDeletePressed),
                 ],
               ).animate().fade(delay: 400.ms).slideY(begin: 0.2),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 0, 32, 24),
+              child: Column(
+                children: [
+                  TextButton.icon(
+                    onPressed: () => context.push('/intro'),
+                    icon: const Icon(LucideIcons.plusCircle),
+                    label: Text(
+                      AppLocalizations.of(context)!.vaultUnlockStartSetup,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    AppLocalizations.of(context)!.vaultUnlockStartSetupDesc,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ColdBitTheme.platinumText,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

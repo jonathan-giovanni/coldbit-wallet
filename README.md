@@ -66,7 +66,7 @@ flutter test --coverage
 flutter build apk --debug
 ```
 
-Current local coverage gate: `78.00%` line coverage from `coverage/lcov.info`
+Current local coverage gate: `75.21%` line coverage from `coverage/lcov.info`
 on 2026-05-02. Minimum required coverage: `70%`.
 
 The execution roadmap is maintained in:
