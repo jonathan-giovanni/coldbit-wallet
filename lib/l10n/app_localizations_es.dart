@@ -52,6 +52,139 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingRecoverBtn => 'Recuperar Semilla Mnemónica';
 
   @override
+  String get introTitle => 'ColdBit Wallet';
+
+  @override
+  String get introSubtitle =>
+      'Construye una bóveda Bitcoin offline paso a paso: entiende el modelo operativo, elige la longitud de la frase, prepara el respaldo y crea el PIN seguro.';
+
+  @override
+  String get introBeginBtn => 'Iniciar onboarding';
+
+  @override
+  String get introRecoverBtn => 'Recuperar bóveda existente';
+
+  @override
+  String get briefingTitle => 'Briefing operativo';
+
+  @override
+  String get briefingSubtitle =>
+      'ColdBit está construido para revisión y firma aislada de PSBT. Estas reglas definen cómo debe usarse la bóveda antes de crear cualquier seed.';
+
+  @override
+  String get briefingOfflineTitle => 'Mantén el firmante offline';
+
+  @override
+  String get briefingOfflineDesc =>
+      'Las claves privadas se quedan en este dispositivo. Mueve transacciones sin firmar y firmadas solo por QR o transferencia de archivo.';
+
+  @override
+  String get briefingSeedTitle => 'La seed es la bóveda';
+
+  @override
+  String get briefingSeedDesc =>
+      'Cualquiera con la frase de recuperación puede mover fondos. Escríbela una vez, verifícala y guárdala fuera de sistemas digitales.';
+
+  @override
+  String get briefingPsbtTitle => 'Revisa cada PSBT';
+
+  @override
+  String get briefingPsbtDesc =>
+      'Trata cada transacción importada como hostil hasta comprobar destino, totales y contexto de firma.';
+
+  @override
+  String get briefingContinueBtn => 'Continuar';
+
+  @override
+  String get vaultModeTitle => 'Elegir modo de bóveda';
+
+  @override
+  String get vaultModeSubtitle =>
+      'Crea una nueva billetera aislada o restaura una frase conocida. La creación siempre fuerza verificación de respaldo.';
+
+  @override
+  String get vaultModeCreateTitle => 'Crear bóveda nueva';
+
+  @override
+  String get vaultModeCreateDesc =>
+      'Genera localmente una frase BIP39 nueva y protégela con PIN.';
+
+  @override
+  String get vaultModeRecoverTitle => 'Recuperar bóveda existente';
+
+  @override
+  String get vaultModeRecoverDesc =>
+      'Introduce una frase BIP39 válida de 12 o 24 palabras y restaura la bóveda de firma.';
+
+  @override
+  String get vaultModeCreateBtn => 'Crear bóveda nueva';
+
+  @override
+  String get vaultModeRecoverBtn => 'Recuperar bóveda';
+
+  @override
+  String get mnemonicLengthTitle => 'Longitud de frase';
+
+  @override
+  String get mnemonicLengthSubtitle =>
+      'Elige el tamaño exacto de la seed antes de generarla. ColdBit usará tu selección al crear la frase.';
+
+  @override
+  String get mnemonicLength24Title => '24 palabras';
+
+  @override
+  String get mnemonicLength24Desc =>
+      'Máxima entropía para custodia fría de alto valor y flujos institucionales.';
+
+  @override
+  String get mnemonicLength12Title => '12 palabras';
+
+  @override
+  String get mnemonicLength12Desc =>
+      'Seguridad BIP39 estándar con respaldo y recuperación manual más corta.';
+
+  @override
+  String get mnemonicLengthContinueBtn => 'Preparar respaldo';
+
+  @override
+  String get backupDisciplineTitle => 'Disciplina de respaldo';
+
+  @override
+  String get backupDisciplineSubtitle =>
+      'Prepara ahora el entorno físico. La siguiente fase crea la frase de recuperación real.';
+
+  @override
+  String get backupDisciplinePaperTitle => 'Usa soporte físico';
+
+  @override
+  String get backupDisciplinePaperDesc =>
+      'Prepara papel o material metálico antes de revelar la frase.';
+
+  @override
+  String get backupDisciplinePrivacyTitle => 'Controla la sala';
+
+  @override
+  String get backupDisciplinePrivacyDesc =>
+      'Sin cámaras, observadores, pantalla compartida ni soporte remoto durante la creación de la seed.';
+
+  @override
+  String get backupDisciplineNoPhotoTitle => 'Nunca la fotografíes';
+
+  @override
+  String get backupDisciplineNoPhotoDesc =>
+      'No guardes la frase en fotos, gestores de contraseñas, notas en nube, email o chat.';
+
+  @override
+  String get backupDisciplineStorageTitle => 'Almacenamiento separado';
+
+  @override
+  String get backupDisciplineStorageDesc =>
+      'Guarda el respaldo donde sobreviva a la pérdida del dispositivo y no pueda descubrirse casualmente.';
+
+  @override
+  String get backupDisciplineContinueBtn => 'Crear PIN seguro';
+
+  @override
   String get pinSetupTitle => 'Acceso Blindado';
 
   @override

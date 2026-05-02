@@ -176,6 +176,240 @@ abstract class AppLocalizations {
   /// **'Recover Seed'**
   String get onboardingRecoverBtn;
 
+  /// No description provided for @introTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ColdBit Wallet'**
+  String get introTitle;
+
+  /// No description provided for @introSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Build an offline Bitcoin vault step by step: understand the operating model, choose the recovery phrase length, prepare the backup, then create the secure PIN.'**
+  String get introSubtitle;
+
+  /// No description provided for @introBeginBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Onboarding'**
+  String get introBeginBtn;
+
+  /// No description provided for @introRecoverBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover existing vault'**
+  String get introRecoverBtn;
+
+  /// No description provided for @briefingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational Briefing'**
+  String get briefingTitle;
+
+  /// No description provided for @briefingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ColdBit is built for isolated PSBT review and signing. These rules define how the vault must be used before any seed exists.'**
+  String get briefingSubtitle;
+
+  /// No description provided for @briefingOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the signer offline'**
+  String get briefingOfflineTitle;
+
+  /// No description provided for @briefingOfflineDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Private keys stay on this device. Move unsigned and signed transactions by QR or file transfer only.'**
+  String get briefingOfflineDesc;
+
+  /// No description provided for @briefingSeedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The seed is the vault'**
+  String get briefingSeedTitle;
+
+  /// No description provided for @briefingSeedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone with the recovery phrase can move funds. Write it once, verify it, and store it outside digital systems.'**
+  String get briefingSeedDesc;
+
+  /// No description provided for @briefingPsbtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review every PSBT'**
+  String get briefingPsbtTitle;
+
+  /// No description provided for @briefingPsbtDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Treat each imported transaction as hostile until the destination, totals, and signing context have been checked.'**
+  String get briefingPsbtDesc;
+
+  /// No description provided for @briefingContinueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get briefingContinueBtn;
+
+  /// No description provided for @vaultModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Vault Mode'**
+  String get vaultModeTitle;
+
+  /// No description provided for @vaultModeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new isolated wallet or restore a known recovery phrase. Creation always forces a backup verification path.'**
+  String get vaultModeSubtitle;
+
+  /// No description provided for @vaultModeCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new vault'**
+  String get vaultModeCreateTitle;
+
+  /// No description provided for @vaultModeCreateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a fresh BIP39 recovery phrase locally and protect it with a PIN.'**
+  String get vaultModeCreateDesc;
+
+  /// No description provided for @vaultModeRecoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover existing vault'**
+  String get vaultModeRecoverTitle;
+
+  /// No description provided for @vaultModeRecoverDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 12-word or 24-word BIP39 phrase and restore the signing vault.'**
+  String get vaultModeRecoverDesc;
+
+  /// No description provided for @vaultModeCreateBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new vault'**
+  String get vaultModeCreateBtn;
+
+  /// No description provided for @vaultModeRecoverBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover vault'**
+  String get vaultModeRecoverBtn;
+
+  /// No description provided for @mnemonicLengthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery Phrase Length'**
+  String get mnemonicLengthTitle;
+
+  /// No description provided for @mnemonicLengthSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the exact seed size before generation. ColdBit will use your selection when the phrase is created.'**
+  String get mnemonicLengthSubtitle;
+
+  /// No description provided for @mnemonicLength24Title.
+  ///
+  /// In en, this message translates to:
+  /// **'24 words'**
+  String get mnemonicLength24Title;
+
+  /// No description provided for @mnemonicLength24Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum entropy for high-value cold storage and institutional workflows.'**
+  String get mnemonicLength24Desc;
+
+  /// No description provided for @mnemonicLength12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'12 words'**
+  String get mnemonicLength12Title;
+
+  /// No description provided for @mnemonicLength12Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard BIP39 strength with shorter manual backup and recovery.'**
+  String get mnemonicLength12Desc;
+
+  /// No description provided for @mnemonicLengthContinueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare backup'**
+  String get mnemonicLengthContinueBtn;
+
+  /// No description provided for @backupDisciplineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup Discipline'**
+  String get backupDisciplineTitle;
+
+  /// No description provided for @backupDisciplineSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare the physical environment now. The next phase creates the real recovery phrase.'**
+  String get backupDisciplineSubtitle;
+
+  /// No description provided for @backupDisciplinePaperTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use physical media'**
+  String get backupDisciplinePaperTitle;
+
+  /// No description provided for @backupDisciplinePaperDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare paper or metal backup material before revealing the phrase.'**
+  String get backupDisciplinePaperDesc;
+
+  /// No description provided for @backupDisciplinePrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control the room'**
+  String get backupDisciplinePrivacyTitle;
+
+  /// No description provided for @backupDisciplinePrivacyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No cameras, observers, screen sharing, or remote support during seed creation.'**
+  String get backupDisciplinePrivacyDesc;
+
+  /// No description provided for @backupDisciplineNoPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Never photograph it'**
+  String get backupDisciplineNoPhotoTitle;
+
+  /// No description provided for @backupDisciplineNoPhotoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not store the phrase in photos, password managers, cloud notes, email, or chat.'**
+  String get backupDisciplineNoPhotoDesc;
+
+  /// No description provided for @backupDisciplineStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate storage'**
+  String get backupDisciplineStorageTitle;
+
+  /// No description provided for @backupDisciplineStorageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Store the backup where it survives device loss and cannot be casually discovered.'**
+  String get backupDisciplineStorageDesc;
+
+  /// No description provided for @backupDisciplineContinueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create secure PIN'**
+  String get backupDisciplineContinueBtn;
+
   /// No description provided for @pinSetupTitle.
   ///
   /// In en, this message translates to:
