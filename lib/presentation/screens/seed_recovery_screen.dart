@@ -1,3 +1,4 @@
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
 import 'package:coldbit_wallet/core/crypto/wallet_engine.dart';
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/providers/seed_provider.dart';
@@ -18,14 +19,21 @@ class SeedRecoveryScreen extends ConsumerStatefulWidget {
 }
 
 class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
-  final List<TextEditingController> _controllers =
-      List.generate(24, (_) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(
+    24,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(24, (_) => FocusNode());
   final ScrollController _scrollController = ScrollController();
 
   bool _isValid = false;
   bool _isLoading = false;
   String? _error;
+  List<String> _suggestions = [];
+  int _activeIndex = 0;
+  MnemonicStrength _strength = MnemonicStrength.words24;
+
+  int get _wordCount => _strength.wordCount;
 
   @override
   void dispose() {
@@ -39,11 +47,15 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
     super.dispose();
   }
 
-  String get _mnemonic =>
-      _controllers.map((c) => c.text.trim().toLowerCase()).join(' ');
+  String get _mnemonic => _controllers
+      .take(_wordCount)
+      .map((c) => c.text.trim().toLowerCase())
+      .join(' ');
 
   void _validate() {
-    final allFilled = _controllers.every((c) => c.text.trim().isNotEmpty);
+    final allFilled = _controllers
+        .take(_wordCount)
+        .every((c) => c.text.trim().isNotEmpty);
     if (!allFilled) {
       setState(() {
         _isValid = false;
@@ -57,6 +69,41 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
       _isValid = valid;
       _error = valid ? null : AppLocalizations.of(context)!.recoverInvalidSeed;
     });
+  }
+
+  void _handleOnChanged(int index, String value) {
+    // Smart-Paste Logic: if the value contains spaces, it's likely a mnemonic
+    if (value.trim().contains(' ')) {
+      final words = value.trim().split(RegExp(r'\s+'));
+      if (words.length == MnemonicStrength.words12.wordCount ||
+          words.length == MnemonicStrength.words24.wordCount) {
+        _strength = MnemonicStrength.fromWordCount(words.length);
+      }
+      for (var i = 0; i < words.length && (index + i) < _wordCount; i++) {
+        _controllers[index + i].text = words[i].toLowerCase();
+      }
+      _validate();
+      return;
+    }
+
+    // Update suggestions for the active field
+    setState(() {
+      _activeIndex = index;
+      _suggestions = WalletEngine.getSuggestions(value);
+    });
+
+    _validate();
+  }
+
+  void _applySuggestion(String suggestion) {
+    setState(() {
+      _controllers[_activeIndex].text = suggestion;
+      _suggestions = [];
+      if (_activeIndex < _wordCount - 1) {
+        _focusNodes[_activeIndex + 1].requestFocus();
+      }
+    });
+    _validate();
   }
 
   Future<void> _recover() async {
@@ -105,15 +152,17 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
               Text(
                 loc.recoverDesc,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColdBitTheme.platinumText,
-                      height: 1.5,
-                    ),
+                  color: ColdBitTheme.platinumText,
+                  height: 1.5,
+                ),
               ).animate().fade(),
               if (_error != null) ...[
                 const SizedBox(height: 12),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: ColdBitTheme.errorCrimson.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
@@ -121,8 +170,11 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(LucideIcons.alertTriangle,
-                          color: ColdBitTheme.errorCrimson, size: 18),
+                      const Icon(
+                        LucideIcons.alertTriangle,
+                        color: ColdBitTheme.errorCrimson,
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -139,6 +191,28 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                 ).animate().shake(hz: 6, duration: 400.ms),
               ],
               const SizedBox(height: 16),
+              SegmentedButton<MnemonicStrength>(
+                segments: [
+                  ButtonSegment(
+                    value: MnemonicStrength.words12,
+                    label: Text(loc.recoverWords12),
+                  ),
+                  ButtonSegment(
+                    value: MnemonicStrength.words24,
+                    label: Text(loc.recoverWords24),
+                  ),
+                ],
+                selected: {_strength},
+                onSelectionChanged: (selection) {
+                  setState(() {
+                    _strength = selection.first;
+                    _suggestions = [];
+                    _error = null;
+                  });
+                  _validate();
+                },
+              ).animate().fade(delay: 100.ms),
+              const SizedBox(height: 16),
               Expanded(
                 child: GridView.builder(
                   controller: _scrollController,
@@ -148,83 +222,127 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                     mainAxisSpacing: 8,
                     childAspectRatio: 2.5,
                   ),
-                  itemCount: 24,
+                  itemCount: _wordCount,
                   itemBuilder: (context, index) {
                     return Container(
-                      decoration: BoxDecoration(
-                        color: ColdBitTheme.darkGraphite,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: _controllers[index].text.trim().isNotEmpty
-                              ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.4)
-                              : ColdBitTheme.brushedMetal
-                                  .withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 32,
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${index + 1}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    color: ColdBitTheme.goldBitcoin,
-                                    fontFamily: 'monospace',
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          decoration: BoxDecoration(
+                            color: ColdBitTheme.darkGraphite,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: _controllers[index].text.trim().isEmpty
+                                  ? ColdBitTheme.brushedMetal.withValues(
+                                      alpha: 0.3,
+                                    )
+                                  : WalletEngine.isWordValid(
+                                      _controllers[index].text,
+                                    )
+                                  ? ColdBitTheme.goldBitcoin.withValues(
+                                      alpha: 0.6,
+                                    )
+                                  : ColdBitTheme.errorCrimson.withValues(
+                                      alpha: 0.6,
+                                    ),
+                              width:
+                                  WalletEngine.isWordValid(
+                                    _controllers[index].text,
+                                  )
+                                  ? 1.5
+                                  : 1,
                             ),
                           ),
-                          Expanded(
-                            child: TextField(
-                              controller: _controllers[index],
-                              focusNode: _focusNodes[index],
-                              autocorrect: false,
-                              enableSuggestions: false,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.5,
-                                  ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 8,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 32,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: ColdBitTheme.goldBitcoin,
+                                        fontFamily: 'monospace',
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ),
-                              textInputAction: index < 23
-                                  ? TextInputAction.next
-                                  : TextInputAction.done,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'[a-zA-Z]')),
-                              ],
-                              onChanged: (_) => _validate(),
-                              onSubmitted: (_) {
-                                if (index < 23) {
-                                  _focusNodes[index + 1].requestFocus();
-                                } else {
-                                  _validate();
-                                }
-                              },
-                            ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllers[index],
+                                  focusNode: _focusNodes[index],
+                                  autocorrect: false,
+                                  enableSuggestions: false,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.5,
+                                      ),
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                  textInputAction: index < _wordCount - 1
+                                      ? TextInputAction.next
+                                      : TextInputAction.done,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z]'),
+                                    ),
+                                  ],
+                                  onChanged: (val) =>
+                                      _handleOnChanged(index, val),
+                                  onTap: () =>
+                                      setState(() => _activeIndex = index),
+                                  onSubmitted: (_) {
+                                    if (index < _wordCount - 1) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else {
+                                      _validate();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
+                        )
                         .animate()
                         .fade(delay: (20 * index).ms)
                         .slideY(begin: 0.2, duration: 200.ms);
                   },
                 ),
               ),
+              const SizedBox(height: 12),
+
+              // Suggestion Bar
+              if (_suggestions.isNotEmpty)
+                SizedBox(
+                  height: 40,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _suggestions.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8),
+                    itemBuilder: (context, i) => ActionChip(
+                      label: Text(
+                        _suggestions[i],
+                        style: const TextStyle(
+                          color: ColdBitTheme.goldBitcoin,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      backgroundColor: ColdBitTheme.darkGraphite,
+                      side: const BorderSide(
+                        color: ColdBitTheme.goldBitcoin,
+                        width: 0.5,
+                      ),
+                      onPressed: () => _applySuggestion(_suggestions[i]),
+                    ),
+                  ),
+                ).animate().fade().slideY(begin: 0.2),
+
               const SizedBox(height: 16),
               ColdBitActionButton(
                 label: loc.recoverConfirmBtn,

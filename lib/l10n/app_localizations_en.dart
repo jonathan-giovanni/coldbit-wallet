@@ -43,7 +43,146 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingCreateBtn => 'Create Empty Vault';
 
   @override
+  String get onboardingCreate24Btn => 'Create 24-word Vault';
+
+  @override
+  String get onboardingCreate12Btn => 'Create 12-word Vault';
+
+  @override
   String get onboardingRecoverBtn => 'Recover Seed';
+
+  @override
+  String get introTitle => 'ColdBit Wallet';
+
+  @override
+  String get introSubtitle =>
+      'Build an offline Bitcoin vault step by step: understand the operating model, choose the recovery phrase length, prepare the backup, then create the secure PIN.';
+
+  @override
+  String get introBeginBtn => 'Start Onboarding';
+
+  @override
+  String get introRecoverBtn => 'Recover existing vault';
+
+  @override
+  String get briefingTitle => 'Operational Briefing';
+
+  @override
+  String get briefingSubtitle =>
+      'ColdBit is built for isolated PSBT review and signing. These rules define how the vault must be used before any seed exists.';
+
+  @override
+  String get briefingOfflineTitle => 'Keep the signer offline';
+
+  @override
+  String get briefingOfflineDesc =>
+      'Private keys stay on this device. Move unsigned and signed transactions by QR or file transfer only.';
+
+  @override
+  String get briefingSeedTitle => 'The seed is the vault';
+
+  @override
+  String get briefingSeedDesc =>
+      'Anyone with the recovery phrase can move funds. Write it once, verify it, and store it outside digital systems.';
+
+  @override
+  String get briefingPsbtTitle => 'Review every PSBT';
+
+  @override
+  String get briefingPsbtDesc =>
+      'Treat each imported transaction as hostile until the destination, totals, and signing context have been checked.';
+
+  @override
+  String get briefingContinueBtn => 'Continue';
+
+  @override
+  String get vaultModeTitle => 'Choose Vault Mode';
+
+  @override
+  String get vaultModeSubtitle =>
+      'Create a new isolated wallet or restore a known recovery phrase. Creation always forces a backup verification path.';
+
+  @override
+  String get vaultModeCreateTitle => 'Create new vault';
+
+  @override
+  String get vaultModeCreateDesc =>
+      'Generate a fresh BIP39 recovery phrase locally and protect it with a PIN.';
+
+  @override
+  String get vaultModeRecoverTitle => 'Recover existing vault';
+
+  @override
+  String get vaultModeRecoverDesc =>
+      'Enter a valid 12-word or 24-word BIP39 phrase and restore the signing vault.';
+
+  @override
+  String get vaultModeCreateBtn => 'Create new vault';
+
+  @override
+  String get vaultModeRecoverBtn => 'Recover vault';
+
+  @override
+  String get mnemonicLengthTitle => 'Recovery Phrase Length';
+
+  @override
+  String get mnemonicLengthSubtitle =>
+      'Choose the exact seed size before generation. ColdBit will use your selection when the phrase is created.';
+
+  @override
+  String get mnemonicLength24Title => '24 words';
+
+  @override
+  String get mnemonicLength24Desc =>
+      'Maximum entropy for high-value cold storage and institutional workflows.';
+
+  @override
+  String get mnemonicLength12Title => '12 words';
+
+  @override
+  String get mnemonicLength12Desc =>
+      'Standard BIP39 strength with shorter manual backup and recovery.';
+
+  @override
+  String get mnemonicLengthContinueBtn => 'Prepare backup';
+
+  @override
+  String get backupDisciplineTitle => 'Backup Discipline';
+
+  @override
+  String get backupDisciplineSubtitle =>
+      'Prepare the physical environment now. The next phase creates the real recovery phrase.';
+
+  @override
+  String get backupDisciplinePaperTitle => 'Use physical media';
+
+  @override
+  String get backupDisciplinePaperDesc =>
+      'Prepare paper or metal backup material before revealing the phrase.';
+
+  @override
+  String get backupDisciplinePrivacyTitle => 'Control the room';
+
+  @override
+  String get backupDisciplinePrivacyDesc =>
+      'No cameras, observers, screen sharing, or remote support during seed creation.';
+
+  @override
+  String get backupDisciplineNoPhotoTitle => 'Never photograph it';
+
+  @override
+  String get backupDisciplineNoPhotoDesc =>
+      'Do not store the phrase in photos, password managers, cloud notes, email, or chat.';
+
+  @override
+  String get backupDisciplineStorageTitle => 'Separate storage';
+
+  @override
+  String get backupDisciplineStorageDesc =>
+      'Store the backup where it survives device loss and cannot be casually discovered.';
+
+  @override
+  String get backupDisciplineContinueBtn => 'Create secure PIN';
 
   @override
   String get pinSetupTitle => 'Vault Access';
@@ -53,6 +192,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pinSetupConfirmMsg => 'Confirm your Secure PIN';
+
+  @override
+  String get pinSetupHintCreate => 'Choose a 6-digit access code';
+
+  @override
+  String get pinSetupHintConfirm => 'Repeat the code to verify accuracy';
 
   @override
   String get pinSetupMismatch => 'PINs do not match';
@@ -166,8 +311,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seedBackupTitle => 'Recovery Phrase';
 
   @override
-  String get seedBackupWarning =>
-      'Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.';
+  String seedBackupWarning(int count) {
+    return 'Write down these $count words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.';
+  }
 
   @override
   String get seedBackupHiddenTitle => 'Phrase Hidden';
@@ -225,7 +371,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recoverDesc =>
-      'Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.';
+      'Enter your recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.';
+
+  @override
+  String get recoverWords12 => '12 words';
+
+  @override
+  String get recoverWords24 => '24 words';
 
   @override
   String get recoverInvalidSeed =>

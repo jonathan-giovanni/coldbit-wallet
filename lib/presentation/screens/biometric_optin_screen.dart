@@ -69,27 +69,33 @@ class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              
+
               Center(
-                child: Container(
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    color: ColdBitTheme.brushedMetal.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.2),
+                    child: Container(
+                      padding: const EdgeInsets.all(32),
+                      decoration: BoxDecoration(
+                        color: ColdBitTheme.brushedMetal.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: ColdBitTheme.goldBitcoin.withValues(
+                            alpha: 0.2,
+                          ),
+                        ),
+                      ),
+                      child: const Icon(
+                        LucideIcons.scanFace,
+                        size: 80,
+                        color: ColdBitTheme.goldBitcoin,
+                      ),
                     ),
-                  ),
-                  child: const Icon(
-                    LucideIcons.scanFace,
-                    size: 80,
-                    color: ColdBitTheme.goldBitcoin,
-                  ),
-                ),
-              )
-              .animate()
-              .scale(begin: const Offset(0.5, 0.5), duration: 800.ms, curve: Curves.easeOutBack)
-              .shimmer(delay: 800.ms, duration: 2.seconds),
+                  )
+                  .animate()
+                  .scale(
+                    begin: const Offset(0.5, 0.5),
+                    duration: 800.ms,
+                    curve: Curves.easeOutBack,
+                  )
+                  .shimmer(delay: 800.ms, duration: 2.seconds),
 
               const SizedBox(height: 48),
 
@@ -141,7 +147,7 @@ class _BiometricOptinScreenState extends ConsumerState<BiometricOptinScreen> {
                   ).animate().fade(delay: 800.ms),
                 ],
               ),
-              
+
               const SizedBox(height: 32),
             ],
           ),

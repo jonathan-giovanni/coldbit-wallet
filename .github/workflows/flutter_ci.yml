@@ -2,7 +2,7 @@ name: 🧪 Flutter CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, 'feature/**' ]
   pull_request:
     branches: [ main, develop, feature/** ]
 
@@ -19,8 +19,15 @@ jobs:
         with:
           channel: stable
 
+      - name: 📚 Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsodium-dev libsqlite3-dev
+
       - name: 📦 Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          flutter gen-l10n
 
       - name: 🔍 Analyze code
         run: flutter analyze

@@ -5,10 +5,12 @@ class TransactionDetails {
     required this.txid,
     required this.feeBtc,
     required this.totalAmountBtc,
+    required this.outputCount,
   });
   final String txid;
   final double feeBtc;
   final double totalAmountBtc;
+  final int outputCount;
 }
 
 class TransactionAnalyzer {
@@ -22,26 +24,29 @@ class TransactionAnalyzer {
     }
 
     try {
-      // Validate PSBT is constructable
-      await WalletEngine.parsePsbt(sanitizedData);
+      final psbt = await WalletEngine.parsePsbt(sanitizedData);
+      final feeSats = psbt.feeAmount();
+      if (feeSats == null) {
+        throw StateError('PSBT_FEE_UNAVAILABLE');
+      }
+
+      final tx = psbt.extractTx();
+      final outputs = tx.output();
+      final totalOutputSats = outputs.fold<BigInt>(
+        BigInt.zero,
+        (sum, output) => sum + output.value,
+      );
+
+      return TransactionDetails(
+        txid: psbt.txid(),
+        feeBtc: _satsToBtc(feeSats),
+        totalAmountBtc: _satsToBtc(totalOutputSats),
+        outputCount: outputs.length,
+      );
     } catch (_) {
       throw StateError('INVALID_PSBT_FORMAT');
     }
-
-    // If bdk-flutter version doesn't expose txid directly, we generate a mock hash
-    // in real production BDK it corresponds to extracting the transaction graph.
-    final txid =
-        base64Psbt.toString().hashCode.toRadixString(16).padLeft(16, '0') +
-        base64Psbt.toString().hashCode.toRadixString(16).padLeft(16, '0');
-
-    // In a fully built BDK node, we can pull inputs/outputs.
-    // For local Air-Gapped PSBTs parsing without descriptor graphs,
-    // BDK offline requires manual parsing of TxOuts.
-    // We mock the decoded values securely for the UI implementation phase.
-    return TransactionDetails(
-      txid: txid,
-      feeBtc: 0.000045, // Example dynamic fee parsed from payload
-      totalAmountBtc: 0.024000,
-    );
   }
+
+  static double _satsToBtc(BigInt sats) => sats.toDouble() / 100000000;
 }

@@ -48,7 +48,9 @@ class _AuthChallengeSheetState extends ConsumerState<AuthChallengeSheet> {
   Future<void> _attemptBiometrics() async {
     final enabled = ref.read(biometricsEnabledProvider).valueOrNull ?? false;
     if (enabled) {
-      final success = await AuthBarrier(RateLimiter()).authenticateBiometricsOnly();
+      final success = await AuthBarrier(
+        RateLimiter(),
+      ).authenticateBiometricsOnly();
       if (success && mounted) {
         Navigator.of(context).pop(true);
       }
@@ -118,7 +120,7 @@ class _AuthChallengeSheetState extends ConsumerState<AuthChallengeSheet> {
             ),
           ),
           const SizedBox(height: 32),
-          
+
           Text(
             "AUTHORIZE SIGNING",
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -127,13 +129,15 @@ class _AuthChallengeSheetState extends ConsumerState<AuthChallengeSheet> {
               color: ColdBitTheme.goldBitcoin,
             ),
           ).animate().fade(),
-          
+
           const SizedBox(height: 8),
-          
+
           Text(
             _isError ? "Invalid PIN" : "Confirm identity to access secure keys",
             style: TextStyle(
-              color: _isError ? ColdBitTheme.errorCrimson : ColdBitTheme.platinumText,
+              color: _isError
+                  ? ColdBitTheme.errorCrimson
+                  : ColdBitTheme.platinumText,
               fontSize: 14,
             ),
           ).animate(key: ValueKey(_isError)).shake(),
@@ -152,9 +156,13 @@ class _AuthChallengeSheetState extends ConsumerState<AuthChallengeSheet> {
                 height: 18,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isFilled ? ColdBitTheme.goldBitcoin : Colors.transparent,
+                  color: isFilled
+                      ? ColdBitTheme.goldBitcoin
+                      : Colors.transparent,
                   border: Border.all(
-                    color: isFilled ? ColdBitTheme.goldBitcoin : ColdBitTheme.brushedMetal.withValues(alpha: 0.5),
+                    color: isFilled
+                        ? ColdBitTheme.goldBitcoin
+                        : ColdBitTheme.brushedMetal.withValues(alpha: 0.5),
                     width: 2.5,
                   ),
                 ),
@@ -228,9 +236,9 @@ class _NumpadKeyState extends State<_NumpadKey> {
           shape: BoxShape.circle,
           color: _isPressed ? ColdBitTheme.brushedMetal : Colors.transparent,
           border: Border.all(
-            color: _isPressed 
-              ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5) 
-              : ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
+            color: _isPressed
+                ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.5)
+                : ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
             width: 1.5,
           ),
         ),

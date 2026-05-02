@@ -8,11 +8,15 @@ class WalletState {
     required this.fingerprint,
     required this.descriptor,
     required this.network,
+    required this.receiveAddress,
+    required this.receivePath,
   });
 
   final String fingerprint;
   final Descriptor descriptor;
   final Network network;
+  final String receiveAddress;
+  final String receivePath;
 }
 
 final walletProvider = FutureProvider<WalletState?>((ref) async {
@@ -24,11 +28,17 @@ final walletProvider = FutureProvider<WalletState?>((ref) async {
 
   final descriptorStr = descriptor.asString();
   final fingerprint = _extractFingerprint(descriptorStr);
+  final receiveAddress = await WalletEngine.deriveReceiveAddress(
+    descriptor: descriptor,
+    network: network,
+  );
 
   return WalletState(
     fingerprint: fingerprint,
     descriptor: descriptor,
     network: network,
+    receiveAddress: receiveAddress,
+    receivePath: "m/84'/1'/0'/0/0",
   );
 });
 

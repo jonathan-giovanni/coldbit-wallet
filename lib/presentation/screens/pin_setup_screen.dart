@@ -75,9 +75,10 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final title = _state == PinSetupState.create
-        ? AppLocalizations.of(context)!.pinSetupCreateMsg
-        : AppLocalizations.of(context)!.pinSetupConfirmMsg;
+        ? loc.pinSetupCreateMsg
+        : loc.pinSetupConfirmMsg;
 
     final icon = _state == PinSetupState.create
         ? LucideIcons.key
@@ -122,7 +123,9 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
 
             Text(
                   _isError
-                      ? AppLocalizations.of(context)!.pinSetupMismatch.toUpperCase()
+                      ? AppLocalizations.of(
+                          context,
+                        )!.pinSetupMismatch.toUpperCase()
                       : title.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -137,18 +140,18 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
                 .slideY(begin: 0.2),
 
             const SizedBox(height: 12),
-            
+
             if (!_isError)
               Text(
                 _state == PinSetupState.create
-                    ? "Choose a 6-digit access code"
-                    : "Repeat the code to verify accuracy",
+                    ? loc.pinSetupHintCreate
+                    : loc.pinSetupHintConfirm,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColdBitTheme.platinumText,
+                  color: ColdBitTheme.platinumText.withValues(alpha: 0.6),
+                  letterSpacing: 0.5,
                 ),
-              ).animate().fade(),
-
-            const SizedBox(height: 48),
+                textAlign: TextAlign.center,
+              ).animate().fade(delay: 100.ms),
 
             // PIN Dots
             Row(

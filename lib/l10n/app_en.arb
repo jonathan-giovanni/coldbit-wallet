@@ -13,11 +13,59 @@
   "onboardingSlide3Desc": "Protected by Secure Enclave and military-grade encryption patterns.",
   "onboardingSubtitle": "Your private keys never touch the internet. Fully isolated offline PSBT signing vault.",
   "onboardingCreateBtn": "Create Empty Vault",
+  "onboardingCreate24Btn": "Create 24-word Vault",
+  "onboardingCreate12Btn": "Create 12-word Vault",
   "onboardingRecoverBtn": "Recover Seed",
+
+  "introTitle": "ColdBit Wallet",
+  "introSubtitle": "Build an offline Bitcoin vault step by step: understand the operating model, choose the recovery phrase length, prepare the backup, then create the secure PIN.",
+  "introBeginBtn": "Start Onboarding",
+  "introRecoverBtn": "Recover existing vault",
+
+  "briefingTitle": "Operational Briefing",
+  "briefingSubtitle": "ColdBit is built for isolated PSBT review and signing. These rules define how the vault must be used before any seed exists.",
+  "briefingOfflineTitle": "Keep the signer offline",
+  "briefingOfflineDesc": "Private keys stay on this device. Move unsigned and signed transactions by QR or file transfer only.",
+  "briefingSeedTitle": "The seed is the vault",
+  "briefingSeedDesc": "Anyone with the recovery phrase can move funds. Write it once, verify it, and store it outside digital systems.",
+  "briefingPsbtTitle": "Review every PSBT",
+  "briefingPsbtDesc": "Treat each imported transaction as hostile until the destination, totals, and signing context have been checked.",
+  "briefingContinueBtn": "Continue",
+
+  "vaultModeTitle": "Choose Vault Mode",
+  "vaultModeSubtitle": "Create a new isolated wallet or restore a known recovery phrase. Creation always forces a backup verification path.",
+  "vaultModeCreateTitle": "Create new vault",
+  "vaultModeCreateDesc": "Generate a fresh BIP39 recovery phrase locally and protect it with a PIN.",
+  "vaultModeRecoverTitle": "Recover existing vault",
+  "vaultModeRecoverDesc": "Enter a valid 12-word or 24-word BIP39 phrase and restore the signing vault.",
+  "vaultModeCreateBtn": "Create new vault",
+  "vaultModeRecoverBtn": "Recover vault",
+
+  "mnemonicLengthTitle": "Recovery Phrase Length",
+  "mnemonicLengthSubtitle": "Choose the exact seed size before generation. ColdBit will use your selection when the phrase is created.",
+  "mnemonicLength24Title": "24 words",
+  "mnemonicLength24Desc": "Maximum entropy for high-value cold storage and institutional workflows.",
+  "mnemonicLength12Title": "12 words",
+  "mnemonicLength12Desc": "Standard BIP39 strength with shorter manual backup and recovery.",
+  "mnemonicLengthContinueBtn": "Prepare backup",
+
+  "backupDisciplineTitle": "Backup Discipline",
+  "backupDisciplineSubtitle": "Prepare the physical environment now. The next phase creates the real recovery phrase.",
+  "backupDisciplinePaperTitle": "Use physical media",
+  "backupDisciplinePaperDesc": "Prepare paper or metal backup material before revealing the phrase.",
+  "backupDisciplinePrivacyTitle": "Control the room",
+  "backupDisciplinePrivacyDesc": "No cameras, observers, screen sharing, or remote support during seed creation.",
+  "backupDisciplineNoPhotoTitle": "Never photograph it",
+  "backupDisciplineNoPhotoDesc": "Do not store the phrase in photos, password managers, cloud notes, email, or chat.",
+  "backupDisciplineStorageTitle": "Separate storage",
+  "backupDisciplineStorageDesc": "Store the backup where it survives device loss and cannot be casually discovered.",
+  "backupDisciplineContinueBtn": "Create secure PIN",
 
   "pinSetupTitle": "Vault Access",
   "pinSetupCreateMsg": "Establish your Secure PIN",
   "pinSetupConfirmMsg": "Confirm your Secure PIN",
+  "pinSetupHintCreate": "Choose a 6-digit access code",
+  "pinSetupHintConfirm": "Repeat the code to verify accuracy",
   "pinSetupMismatch": "PINs do not match",
 
   "biometricOptinTitle": "Biometric Defense",
@@ -69,7 +117,12 @@
   "aboutMissionMd": "# ColdBit Wallet Mission\n\nThis application was forged with an absolute purpose: **Assume that all internet environments are compromised or inherently hostile**.\n\n## Design Principles\n1. **Pure Air-gapped**: \n   Your device will not send a single private key to the open internet. Only PSBT signing.\n2. **RAM Layer Defense (MemGuard)**: \n   Seeds (Seed Phrases) exist in temporary sealed cryptographic RAM. Pulsed and burned at discretion.\n\n---\n\n### Implemented Security Components:\n- **libsodium**: Argon2id style hashing derivation and isolated storage.\n- **Fail-Close Policy**: Any disturbance (exiting the App, biometric failure, detected jailbreak) collapses the session by protocol.\n\n*The software is for sovereign use. Verify the Code Hash and build it yourself.*",
 
   "seedBackupTitle": "Recovery Phrase",
-  "seedBackupWarning": "Write down these 24 words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.",
+  "seedBackupWarning": "Write down these {count} words in order. This is your ONLY way to recover your wallet. Never share them. Never store them digitally.",
+  "@seedBackupWarning": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "seedBackupHiddenTitle": "Phrase Hidden",
   "seedBackupHiddenDesc": "Ensure no one can see your screen before revealing your recovery phrase.",
   "seedBackupRevealBtn": "Reveal Phrase",
@@ -94,7 +147,9 @@
   "receiveOfflineNote": "This address was derived offline from your seed. Always verify on your hardware device before accepting large transactions.",
 
   "recoverTitle": "Recover Wallet",
-  "recoverDesc": "Enter your 24-word recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverDesc": "Enter your recovery phrase to restore your wallet. Each word must be from the BIP39 standard wordlist.",
+  "recoverWords12": "12 words",
+  "recoverWords24": "24 words",
   "recoverInvalidSeed": "Invalid recovery phrase. Check each word carefully.",
   "recoverError": "Recovery failed. Please try again.",
   "recoverConfirmBtn": "Restore Vault"

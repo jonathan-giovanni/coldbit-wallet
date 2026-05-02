@@ -55,20 +55,22 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
     final isAuthenticated = await AuthChallengeSheet.show(context);
     if (!isAuthenticated) return;
 
-    String signedBase64;
     final walletState = ref.read(walletProvider).valueOrNull;
-    if (walletState != null) {
-      try {
-        signedBase64 = await WalletEngine.signPsbtOffline(
-          psbtBase64: widget.rawPsbtBase64,
-          descriptor: walletState.descriptor,
-          network: walletState.network,
-        );
-      } catch (_) {
-        signedBase64 = widget.rawPsbtBase64;
-      }
-    } else {
-      signedBase64 = widget.rawPsbtBase64;
+    if (walletState == null) {
+      setState(() => _error = 'Wallet unavailable. Signature aborted.');
+      return;
+    }
+
+    late final String signedBase64;
+    try {
+      signedBase64 = await WalletEngine.signPsbtOffline(
+        psbtBase64: widget.rawPsbtBase64,
+        descriptor: walletState.descriptor,
+        network: walletState.network,
+      );
+    } catch (_) {
+      setState(() => _error = 'Signing failed. No payload was exported.');
+      return;
     }
 
     final record = TransactionRecord(
@@ -241,7 +243,7 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Amount to Send',
+                                    'Total Outputs',
                                     style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(
                                           color: ColdBitTheme.platinumText,
@@ -283,6 +285,29 @@ class _PsbtReviewScreenState extends ConsumerState<PsbtReviewScreen> {
                                     ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: ColdBitTheme.errorCrimson,
+                                      fontFamily: 'monospace',
+                                    ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Output Count',
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: ColdBitTheme.platinumText,
+                                    ),
+                              ),
+                              Text(
+                                '${_details!.outputCount}',
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
                                       fontFamily: 'monospace',
                                     ),
                               ),

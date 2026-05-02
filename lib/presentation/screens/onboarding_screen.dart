@@ -1,19 +1,22 @@
+import 'package:coldbit_wallet/core/crypto/mnemonic_strength.dart';
+import 'package:coldbit_wallet/core/providers/mnemonic_policy_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
 import 'package:coldbit_wallet/l10n/app_localizations.dart';
 import 'package:coldbit_wallet/presentation/widgets/coldbit_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -80,7 +83,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
-                    onPageChanged: (page) => setState(() => _currentPage = page),
+                    onPageChanged: (page) =>
+                        setState(() => _currentPage = page),
                     itemCount: slides.length,
                     itemBuilder: (context, index) => slides[index],
                   ),
@@ -125,15 +129,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           isPrimary: false,
                         )
                       else
-                        ColdBitActionButton(
-                          label: loc.onboardingCreateBtn,
-                          icon: LucideIcons.plusCircle,
-                          onPressed: () => context.push('/setup'),
-                          isPrimary: true,
-                        ).animate().shimmer(duration: 2.seconds),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ColdBitActionButton(
+                              label: loc.onboardingCreate24Btn,
+                              icon: LucideIcons.shieldCheck,
+                              onPressed: () => _createVault(
+                                context,
+                                MnemonicStrength.words24,
+                              ),
+                              isPrimary: true,
+                            ).animate().shimmer(duration: 2.seconds),
+                            const SizedBox(height: 12),
+                            ColdBitActionButton(
+                              label: loc.onboardingCreate12Btn,
+                              icon: LucideIcons.plusCircle,
+                              onPressed: () => _createVault(
+                                context,
+                                MnemonicStrength.words12,
+                              ),
+                              isPrimary: false,
+                            ),
+                          ],
+                        ),
 
                       const SizedBox(height: 16),
-                      
+
                       if (_currentPage == slides.length - 1)
                         TextButton(
                           onPressed: () => context.push('/recover'),
@@ -157,6 +179,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
+  void _createVault(BuildContext context, MnemonicStrength strength) {
+    ref.read(mnemonicStrengthProvider.notifier).state = strength;
+    context.push('/setup');
+  }
 }
 
 class _OnboardingSlide extends StatelessWidget {
@@ -178,24 +205,24 @@ class _OnboardingSlide extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: Icon(
-              icon,
-              size: 72,
-              color: ColdBitTheme.goldBitcoin,
-            ),
-          )
-          .animate(key: ValueKey(icon))
-          .scale(begin: const Offset(0.5, 0.5), duration: 600.ms, curve: Curves.easeOutBack)
-          .shimmer(delay: 600.ms, duration: 1.5.seconds),
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: ColdBitTheme.brushedMetal.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: ColdBitTheme.goldBitcoin.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(icon, size: 72, color: ColdBitTheme.goldBitcoin),
+              )
+              .animate(key: ValueKey(icon))
+              .scale(
+                begin: const Offset(0.5, 0.5),
+                duration: 600.ms,
+                curve: Curves.easeOutBack,
+              )
+              .shimmer(delay: 600.ms, duration: 1.5.seconds),
 
           const SizedBox(height: 48),
 
@@ -212,13 +239,16 @@ class _OnboardingSlide extends StatelessWidget {
           const SizedBox(height: 16),
 
           Text(
-            description,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: ColdBitTheme.platinumText,
-              height: 1.6,
-            ),
-          ).animate(key: ValueKey(description)).fade(delay: 200.ms).slideY(begin: 0.2),
+                description,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: ColdBitTheme.platinumText,
+                  height: 1.6,
+                ),
+              )
+              .animate(key: ValueKey(description))
+              .fade(delay: 200.ms)
+              .slideY(begin: 0.2),
         ],
       ),
     );

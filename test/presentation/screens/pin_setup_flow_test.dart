@@ -27,7 +27,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Establish your Secure PIN'), findsOneWidget);
+    expect(find.text('ESTABLISH YOUR SECURE PIN'), findsOneWidget);
 
     final digits = List.generate(
       VaultConfig.pinLength,
@@ -40,7 +40,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
 
-    expect(find.text('Confirm your Secure PIN'), findsOneWidget);
+    expect(find.text('CONFIRM YOUR SECURE PIN'), findsOneWidget);
 
     final wrongDigits = digits.reversed.toList();
     for (final d in wrongDigits) {
@@ -50,7 +50,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
 
-    expect(find.text('PINs do not match'), findsOneWidget);
+    expect(find.text('PINS DO NOT MATCH'), findsOneWidget);
   });
 
   test('VaultConfig.pinLength is 6 digits per user request', () {
