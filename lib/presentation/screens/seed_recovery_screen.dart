@@ -196,11 +196,24 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: _controllers[index].text.trim().isEmpty
-                                  ? ColdBitTheme.brushedMetal.withValues(alpha: 0.3)
-                                  : WalletEngine.isWordValid(_controllers[index].text)
-                                      ? ColdBitTheme.goldBitcoin.withValues(alpha: 0.6)
-                                      : ColdBitTheme.errorCrimson.withValues(alpha: 0.6),
-                              width: WalletEngine.isWordValid(_controllers[index].text) ? 1.5 : 1,
+                                  ? ColdBitTheme.brushedMetal.withValues(
+                                      alpha: 0.3,
+                                    )
+                                  : WalletEngine.isWordValid(
+                                      _controllers[index].text,
+                                    )
+                                  ? ColdBitTheme.goldBitcoin.withValues(
+                                      alpha: 0.6,
+                                    )
+                                  : ColdBitTheme.errorCrimson.withValues(
+                                      alpha: 0.6,
+                                    ),
+                              width:
+                                  WalletEngine.isWordValid(
+                                    _controllers[index].text,
+                                  )
+                                  ? 1.5
+                                  : 1,
                             ),
                           ),
                           child: Row(
@@ -245,8 +258,10 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                                       RegExp(r'[a-zA-Z]'),
                                     ),
                                   ],
-                                    onChanged: (val) => _handleOnChanged(index, val),
-                                    onTap: () => setState(() => _activeIndex = index),
+                                  onChanged: (val) =>
+                                      _handleOnChanged(index, val),
+                                  onTap: () =>
+                                      setState(() => _activeIndex = index),
                                   onSubmitted: (_) {
                                     if (index < 23) {
                                       _focusNodes[index + 1].requestFocus();
@@ -263,7 +278,7 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                         .fade(delay: (20 * index).ms)
                         .slideY(begin: 0.2, duration: 200.ms);
                   },
-              ),
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -274,7 +289,8 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _suggestions.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8),
                     itemBuilder: (context, i) => ActionChip(
                       label: Text(
                         _suggestions[i],
@@ -284,7 +300,10 @@ class _SeedRecoveryScreenState extends ConsumerState<SeedRecoveryScreen> {
                         ),
                       ),
                       backgroundColor: ColdBitTheme.darkGraphite,
-                      side: const BorderSide(color: ColdBitTheme.goldBitcoin, width: 0.5),
+                      side: const BorderSide(
+                        color: ColdBitTheme.goldBitcoin,
+                        width: 0.5,
+                      ),
                       onPressed: () => _applySuggestion(_suggestions[i]),
                     ),
                   ),

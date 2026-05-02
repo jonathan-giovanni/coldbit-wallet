@@ -4,6 +4,17 @@
 
 ---
 
+## 0) Implementation Status Notice
+This file describes the target production requirements. It is not a statement that every listed capability is already implemented.
+
+As of the 2026-05-02 audit:
+- Implemented or partially implemented: Flutter app shell, onboarding, PIN, biometrics, 24-word BIP39 generation/recovery, BIP84 descriptor derivation scaffold, raw QR PSBT scanning, BDK signing path, local secure storage, i18n, and basic tests.
+- Not production-complete: real receive address display, real PSBT amount/fee/output review, fail-closed signing UX, 12-word seed support, UR2 QR fragmentation, Taproot/BIP86, native StrongBox/Secure Enclave attestation, Bitcoin network broadcast, Tor, multisig, watch-only wallets, and descriptor export.
+- The operational execution plan is `docs/PRODUCTION_EXECUTION_PLAN.md`.
+- The current quality baseline is `docs/QUALITY_BASELINE.md`.
+
+---
+
 ## 1) Philosophy and Core Principles
 Coldbit Wallet is a **true cold wallet**: private keys never leave the device, no network access is required, and all signing operations occur locally using hardware-backed secure elements (Android StrongBox / iOS Secure Enclave).  
 The app has **zero analytics, zero metrics, and zero external dependencies**.  

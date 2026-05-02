@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:bdk_flutter/bdk_flutter.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip39/src/wordlists/english.dart' as bip39_english;
+import 'package:coldbit_wallet/core/crypto/bip39_english_wordlist.dart'
+    as bip39_english;
 import 'package:coldbit_wallet/core/security/sealed_state.dart';
 
 class WalletEngine {
@@ -16,13 +17,13 @@ class WalletEngine {
   }
 
   static bool isWordValid(String word) {
-    final list = bip39_english.WORDLIST;
+    final list = bip39_english.englishWordlist;
     return list.contains(word.toLowerCase());
   }
 
   static List<String> getSuggestions(String partial) {
     if (partial.isEmpty) return [];
-    final list = bip39_english.WORDLIST;
+    final list = bip39_english.englishWordlist;
     return list
         .where((word) => word.startsWith(partial.toLowerCase()))
         .take(5)
