@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/jonathan-giovanni/coldbit-wallet/branch/main/graph/badge.svg)](https://codecov.io/gh/jonathan-giovanni/coldbit-wallet)
+[![codecov](https://codecov.io/gh/jonathan-giovanni/coldbit-wallet/branch/develop/graph/badge.svg)](https://codecov.io/gh/jonathan-giovanni/coldbit-wallet/branch/develop)
 
 # ColdBit Wallet
 
@@ -63,7 +63,11 @@ Every production change must pass:
 dart format .
 flutter analyze
 flutter test --coverage
+flutter build apk --debug
 ```
+
+Current local coverage gate: `78.00%` line coverage from `coverage/lcov.info`
+on 2026-05-02. Minimum required coverage: `70%`.
 
 The execution roadmap is maintained in:
 

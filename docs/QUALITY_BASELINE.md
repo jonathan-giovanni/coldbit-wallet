@@ -12,7 +12,7 @@ flutter test --coverage
 flutter build apk --debug
 ```
 
-## Current Result
+## Original Baseline Result
 
 `flutter analyze`:
 
@@ -34,6 +34,27 @@ Coverage summary from `coverage/lcov.info`:
 lines_hit=464
 lines_found=842
 coverage=55.11%
+```
+
+## Current Coverage Gate
+
+Updated date: 2026-05-02  
+Branch: `feature/04-expanded-onboarding`
+
+`flutter test --coverage`:
+
+```text
+All tests passed.
+42 tests passed.
+1 test skipped: BDK native FFI descriptor derivation requires native library/device.
+```
+
+Coverage summary from `coverage/lcov.info`:
+
+```text
+lines_hit=968
+lines_found=1241
+coverage=78.00%
 ```
 
 Android debug build:
