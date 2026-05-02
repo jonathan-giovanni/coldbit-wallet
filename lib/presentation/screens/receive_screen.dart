@@ -65,7 +65,7 @@ class _ReceiveScreenState extends ConsumerState<ReceiveScreen> {
               );
             }
 
-            final address = wallet.fingerprint;
+            final address = wallet.receiveAddress;
 
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -169,6 +169,14 @@ class _ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       ],
                     ),
                   ).animate().fade(delay: 200.ms).slideY(begin: 0.1),
+                  const SizedBox(height: 16),
+                  Text(
+                    wallet.receivePath,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: ColdBitTheme.goldBitcoin,
+                      fontFamily: 'monospace',
+                    ),
+                  ).animate().fade(delay: 250.ms),
                   const SizedBox(height: 16),
                   AnimatedOpacity(
                     opacity: _copied ? 1.0 : 0.0,

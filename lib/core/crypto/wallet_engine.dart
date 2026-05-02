@@ -58,6 +58,23 @@ class WalletEngine {
     }
   }
 
+  static Future<String> deriveReceiveAddress({
+    required Descriptor descriptor,
+    required Network network,
+    int index = 0,
+  }) async {
+    final wallet = await Wallet.create(
+      descriptor: descriptor,
+      network: network,
+      databaseConfig: const DatabaseConfig.memory(),
+    );
+
+    final addressInfo = wallet.getAddress(
+      addressIndex: AddressIndex.peek(index: index),
+    );
+    return addressInfo.address.toString();
+  }
+
   static Future<String> signPsbtOffline({
     required String psbtBase64,
     required Descriptor descriptor,
