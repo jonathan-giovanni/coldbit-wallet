@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:coldbit_wallet/core/crypto/bip39_english_wordlist.dart'
+    as bip39_english;
 import 'package:coldbit_wallet/core/providers/auth_provider.dart';
 import 'package:coldbit_wallet/core/providers/seed_provider.dart';
 import 'package:coldbit_wallet/core/theme/coldbit_theme.dart';
@@ -13,7 +15,17 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class SeedVerifyScreen extends ConsumerStatefulWidget {
-  const SeedVerifyScreen({super.key});
+  const SeedVerifyScreen({
+    super.key,
+    this.challengeIndicesForTesting,
+    this.optionsForTesting,
+  });
+
+  @visibleForTesting
+  final List<int>? challengeIndicesForTesting;
+
+  @visibleForTesting
+  final Map<int, List<String>>? optionsForTesting;
 
   @override
   ConsumerState<SeedVerifyScreen> createState() => _SeedVerifyScreenState();
@@ -23,6 +35,7 @@ class _SeedVerifyScreenState extends ConsumerState<SeedVerifyScreen> {
   static const int _challengeCount = 4;
   late final List<String> _words;
   late final List<int> _challengeIndices;
+  late final Map<int, List<String>> _optionsByIndex;
   final Map<int, String?> _answers = {};
   bool _failed = false;
 
@@ -30,22 +43,33 @@ class _SeedVerifyScreenState extends ConsumerState<SeedVerifyScreen> {
   void initState() {
     super.initState();
     _words = ref.read(seedProvider.notifier).words;
-    _challengeIndices = _pickRandomIndices(_words.length, _challengeCount);
+    _challengeIndices =
+        widget.challengeIndicesForTesting ??
+        _pickRandomIndices(_words.length, _challengeCount);
+    _optionsByIndex = {
+      for (final index in _challengeIndices)
+        index:
+            widget.optionsForTesting?[index] ??
+            _buildOptions(correctIndex: index),
+    };
   }
 
   List<int> _pickRandomIndices(int total, int count) {
     final rng = Random.secure();
     final indices = <int>{};
-    while (indices.length < count) {
+    final effectiveCount = min(total, count);
+    while (indices.length < effectiveCount) {
       indices.add(rng.nextInt(total));
     }
     return indices.toList()..sort();
   }
 
-  List<String> _buildOptions(int correctIndex) {
+  List<String> _buildOptions({required int correctIndex}) {
     final rng = Random.secure();
     final correct = _words[correctIndex];
-    final pool = _words.where((w) => w != correct).toList()..shuffle(rng);
+    final pool =
+        bip39_english.englishWordlist.where((word) => word != correct).toList()
+          ..shuffle(rng);
     final options = [correct, ...pool.take(3)]..shuffle(rng);
     return options;
   }
@@ -153,7 +177,7 @@ class _SeedVerifyScreenState extends ConsumerState<SeedVerifyScreen> {
                   separatorBuilder: (_, _) => const SizedBox(height: 20),
                   itemBuilder: (context, i) {
                     final wordIndex = _challengeIndices[i];
-                    final options = _buildOptions(wordIndex);
+                    final options = _optionsByIndex[wordIndex]!;
                     final selected = _answers[wordIndex];
 
                     return _ChallengeCard(

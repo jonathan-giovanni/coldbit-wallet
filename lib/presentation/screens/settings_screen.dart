@@ -15,14 +15,35 @@ class SettingsScreen extends ConsumerStatefulWidget {
   ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen>
+    with WidgetsBindingObserver {
   bool _cameraGranted = false;
   bool _notificationsGranted = false;
 
   @override
   void initState() {
     super.initState();
-    _checkPermissions();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _syncSettingsState());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _syncSettingsState();
+    }
+  }
+
+  Future<void> _syncSettingsState() async {
+    if (!mounted) return;
+    ref.invalidate(biometricsEnabledProvider);
+    await _checkPermissions();
   }
 
   Future<void> _checkPermissions() async {
@@ -41,7 +62,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     if (status.isPermanentlyDenied) {
       await openAppSettings();
     }
-    await _checkPermissions();
+    await _syncSettingsState();
   }
 
   @override
